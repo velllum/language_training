@@ -1,5 +1,8 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
+
 from . import models
+from . import resources
 
 
 @admin.register(models.Category)
@@ -14,18 +17,19 @@ class ServicesAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     list_display = ("id", "name", "category", "price", "slug", "updated_date", "created_date",)
     list_display_links = ("id",)
-    search_fields = ("name", "category__name",)
+    search_fields = ("category__name",)
     list_filter = ("category",)
     save_as = True
-    list_editable = ("name", "category", "price", "slug")
+    list_editable = ("category", "name", "price", "slug")
 
 
 @admin.register(models.Word)
-class ArticleAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('translation',)}
+class WordAdmin(ImportExportModelAdmin):
+    list_per_page = 30
+    prepopulated_fields = {'slug': ('category', 'translation',)}
     list_display = (
-        "id", "translation", "word", "transcript", "category",
-        "image", "links_image", "is_free", "is_published", "slug",
+        "id", "category", "translation", "word", "transcript",
+        "image", "links_image",  "slug", "is_free", "is_published",
         "updated_date", "created_date",
     )
     list_display_links = ("id",)
@@ -33,17 +37,21 @@ class ArticleAdmin(admin.ModelAdmin):
         "translation", "word", "transcript",
     )
     list_filter = ("category", "is_published", "is_free",)
+    resource_class = resources.WordResource
     save_as = True
     list_editable = (
-        "translation", "word", "transcript", "category",
-        "image", "links_image", "is_free", "is_published", "slug",
+        "category", "translation", "word", "transcript",
+        "is_free", "is_published", "slug",
     )
     fieldsets = (
-        ("Слова на иностранном", {
-            "fields": ("word", "example", "transcript")
+        ("Выбор категории", {
+            "fields": ("category",)
         }),
-        ("Перевод на русском", {
-            "fields": ("translation", "example_translate",  "slug")
+        ("Русском перевод", {
+            "fields": ("translation", "example_translate", "slug")
+        }),
+        ("Иностранный перевод", {
+            "fields": ("word", "example", "transcript")
         }),
         ("Картинка", {
             "fields": ("image", "links_image")

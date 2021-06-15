@@ -33,12 +33,12 @@ class Category(models.Model):
 
 class Word(models.Model):
     """Слова, примеры"""
-    translation = models.CharField(max_length=255, verbose_name="Перевод слова")
-    example_translate = models.CharField(max_length=255, verbose_name="Пример перевода в тексте")
+    translation = models.CharField(max_length=255, verbose_name="Слова")
+    example_translate = models.CharField(max_length=255, verbose_name="Пример в тексте")
 
     word = models.CharField(max_length=255, verbose_name="Слова")
     example = models.CharField(max_length=255, verbose_name="Пример в тексте")
-    transcript = models.CharField(max_length=255, verbose_name="Транскрипция")
+    transcript = models.CharField(max_length=255, blank=True, verbose_name="Транскрипция")
 
     category = models.ForeignKey(
         "Category", related_name='word', on_delete=models.CASCADE, verbose_name='Категория'
@@ -46,9 +46,9 @@ class Word(models.Model):
 
     slug = models.SlugField(unique=True, verbose_name='Ссылка')
     image = models.ImageField(upload_to='media/', blank=True, verbose_name='Изображение',)
-    links_image = models.CharField(max_length=255, verbose_name="Ссылка на ресурс картинки")
+    links_image = models.CharField(max_length=255,  blank=True, verbose_name="Ссылка на ресурс картинки")
 
-    is_free = models.BooleanField(default=False, verbose_name='Статус бесплатно')
+    is_free = models.BooleanField(default=False, verbose_name='Бесплатно')
     is_published = models.BooleanField(default=True, verbose_name='Опубликовано')
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')

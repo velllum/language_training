@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'translator.apps.TranslatorConfig',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -130,13 +131,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CORS_REPLACE_HTTPS_REFERER = False
-# HOST_SCHEME = "http://"
-# SECURE_PROXY_SSL_HEADER = None
-SECURE_SSL_REDIRECT = False
-# SESSION_COOKIE_SECURE = False
-# CSRF_COOKIE_SECURE = False
-# SECURE_HSTS_SECONDS = None
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = False
-# SECURE_FRAME_DENY = False
+# Определяет, следует ли при импорте ресурсов использовать транзакции базы данных
+# https://django-import-export.readthedocs.io/en/latest/installation.html
+IMPORT_EXPORT_USE_TRANSACTIONS = False
 
