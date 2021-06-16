@@ -27,9 +27,9 @@ class ServicesAdmin(admin.ModelAdmin):
 
 @admin.register(models.Word)
 class WordAdmin(ImportExportModelAdmin):
-    formfield_overrides = {
-        models.models.CharField: {'widget': TextInput(attrs={'size': '100'})},
-    }
+    # formfield_overrides = {
+    #     models.models.CharField: {'widget': TextInput(attrs={'size': '100'})},
+    # }
     list_per_page = 30
     prepopulated_fields = {'slug': ('category', 'translation',)}
     list_display = (
@@ -66,11 +66,11 @@ class WordAdmin(ImportExportModelAdmin):
         }),
     )
 
-    # def get_form(self, request, obj=None, **kwargs):
-    #     form = super(WordAdmin, self).get_form(request, obj, **kwargs)
-    #     form.base_fields['example_translate'].widget.attrs['style'] = 'width: 45em;'
-    #     form.base_fields['example'].widget.attrs['style'] = 'width: 45em;'
-    #     return form
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(WordAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields['example_translate'].widget.attrs['style'] = 'width: 45em;'
+        form.base_fields['example'].widget.attrs['style'] = 'width: 45em;'
+        return form
 
     def get_html_photo(self, obj):
         if obj.image:
