@@ -45,7 +45,7 @@ class Word(models.Model):
     )
 
     slug = models.SlugField(unique=True, verbose_name='Ссылка')
-    image = models.ImageField(upload_to='media/', blank=True, verbose_name='Изображение',)
+    image = models.ImageField(upload_to=f'images', blank=True, verbose_name='Изображение',)
     links_image = models.CharField(max_length=255,  blank=True, verbose_name="Ссылка на ресурс картинки")
 
     is_free = models.BooleanField(default=False, verbose_name='Бесплатно')

@@ -9,6 +9,7 @@ class WordResource(resources.ModelResource):
             'id',
             'translation', 'example_translate',
             'word', 'example', 'transcript',
+            "image", "links_image",
             'category',
             'slug',
         )

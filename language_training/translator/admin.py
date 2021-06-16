@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.forms import TextInput
+from django.utils.safestring import mark_safe
 from import_export.admin import ImportExportModelAdmin
 
 from . import models
@@ -25,16 +27,19 @@ class ServicesAdmin(admin.ModelAdmin):
 
 @admin.register(models.Word)
 class WordAdmin(ImportExportModelAdmin):
+    formfield_overrides = {
+        models.models.CharField: {'widget': TextInput(attrs={'size': '100'})},
+    }
     list_per_page = 30
     prepopulated_fields = {'slug': ('category', 'translation',)}
     list_display = (
         "id", "category", "translation", "word", "transcript",
-        "image", "links_image",  "slug", "is_free", "is_published",
+        "get_html_photo", "links_image",  "slug", "is_free", "is_published",
         "updated_date", "created_date",
     )
     list_display_links = ("id",)
     search_fields = (
-        "translation", "word", "transcript",
+        "translation", "word", "transcript", "category"
     )
     list_filter = ("category", "is_published", "is_free",)
     resource_class = resources.WordResource
@@ -60,6 +65,18 @@ class WordAdmin(ImportExportModelAdmin):
             "fields": ("is_free", "is_published")
         }),
     )
+
+    # def get_form(self, request, obj=None, **kwargs):
+    #     form = super(WordAdmin, self).get_form(request, obj, **kwargs)
+    #     form.base_fields['example_translate'].widget.attrs['style'] = 'width: 45em;'
+    #     form.base_fields['example'].widget.attrs['style'] = 'width: 45em;'
+    #     return form
+
+    def get_html_photo(self, obj):
+        if obj.image:
+            return mark_safe(f"<img src='{obj.image.url}' width=50>")
+
+    get_html_photo.short_description = "Миниатюра"
 
 
 admin.site.site_title = "Админ панель"
