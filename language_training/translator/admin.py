@@ -68,22 +68,14 @@ class WordAdmin(ImportExportModelAdmin):
     )
 
     def get_form(self, request, obj=None, **kwargs):
-        """- Меняет размеры указанных полей формы
-        :param request:
-        :param obj:
-        :param kwargs:
-        :return:
-        """
+        """- Меняет размеры указанных полей формы"""
         form = super(WordAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields['example_translate'].widget.attrs['style'] = 'width: 45em;'
         form.base_fields['example'].widget.attrs['style'] = 'width: 45em;'
         return form
 
     def get_html_photo(self, obj):
-        """- Добавляет картинку к слову
-        :param obj:
-        :return:
-        """
+        """- Добавляет картинку к слову"""
         if obj.image:
             return mark_safe(f"<img src='{obj.image.url}' width=50>")
 
