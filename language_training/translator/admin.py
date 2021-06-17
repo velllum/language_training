@@ -43,6 +43,7 @@ class WordAdmin(ImportExportModelAdmin):
     )
     list_filter = ("category", "is_published", "is_free",)
     resource_class = resources.WordResource
+    # save_on_top = True
     save_as = True
     list_editable = (
         "category", "translation", "word", "transcript",

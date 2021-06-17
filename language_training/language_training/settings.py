@@ -69,16 +69,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'language_training.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -138,5 +128,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Определяет, следует ли при импорте ресурсов использовать транзакции базы данных
 # https://django-import-export.readthedocs.io/en/latest/installation.html
+
 IMPORT_EXPORT_USE_TRANSACTIONS = False
 

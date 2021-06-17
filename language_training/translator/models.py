@@ -33,7 +33,7 @@ class Category(models.Model):
 
 class Word(models.Model):
     """Слова, примеры"""
-    translation = models.CharField(max_length=255, verbose_name="Слова")
+    translation = models.CharField(max_length=255, verbose_name="Слова", help_text="указывать сумму в долларах")
     example_translate = models.CharField(max_length=255, verbose_name="Пример в тексте")
 
     word = models.CharField(max_length=255, verbose_name="Слова")
