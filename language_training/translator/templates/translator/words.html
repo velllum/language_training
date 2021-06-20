@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Ivanov_PV">
+    <meta name="generator" content="Hugo 0.83.1">
+    <title>Offcanvas navbar template · Bootstrap v5.0</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/offcanvas.css' %}" type="text/css" rel="stylesheet">
+  </head>
+
+  <body class="pt-0">
+
+  <main class="container">
+
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+
+    <!--Блок навбара-->
+        <nav class="navbar navbar-expand-lg  navbar-light">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+<!--            <img src="{% static 'icons/justify.svg' %}" alt="justify" width="25" height="25">-->
+            </button>
+
+
+    <!--Меню-->
+            <div class="collapse navbar-collapse mt-3" id="navbarsExample03">
+              <ul class="navbar-nav small lh-1 me-auto mb-2 mb-sm-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Главная</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="#">Список слов</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Повтор</a>
+                  <ul class="dropdown-menu" aria-labelledby="dropdown03">
+                    <li><a class="dropdown-item small lh-1" href="#">Визуальный</a></li>
+                    <li><a class="dropdown-item small lh-1" href="#">Звуковой</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="#">Настройки</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="#">Войти</a>
+                </li>
+              </ul>
+
+            </div>
+        </nav>
+
+    <!--Контент-->
+        <div class="bg-body rounded">
+
+    <!--Форма поиска-->
+        <form class="pb-2">
+          <input class="form-control" type="text" placeholder="Поиск" aria-label="Search">
+        </form>
+
+          {% for _ in "1111111111" %}
+          <div class="d-flex text-muted pt-1">
+            <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"/><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
+            <p class="pb-1 mb-0 small lh-sm border-bottom w-100">
+              <strong class="d-block text-gray-dark">Слово <span class="fw-light">[транскрипция]</span></strong>
+              Пример слова в предложении
+            </p>
+          </div>
+          {% endfor %}
+
+
+    <!--Кнопки управления
+        ////////
+        ///////
+    -->
+
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/offcanvas.js' %}"></script>
+
+  </body>
+</html>
