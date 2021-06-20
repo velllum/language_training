@@ -12,3 +12,7 @@ def app(request):
 
 def post(request):
     return HttpResponse("Post requests")
+
+
+def words(request):
+    return render(request, "translator/index.html")
