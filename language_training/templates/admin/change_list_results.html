@@ -8,18 +8,31 @@
 
 <style>
 .table-responsive{
-  height:500px;
-  overflow:scroll;
+    height: 550px;
+    overflow: hidden;
 }
- thead tr:nth-child(1) th{
+
+.hide-vertical-scroll {
+    overflow-y: scroll;
+    max-height: 100%;
+    width: 100%;
+    padding-right: 16px;
+    box-sizing: content-box;
+}
+
+thead tr:nth-child(1) th{
     background: white;
     position: sticky;
     top: 0;
     z-index: 10;
-  }
+ }
+
 </style>
 
-<div class="results table-responsive">
+<div class="results">
+<div class="table-responsive">
+<div class="hide-vertical-scroll">
+
 <table id="result_list">
 <thead>
 <tr>
@@ -48,5 +61,7 @@
 {% endfor %}
 </tbody>
 </table>
+</div>
+</div>
 </div>
 {% endif %}

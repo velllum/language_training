@@ -27,14 +27,14 @@ class ServicesAdmin(admin.ModelAdmin):
 
 @admin.register(models.Word)
 class WordAdmin(ImportExportModelAdmin):
-    # formfield_overrides = {
-    #     models.models.CharField: {'widget': TextInput(attrs={'size': '100'})},
-    # }
+    formfield_overrides = {
+        models.models.CharField: {'widget': TextInput(attrs={'size': '20'})},
+    }
     list_per_page = 30
     prepopulated_fields = {'slug': ('category', 'translation',)}
     list_display = (
         "id", "category", "translation", "word", "transcript",
-        "get_html_photo", "links_image",  "slug", "is_free", "is_published",
+        "slug", "is_free", "is_published",
         "updated_date", "created_date",
     )
     list_display_links = ("id",)
