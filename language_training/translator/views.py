@@ -15,4 +15,4 @@ def post(request):
 
 
 def words(request):
-    return render(request, "translator/index.html")
+    return render(request, "translator/cover.html")
