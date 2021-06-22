@@ -22,7 +22,11 @@
 }*/
 
 .cover-container {
+  width: 20em;
+  height: 35em;
   max-width: 20em;
+  max-height: 35em;
+ # background-color: #79aec8;
 }
 
 
