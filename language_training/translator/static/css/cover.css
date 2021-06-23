@@ -39,6 +39,7 @@
     border-bottom: 1px solid rgba(0,0,0,.125);
 }
 
+
 .card-footer-cover {
     padding: .5rem 1rem;
     background-color: #417690!important;
@@ -144,7 +145,7 @@
     border: 0;
 }
 
-.px-cover {
+/*.px-cover {
     padding-right: .7rem!important;
     padding-left: .7rem!important;
-}
+}*/
