@@ -23,9 +23,9 @@
 
 .cover-container {
   width: 20em;
-  height: 35em;
+  height: 38em;
   max-width: 20em;
-  max-height: 35em;
+  max-height: 38em;
 }
 
 .bg-cover {
@@ -145,7 +145,6 @@
     border: 0;
 }
 
-/*.px-cover {
-    padding-right: .7rem!important;
-    padding-left: .7rem!important;
-}*/
+.small-cover, small-cover {
+    font-size: .7em;
+}
