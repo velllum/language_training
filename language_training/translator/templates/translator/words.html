@@ -163,18 +163,37 @@
           </div>
 
 <!--          Контент-->
-          <div class="card-body p-2">
-            {% for _ in "1234567890" %}
-            <a href="#" class="p-1 list-group-item list-group-item-action fw-light">
-              <div class="d-flex justify-content-start align-items-center">
-                <svg class="bd-placeholder-img rounded-0" width="45" height="35" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Example non-rounded image: 75x75" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Example non-rounded image</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">75x75</text></svg>
-                <div class="text-start ps-2 lh-1">
-                  <span class="text-dark small"><strong>Слово</strong> - перевод слова<br></span>
-                  <span class="text-muted small-cover">пример слова в предложение yyyyy</span>
+          <div class="card-body p-2 pb-0">
+            <ul class="list-group list-group-flush">
+              {% for _ in "1234567890" %}
+              <li class="list-group-item-cover">
+                <div class="d-flex justify-content-start align-items-center">
+                  <svg class="bd-placeholder-img rounded-0" width="45" height="38" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Example non-rounded image: 75x75" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Example non-rounded image</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">75x75</text></svg>
+                  <div class="text-start ps-2 lh-1">
+                    <span class="text-dark small"><strong>Слово</strong> - перевод слова<br></span>
+                    <span class="text-muted small-cover">пример слова в предложение yyyyy</span>
+                  </div>
                 </div>
-              </div>
-            </a>
-            {% endfor %}
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+<!--          Пагинация сьраниц-->
+          <div class="d-flex justify-content-evenly align-items-center">
+            <div class="bd-highlight">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+              </svg>
+            </div>
+
+            <div class="bd-highlight">2 / 7000</div>
+
+            <div class="bd-highlight">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+              </svg>
+            </div>
           </div>
 
 <!--          Кнопки снизу-->
