@@ -2,6 +2,14 @@
  * Globals
  */
 
+ /*body {
+  background: url('static/image/88298-1.webp') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}*/
+
 
 /* Custom default button */
 .btn-secondary,
@@ -168,3 +176,10 @@
     background-color: #fff;
     border: 1px solid rgb(0 0 0 / 44%);
 }
+
+.img-fluid-cover {
+    max-width: 100%;
+    height: auto;
+}
+
+/*=================================================*/

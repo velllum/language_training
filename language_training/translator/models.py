@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 """
 User
@@ -29,6 +30,9 @@ class Category(models.Model):
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
+
+    def get_absolute_url(self):
+        return reverse("")
 
 
 class Word(models.Model):

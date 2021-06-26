@@ -46,7 +46,7 @@ class WordAdmin(ImportExportModelAdmin):
     # save_on_top = True
     save_as = True
     list_editable = (
-        "category", "translation", "word", "transcript",
+        "translation", "word", "transcript",
         "is_free", "is_published", "slug",
     )
     fieldsets = (
