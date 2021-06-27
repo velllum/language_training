@@ -31,7 +31,7 @@ class WordAdmin(ImportExportModelAdmin):
         models.models.CharField: {'widget': TextInput(attrs={'size': '20'})},
     }
     list_per_page = 30
-    prepopulated_fields = {'slug': ('category', 'translation',)}
+    prepopulated_fields = {'slug': ('category', 'word',)}
     list_display = (
         "id", "category", "translation", "word", "transcript",
         "slug", "is_free", "is_published",
@@ -39,7 +39,7 @@ class WordAdmin(ImportExportModelAdmin):
     )
     list_display_links = ("id",)
     search_fields = (
-        "translation", "word", "transcript", "category"
+        "translation", "word", "transcript"
     )
     list_filter = ("category", "is_published", "is_free",)
     resource_class = resources.WordResource

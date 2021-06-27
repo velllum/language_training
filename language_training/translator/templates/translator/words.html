@@ -50,36 +50,45 @@
         </form>
       </div>
 
-<!--          Контент-->
-<!--      <div class="card-body p-2 pb-0">-->
+        <!--Контент (таблица) -->
         <ul class="list-group h-100 w-100 list-group-flush">
-          {% for _ in "1234567890" %}
-          <div class="list-group-item-cover h-100 w-100 d-flex align-items-center">
-            <div class="d-flex align-items-center">
-              <img class="bd-placeholder-img rounded-0" width="15%"  src="{% static 'image/placeholder.png' %}">
-              <div class="text-start ps-2 d-flex flex-column">
-                <div class="text-dark small"><strong>Слово</strong> - перевод слова<br></div>
-                <div class="text-muted small-cover">пример слова в предложение yyyyy</div>
-              </div>
-            </div>
-          </div>
+          {% for word in page_words %}
+            <a href="{{ word.get_absolute_url }}" style="text-decoration: none;">
+                <li class="list-group-item-cover h-100 w-100 d-flex align-items-center">
+                    <div class="d-flex align-items-center">
+                      <img class="bd-placeholder-img rounded-0" width="15%"  src="{% static 'image/placeholder.png' %}">
+                      <div class="text-start ps-2 d-flex flex-column">
+                        <div class="text-dark small"><strong>{{ word.word }}</strong> - {{ word.translation }}<br></div>
+                        <div class="text-muted small-cover">{{ word.example }}</div>
+                      </div>
+                    </div>
+                </li>
+            </a>
           {% endfor %}
         </ul>
 
-<!--          Пагинация страниц-->
+    <!--          Пагинация страниц-->
       <div class="d-flex justify-content-evenly align-items-center">
         <div class="bd-highlight">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
-          </svg>
+            {% if page_words.has_previous %}
+                <a class="text-light"  href="?page={{ page_words.previous_page_number }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+                    </svg>
+                </a>
+            {% endif %}
         </div>
 
-        <div class="bd-highlight">2 / 7000</div>
+        <div class="bd-highlight">{{ page_words.number }} / {{ page_words.paginator.num_pages }}</div>
 
         <div class="bd-highlight">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
-          </svg>
+            {% if page_words.has_next %}
+                <a class="text-light" href="?page={{ page_words.next_page_number }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+                    </svg>
+                </a>
+            {% endif %}
         </div>
       </div>
 
@@ -159,18 +168,20 @@
             </form>
           </div>
 
-<!--          Контент-->
+<!--          Контент (таблица)-->
           <div class="card-body p-2 pb-0">
             <ul class="list-group list-group-flush">
-              {% for _ in "1234567890" %}
+              {% for word in page_words %}
               <li class="list-group-item-cover">
-                <div class="d-flex justify-content-start align-items-center">
-                  <img class="bd-placeholder-img rounded-0" width="45" height="38"  src="{% static 'image/placeholder.png' %}">
-                  <div class="text-start ps-2 lh-1">
-                    <span class="text-dark small"><strong>Слово</strong> - перевод слова<br></span>
-                    <span class="text-muted small-cover">пример слова в предложение yyyyy</span>
-                  </div>
-                </div>
+                  <a href="{{ word.get_absolute_url }}" style="text-decoration: none;">
+                      <div class="d-flex justify-content-start align-items-center">
+                          <img class="bd-placeholder-img rounded-0" width="45" height="38"  src="{% static 'image/placeholder.png' %}">
+                          <div class="text-start ps-2 lh-1">
+                            <span class="text-dark small"><strong>{{ word.word }}</strong> - {{ word.translation }}<br></span>
+                            <span class="text-muted small-cover">{{ word.example }}</span>
+                          </div>
+                      </div>
+                  </a>
               </li>
               {% endfor %}
             </ul>
@@ -179,17 +190,25 @@
 <!--          Пагинация страниц-->
           <div class="d-flex justify-content-evenly align-items-center">
             <div class="bd-highlight">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
-              </svg>
+                {% if page_words.has_previous %}
+                    <a class="text-light"  href="?page={{ page_words.previous_page_number }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+                        </svg>
+                    </a>
+                {% endif %}
             </div>
 
-            <div class="bd-highlight">2 / 7000</div>
+            <div class="bd-highlight">{{ page_words.number }} / {{ page_words.paginator.num_pages }}</div>
 
             <div class="bd-highlight">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
-              </svg>
+                {% if page_words.has_next %}
+                    <a class="text-light" href="?page={{ page_words.next_page_number }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+                        </svg>
+                    </a>
+                {% endif %}
             </div>
           </div>
 

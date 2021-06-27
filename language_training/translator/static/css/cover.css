@@ -183,3 +183,16 @@
 }
 
 /*=================================================*/
+
+.bd-example-position-utils {
+    position: relative;
+    padding: 3em;
+}
+
+.bd-example {
+    position: relative;
+    padding: 1rem;
+    margin: 1rem -.75rem 0;
+    border: solid #dee2e6;
+    border-width: 1px 0 0;
+}

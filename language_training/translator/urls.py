@@ -1,11 +1,14 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 
 urlpatterns = [
-    path('words', views.words, name='words'),
-    path('card', views.card, name='card'),
-    path('audio-replay', views.audio_replay, name='audio_replay'),
-    path('repeat-words', views.repeat_words, name='repeat_words'),
-    path('extend-replay', views.extend_replay, name='extend_replay'),
+    path('', views.category, name='category'),
+    path('<slug:category_slug>/', include([
+        path('', views.word, name='word'),
+        path('audio-replay/', views.audio_replay, name='audio_replay'),
+        path('repeat-words/', views.repeat_words, name='repeat_words'),
+        path('extend-replay/', views.extend_replay, name='extend_replay'),
+        path('<str:word_slug>', views.card, name='card'),
+    ])),
 ]

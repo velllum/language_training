@@ -18,11 +18,16 @@ User
 
 class Category(models.Model):
     """- Категории"""
+    objects = None
     name = models.CharField(max_length=255, verbose_name='Наименование')
     slug = models.SlugField(unique=True, verbose_name='Ссылка')
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_date = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
+
+    def get_absolute_url(self):
+        """- Получить url для списка категорий"""
+        return reverse("word", kwargs={"category_slug": self.slug})
 
     def __str__(self):
         return self.name
@@ -31,16 +36,14 @@ class Category(models.Model):
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
 
-    def get_absolute_url(self):
-        return reverse("")
-
 
 class Word(models.Model):
     """- Слова, примеры"""
-    translation = models.CharField(max_length=255, verbose_name="Слова")  # , help_text="указывать сумму в долларах")
+    objects = None
+    translation = models.CharField(max_length=255, verbose_name="Перевод")  # , help_text="указывать сумму в долларах")
     example_translate = models.CharField(max_length=255, verbose_name="Пример в тексте")
 
-    word = models.CharField(max_length=255, verbose_name="Слова")
+    word = models.CharField(max_length=255, verbose_name="Слово")
     example = models.CharField(max_length=255, verbose_name="Пример в тексте")
     transcript = models.CharField(max_length=255, blank=True, verbose_name="Транскрипция")
 
@@ -57,6 +60,10 @@ class Word(models.Model):
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_date = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
+
+    def get_absolute_url(self):
+        """- Получить url для списка слов"""
+        return reverse("card", kwargs={"category_slug": self.category.slug, "word_slug": self.slug})
 
     def __str__(self):
         return self.translation
