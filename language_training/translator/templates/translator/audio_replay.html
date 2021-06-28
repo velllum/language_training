@@ -32,14 +32,13 @@
               </svg>
             </button>
             <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButtonMobil">
-<!--                <li><a class="small dropdown-item-cover" href="#">О сервисе</a></li>-->
-                <li><a class="small dropdown-item-cover" href="#">Список слов</a></li>
-                <li><a class="small dropdown-item-cover active" href="#">Повтор слов</a></li>
-                <li><a class="small dropdown-item-cover" href="#">Аудио повтор</a></li>
-                <li><a class="small dropdown-item-cover" href="#">Настройки</a></li>
-<!--                <li><a class="small dropdown-item-cover" href="#">Инструкция</a></li>-->
+                <li><a class="small dropdown-item-cover" href="{% url 'category' %}"></a>Главная</li>
+                <li><a class="small dropdown-item-cover" href="{% url 'word' %}">Список слов</a></li>
+                <li><a class="small dropdown-item-cover" href="{% url 'repeat_words' %}">Повтор слов</a></li>
+                <li><a class="small dropdown-item-cover active" href="{% url 'audio_replay' %}">Аудио повтор</a></li>
+                <li><a class="small dropdown-item-cover" href="{% url 'settings' %}">Настройки</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="small dropdown-item-cover" href="#">Войти</a></li>
+                <li><a class="small dropdown-item-cover" href="{% url 'auth' %}">Войти</a></li>
             </ul>
           </div>
 
@@ -135,14 +134,13 @@
                 </svg>
               </button>
               <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton">
-<!--                <li><a class="small dropdown-item-cover" href="#">О сервисе</a></li>-->
-                <li><a class="small dropdown-item-cover" href="#">Список слов</a></li>
-                <li><a class="small dropdown-item-cover active" href="#">Повтор слов</a></li>
-                <li><a class="small dropdown-item-cover" href="#">Аудио повтор</a></li>
-                <li><a class="small dropdown-item-cover" href="#">Настройки</a></li>
-<!--                <li><a class="small dropdown-item-cover" href="#">Инструкция</a></li>-->
+                <li><a class="small dropdown-item-cover" href="{% url 'category' %}"></a>Главная</li>
+                <li><a class="small dropdown-item-cover" href="{% url 'word' %}">Список слов</a></li>
+                <li><a class="small dropdown-item-cover" href="{% url 'repeat_words' %}">Повтор слов</a></li>
+                <li><a class="small dropdown-item-cover active" href="{% url 'audio_replay' %}">Аудио повтор</a></li>
+                <li><a class="small dropdown-item-cover" href="{% url 'settings' %}">Настройки</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="small dropdown-item-cover" href="#">Войти</a></li>
+                <li><a class="small dropdown-item-cover" href="{% url 'auth' %}">Войти</a></li>
               </ul>
             </div>
 

@@ -15,10 +15,14 @@ def word(request, category_slug):
     paginator = Paginator(words, 5)
     page_number = request.GET.get('page')
     page_words = paginator.get_page(page_number)
-    return render(request, "translator/words.html", context={"page_words": page_words})
+    content = {
+        "page_words": page_words,
+        "category_slug": category_slug,
+    }
+    return render(request, "translator/words.html", context=content)
 
 
-def card(request, word_slug, category_slug=None):
+def card(request, word_slug, *args, **kwargs):
     """- Карточка слова"""
     card_word = get_object_or_404(models.Word, slug=word_slug)
     return render(request, "translator/card.html", context={"card_word": card_word})
@@ -38,4 +42,13 @@ def extend_replay(request):
     """- Продление повтора"""
     return render(request, "translator/extend_replay.html")
 
+
+def settings(request):
+    """- Настойки"""
+    return render(request, "translator/settings.html")
+
+
+def auth(request):
+    """- Авторизация"""
+    return render(request, "translator/auth.html")
 

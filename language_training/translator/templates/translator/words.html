@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <meta name="generator" content="Hugo 0.83.1">
+    <meta name="generator" content="">
 
     <title>Title</title>
 
@@ -30,17 +30,7 @@
               <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
             </svg>
           </button>
-          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButtonMobil">
-<!--                <li><a class="small dropdown-item-cover" href="#">О сервисе</a></li>-->
-            <li><a class="small dropdown-item-cover" href="#">Список слов</a></li>
-            <li><a class="small dropdown-item-cover active" href="#">Повтор слов</a></li>
-            <li><a class="small dropdown-item-cover" href="#">Аудио повтор</a></li>
-            <li><a class="small dropdown-item-cover" href="#">Настройки</a></li>
-            <li><hr class="dropdown-divider"></li>
-<!--                <li><a class="small dropdown-item-cover" href="#">Инструкция</a></li>-->
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="small dropdown-item-cover" href="#">Войти</a></li>
-          </ul>
+
         </div>
 <!--            Форма поиска-->
         <form action="" method="POST">
@@ -149,14 +139,12 @@
                 </svg>
               </button>
               <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton">
-<!--                <li><a class="small dropdown-item-cover" href="#">О сервисе</a></li>-->
-                <li><a class="small dropdown-item-cover" href="#">Список слов</a></li>
-                <li><a class="small dropdown-item-cover active" href="#">Повтор слов</a></li>
-                <li><a class="small dropdown-item-cover" href="#">Аудио повтор</a></li>
-                <li><a class="small dropdown-item-cover" href="#">Настройки</a></li>
+                <li><a class="small dropdown-item-cover" href="{% url 'word' category_slug %}">Список слов</a></li>
+                <li><a class="small dropdown-item-cover" href="{% url 'repeat_words'%}">Повтор слов</a></li>
+                <li><a class="small dropdown-item-cover active" href="{% url 'audio_replay'%}">Аудио повтор</a></li>
+                <li><a class="small dropdown-item-cover" href="{% url 'settings'%}">Настройки</a></li>
                 <li><hr class="dropdown-divider"></li>
-<!--                <li><a class="small dropdown-item-cover" href="#">Инструкция</a></li>-->
-                <li><a class="small dropdown-item-cover" href="#">Войти</a></li>
+                <li><a class="small dropdown-item-cover" href="{% url 'auth'%}">Войти</a></li>
               </ul>
             </div>
 
