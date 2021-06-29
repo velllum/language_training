@@ -12,6 +12,7 @@ def category(request):
 def word(request, category_slug):
     """- Все слова"""
     words = models.Word.objects.filter(category__slug=category_slug)
+    categories = models.Category.objects.all()
     paginator = Paginator(words, 5)
     page_number = request.GET.get('page')
     page_words = paginator.get_page(page_number)
@@ -22,33 +23,35 @@ def word(request, category_slug):
     return render(request, "translator/words.html", context=content)
 
 
-def card(request, word_slug, *args, **kwargs):
+def card(request, word_slug, **kwargs):
     """- Карточка слова"""
     card_word = get_object_or_404(models.Word, slug=word_slug)
     return render(request, "translator/card.html", context={"card_word": card_word})
 
 
-def audio_replay(request):
+def audio_replay(request, category_slug):
     """- Аудио повтор слов добавленных в закладки"""
-    return render(request, "translator/audio_replay.html")
+    print(category_slug)
+    return render(request, "translator/audio_replay.html", context={"category_slug": category_slug})
 
 
-def repeat_words(request):
+def repeat_words(request, category_slug):
     """- Повторение слов добавленных в закладки"""
-    return render(request, "translator/repeat_words.html")
+    print("11111111111111")
+    return render(request, "translator/repeat_words.html", context={"category_slug": category_slug})
 
 
-def extend_replay(request):
+def extend_replay(request, category_slug):
     """- Продление повтора"""
-    return render(request, "translator/extend_replay.html")
+    return render(request, "translator/extend_replay.html", context={"category_slug": category_slug})
 
 
-def settings(request):
+def settings(request, category_slug):
     """- Настойки"""
-    return render(request, "translator/settings.html")
+    return render(request, "translator/settings.html", context={"category_slug": category_slug})
 
 
-def auth(request):
+def auth(request, category_slug):
     """- Авторизация"""
-    return render(request, "translator/auth.html")
+    return render(request, "translator/auth.html", context={"category_slug": category_slug})
 

@@ -31,13 +31,7 @@
             </svg>
           </button>
           <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButtonMobil">
-              <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
-              <li><a class="small dropdown-item-cover" href="{% url 'word' category_slug %}">Список слов</a></li>
-            <li><a class="small dropdown-item-cover" href="{% url 'repeat_words' category_slug %}">Повтор слов</a></li>
-            <li><a class="small dropdown-item-cover" href="{% url 'audio_replay' category_slug %}">Аудио повтор</a></li>
-            <li><a class="small dropdown-item-cover" href="{% url 'settings' category_slug %}">Настройки</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="small dropdown-item-cover" href="{% url 'auth' category_slug %}">Войти</a></li>
+
           </ul>
         </div>
 <!--            Форма поиска-->
@@ -143,17 +137,16 @@
 <!--              Меню-->
               <button class="btn-cover" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="true" style="">
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
-                </svg>
+                    <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+                  </svg>
               </button>
               <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton">
-                  <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
                 <li><a class="small dropdown-item-cover" href="{% url 'word' category_slug %}">Список слов</a></li>
                 <li><a class="small dropdown-item-cover" href="{% url 'repeat_words' category_slug %}">Повтор слов</a></li>
                 <li><a class="small dropdown-item-cover" href="{% url 'audio_replay' category_slug %}">Аудио повтор</a></li>
                 <li><a class="small dropdown-item-cover" href="{% url 'settings' category_slug %}">Настройки</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="small dropdown-item-cover" href="{% url 'auth' category_slug %}">Войти</a></li
+                <li><a class="small dropdown-item-cover" href="{% url 'auth' category_slug %}">Войти</a></li>
               </ul>
             </div>
 
@@ -184,7 +177,7 @@
             </ul>
           </div>
 
-<!--          Пагинация страниц-->
+<!--      Пагинация страниц-->
           <div class="d-flex justify-content-evenly align-items-center">
             <div class="bd-highlight">
                 {% if page_words.has_previous %}
@@ -242,7 +235,6 @@
         <p class="small text-black-50">Все права защищены © 2021</p>
       </footer>
     </div>
-
 
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
