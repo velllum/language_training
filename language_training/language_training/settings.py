@@ -129,5 +129,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Определяет, следует ли при импорте ресурсов использовать транзакции базы данных
 # https://django-import-export.readthedocs.io/en/latest/installation.html
 
-IMPORT_EXPORT_USE_TRANSACTIONS = False
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 

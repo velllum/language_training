@@ -12,8 +12,7 @@ def category(request):
 def word(request, category_slug):
     """- Все слова"""
     words = models.Word.objects.filter(category__slug=category_slug)
-    categories = models.Category.objects.all()
-    paginator = Paginator(words, 5)
+    paginator = Paginator(words, 10)
     page_number = request.GET.get('page')
     page_words = paginator.get_page(page_number)
     content = {
@@ -23,10 +22,10 @@ def word(request, category_slug):
     return render(request, "translator/words.html", context=content)
 
 
-def card(request, word_slug, **kwargs):
+def card(request, word_slug, category_slug):
     """- Карточка слова"""
     card_word = get_object_or_404(models.Word, slug=word_slug)
-    return render(request, "translator/card.html", context={"card_word": card_word})
+    return render(request, "translator/card.html", context={"card_word": card_word, "category_slug": category_slug})
 
 
 def audio_replay(request, category_slug):
@@ -37,7 +36,6 @@ def audio_replay(request, category_slug):
 
 def repeat_words(request, category_slug):
     """- Повторение слов добавленных в закладки"""
-    print("11111111111111")
     return render(request, "translator/repeat_words.html", context={"category_slug": category_slug})
 
 
@@ -54,4 +52,9 @@ def settings(request, category_slug):
 def auth(request, category_slug):
     """- Авторизация"""
     return render(request, "translator/auth.html", context={"category_slug": category_slug})
+
+
+def register(request, category_slug):
+    """- Регистрация"""
+    return render(request, "translator/register.html", context={"category_slug": category_slug})
 

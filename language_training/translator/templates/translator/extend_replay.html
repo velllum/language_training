@@ -32,14 +32,18 @@
               </svg>
             </button>
             <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButtonMobil">
-<!--                <li><a class="small dropdown-item-cover" href="#">О сервисе</a></li>-->
-                <li><a class="small dropdown-item-cover" href="#">Список слов</a></li>
-                <li><a class="small dropdown-item-cover active" href="#">Повтор слов</a></li>
-                <li><a class="small dropdown-item-cover" href="#">Аудио повтор</a></li>
-                <li><a class="small dropdown-item-cover" href="#">Настройки</a></li>
-<!--                <li><a class="small dropdown-item-cover" href="#">Инструкция</a></li>-->
+                  <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
+                  {% url 'word' category_slug as url %}
+                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Список слов</a></li>
+                  {% url 'repeat_words' category_slug as url %}
+                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Повтор слов</a></li>
+                  {% url 'audio_replay' category_slug as url %}
+                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Аудио повтор</a></li>
+                  {% url 'settings' category_slug as url %}
+                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Настройки</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="small dropdown-item-cover" href="#">Войти</a></li>
+                  {% url 'auth' category_slug as url %}
+                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Войти</a></li>
             </ul>
           </div>
 
@@ -122,8 +126,6 @@
 
       </style>
 
-
-
       <main>
 
         <div class="card text-light bg-cover cover-container">
@@ -137,14 +139,18 @@
                 </svg>
               </button>
               <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton">
-<!--                <li><a class="small dropdown-item-cover" href="#">О сервисе</a></li>-->
-                <li><a class="small dropdown-item-cover" href="#">Список слов</a></li>
-                <li><a class="small dropdown-item-cover active" href="#">Повтор слов</a></li>
-                <li><a class="small dropdown-item-cover" href="#">Аудио повтор</a></li>
-                <li><a class="small dropdown-item-cover" href="#">Настройки</a></li>
-<!--                <li><a class="small dropdown-item-cover" href="#">Инструкция</a></li>-->
+                  <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
+                  {% url 'word' category_slug as url %}
+                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Список слов</a></li>
+                  {% url 'repeat_words' category_slug as url %}
+                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Повтор слов</a></li>
+                  {% url 'audio_replay' category_slug as url %}
+                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Аудио повтор</a></li>
+                  {% url 'settings' category_slug as url %}
+                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Настройки</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="small dropdown-item-cover" href="#">Войти</a></li>
+                  {% url 'auth' category_slug as url %}
+                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Войти</a></li>
               </ul>
             </div>
 
