@@ -1,0 +1,12 @@
+<li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
+{% url 'word' category_slug as url %}
+<li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Список слов</a></li>
+{% url 'repeat_words' category_slug as url %}
+<li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Повтор слов</a></li>
+{% url 'audio_replay' category_slug as url %}
+<li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Аудио повтор</a></li>
+{% url 'settings' category_slug as url %}
+<li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Настройки</a></li>
+<li><hr class="dropdown-divider"></li>
+{% url 'auth' category_slug as url %}
+<li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Войти</a></li>
