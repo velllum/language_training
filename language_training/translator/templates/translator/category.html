@@ -1,7 +1,7 @@
 <!doctype html>
 {% load static %}
 <html lang="en" class="h-100">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -14,40 +14,40 @@
     <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
     <link href="{% static 'css/cover.css' %}" type="text/css" rel="stylesheet">
 
-  </head>
-  <body class="d-flex h-100 text-center">
+</head>
+<body class="d-flex h-100 text-center">
 
 <!--  #############################################################-->
 
 <!--  мобильная версия-->
-    <div class="d-block d-sm-none d-flex w-100 h-100 mx-auto bg-cover">
+<div class="d-block d-sm-none d-flex w-100 h-100 mx-auto bg-cover">
 
-<!--          Контент-->
-        <div class="bg-cover m-auto">
-            <div class="d-grid gap-3">
-                {% for category in categories %}
-                <a class="btn btn-outline-light" href="{{ category.get_absolute_url }}" role="button" style="border: 2px solid #ffffffbf; padding: 1rem 2.5rem; font-size: 1.3rem; border-radius: .5rem;">
-                    {{ category.name }}
-                </a>
-                {% endfor %}
-            </div>
+    <!--          Контент-->
+    <div class="bg-cover m-auto">
+        <div class="d-grid gap-3">
+            {% for category in categories %}
+            <a class="btn btn-outline-light" href="{{ category.get_absolute_url }}" role="button" style="border: 2px solid #ffffffbf; padding: 1rem 2.5rem; font-size: 1.3rem; border-radius: .5rem;">
+                {{ category.name }}
+            </a>
+            {% endfor %}
         </div>
     </div>
+</div>
 
 <!--  #############################################################-->
 
-  <!--Десктопная версия-->
-    <div class="d-none d-sm-block cover-container m-auto">
+<!--Десктопная версия-->
+<div class="d-none d-sm-block cover-container m-auto">
 
-<!--      <style>-->
-<!--       body {-->
-<!--        height: 200px; /* Высота блока */-->
-<!--        background: url({% static 'image/background-picture.jpg' %}) 100% 100% no-repeat; /* Добавляем фон */-->
-<!--        background-size: cover; /* Масштабируем фон */-->
-<!--       }-->
-<!--      </style>-->
+    <!--      <style>-->
+    <!--       body {-->
+    <!--        height: 200px; /* Высота блока */-->
+    <!--        background: url({% static 'image/background-picture.jpg' %}) 100% 100% no-repeat; /* Добавляем фон */-->
+    <!--        background-size: cover; /* Масштабируем фон */-->
+    <!--       }-->
+    <!--      </style>-->
 
-      <main>
+    <main>
         <div class="card bg-cover cover-container">
             <div class="d-grid gap-3 m-auto">
                 {% for category in categories %}
@@ -57,18 +57,18 @@
                 {% endfor %}
             </div>
         </div>
-      </main>
+    </main>
 
-<!--      Нижний заголовок-->
-<!--      <footer class="fixed-bottom">-->
-        <footer class="footer mt-auto py-3">
-            <span class="small text-black-50">Все права защищены © 2021</span>
-        </footer>
+    <!--      Нижний заголовок-->
+    <!--      <footer class="fixed-bottom">-->
+    <footer class="footer mt-auto py-3">
+        <span class="small text-black-50">Все права защищены © 2021</span>
+    </footer>
 
-    </div>
+</div>
 
 
-  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
-  </body>
+</body>
 </html>
