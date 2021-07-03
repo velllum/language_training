@@ -5,12 +5,6 @@ from django.views.generic import ListView
 from . import models
 
 
-# def category(request):
-#     """- Все категории"""
-#     categories = models.Category.objects.all()
-#     return render(request, "translator/category.html", context={'categories': categories})
-
-
 class Category(ListView):
     """- Вывод категорий"""
     model = models.Category
