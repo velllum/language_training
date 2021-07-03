@@ -1,88 +1,45 @@
-<!doctype html>
+{% extends "base.html" %}
 {% load static %}
-<html lang="en" class="h-100">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="generator" content="Hugo 0.83.1">
 
-    <title>Title</title>
+<title>{% block title %}Добавить слово в повтор{% endblock title %}</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
-    <link href="{% static 'css/cover.css' %}" type="text/css" rel="stylesheet">
+{% block mobile_content %}
+<div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">
+    <div class="card-header-cover p-1 d-flex justify-content-between">
+        <!--меню-->
+        {% include "snippets/_menu.html" %}
+        <!--Форма поиска-->
+        {% include "snippets/_search_form.html" %}
+    </div>
 
-  </head>
-  <body class="d-flex h-100 text-center">
-
-<!--  #############################################################-->
-
-<!--  мобильная версия-->
-    <div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">
-
-        <div class="card-header-cover p-1 d-flex justify-content-between">
-          <div class="dropdown text-start">
-
-<!--            меню-->
-            <button class="btn-cover" type="button" id="dropdownMenuButtonMobil" data-bs-toggle="dropdown" aria-expanded="true" style="">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
-              </svg>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButtonMobil">
-                  <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
-                  {% url 'word' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Список слов</a></li>
-                  {% url 'repeat_words' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Повтор слов</a></li>
-                  {% url 'audio_replay' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Аудио повтор</a></li>
-                  {% url 'settings' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Настройки</a></li>
-                <li><hr class="dropdown-divider"></li>
-                  {% url 'auth' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Войти</a></li>
-            </ul>
-          </div>
-
-<!--          форма поиска-->
-              <div class="pt-1">
-                <form action="" method="POST">
-                  <input class="form-control form-control-sm" style="width: 15rem;" type="text" placeholder="Поиск">
-                </form>
-              </div>
-        </div>
-
-<!--      слова и транскрипция-->
-      <div class="card-body">
+    <!--слова и транскрипция-->
+    <div class="card-body">
         <div class="position-relative top-50 start-50 translate-middle">
-          <p class="card-title lead"><strong>Слова на Анг.</strong></p>
-          <p class="card-text">[транскрипт]</p>
+            <p class="card-title lead"><strong>Слова на Анг.</strong></p>
+            <p class="card-text">[транскрипт]</p>
         </div>
-      </div>
+    </div>
 
-<!--      картинка к слову-->
-      <div class="py-0 px-2">
+    <!--картинка к слову-->
+    <div class="py-0 px-2">
         <div class="position-relative top-50 start-50 translate-middle">
             <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}">
         </div>
-      </div>
-      <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
+    </div>
+    <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
 
-<!--      пример слова в предложении-->
-      <div class="card-body">
+    <!--пример слова в предложении-->
+    <div class="card-body">
         <p class="card-text small">Пример слова в предложении</p>
-      </div>
+    </div>
 
-<!--      кнопки правления-->
-      <div class="card-footer-cover p-1 mt-auto d-flex justify-content-between">
+    <!--кнопки правления-->
+    <div class="card-footer-cover p-1 mt-auto d-flex justify-content-between">
 
         <div class="px-cover">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-          </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+            </svg>
         </div>
 
         <a href="#" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-2">1</strong></a>
@@ -90,133 +47,80 @@
         <a href="#" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-2">0</strong></a>
 
         <div class="px-cover">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.624 9.624 0 0 0 7.556 8a9.624 9.624 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.595 10.595 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.624 9.624 0 0 0 6.444 8a9.624 9.624 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5z"/>
-            <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z"/>
-          </svg>
-        </div>
-
-      </div>
-
-<!--      <div class="bg-dark">-->
-<!--        <span class="small">Все права защищены © 2021</span>-->
-<!--      </div>-->
-
-    </div>
-
-<!--  #############################################################-->
-
-  <!--    Десктопная версия-->
-    <div class="d-none d-sm-block cover-container m-auto flex-column">
-
-      <style>
-<!--       body {-->
-<!--          background: url({% static 'image/background-1.jpg' %}) no-repeat center center fixed;-->
-<!--          -webkit-background-size: cover;-->
-<!--          -moz-background-size: cover;-->
-<!--          background-size: cover;-->
-<!--          -o-background-size: cover;-->
-<!--       }-->
-
-<!--       body {-->
-<!--        height: 200px; /* Высота блока */-->
-<!--        background: url({% static 'image/background-1.jpg' %}) 100% 100% no-repeat; /* Добавляем фон */-->
-<!--        background-size: cover; /* Масштабируем фон */-->
-<!--       }-->
-
-
-      </style>
-
-      <main>
-
-        <div class="card text-light bg-cover cover-container">
-          <div class="card-header-cover p-1 d-flex justify-content-between">
-            <div class="dropdown text-start">
-
-<!--              меню-->
-              <button class="btn-cover" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="true" style="">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
-                </svg>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton">
-                  <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
-                  {% url 'word' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Список слов</a></li>
-                  {% url 'repeat_words' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Повтор слов</a></li>
-                  {% url 'audio_replay' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Аудио повтор</a></li>
-                  {% url 'settings' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Настройки</a></li>
-                <li><hr class="dropdown-divider"></li>
-                  {% url 'auth' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Войти</a></li>
-              </ul>
-            </div>
-
-<!--            форма поиска-->
-              <div class="pt-1">
-                <form action="" method="POST">
-                  <input class="form-control form-control-sm" style="width: 15rem;" type="text" placeholder="Поиск">
-                </form>
-              </div>
-
-          </div>
-
-<!--          слова-->
-          <div class="card-body">
-            <div class="position-relative top-50 start-50 translate-middle">
-              <p class="card-title lead"><strong>Слова на Анг.</strong></p>
-              <p class="card-text">[транскрипт]</p>
-            </div>
-          </div>
-
-<!--          картинка к слову-->
-          <div class="py-0 px-2">
-            <div class="position-relative top-50 start-50 translate-middle">
-                <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}">
-            </div>
-          </div>
-          <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
-
-<!--          пример слова в предложении-->
-          <div class="card-body">
-            <p class="card-text small">Пример слова в предложении</p>
-          </div>
-
-<!--          кнопки правления-->
-          <div class="card-footer-cover p-1 d-flex justify-content-between">
-
-            <div class="px-cover">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-              </svg>
-            </div>
-
-            <a href="#" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-2">1</strong></a>
-
-            <a href="#" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-2">0</strong></a>
-
-            <div class="px-cover">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.624 9.624 0 0 0 7.556 8a9.624 9.624 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.595 10.595 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.624 9.624 0 0 0 6.444 8a9.624 9.624 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5z"/>
                 <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z"/>
-              </svg>
-            </div>
-
-          </div>
+            </svg>
         </div>
-      </main>
 
-<!--      Нижний заголовок-->
-        <footer class="footer mt-auto py-3">
-            <span class="small text-black-50">Все права защищены © 2021</span>
-        </footer>
     </div>
 
+</div>
+{% endblock mobile_content %}
 
-  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
-  </body>
-</html>
+{% block desktop_content %}
+<div class="d-none d-sm-block cover-container m-auto flex-column">
+
+    <!--картинка фона-->
+    {% include "snippets/_background.html" %}
+
+    <main>
+        <div class="card text-light bg-cover cover-container">
+            <div class="card-header-cover p-1 d-flex justify-content-between">
+                <!--меню-->
+                {% include "snippets/_menu.html" %}
+                <!--Форма поиска-->
+                {% include "snippets/_search_form.html" %}
+            </div>
+
+            <!--слова-->
+            <div class="card-body">
+                <div class="position-relative top-50 start-50 translate-middle">
+                    <p class="card-title lead"><strong>Слова на Анг.</strong></p>
+                    <p class="card-text">[транскрипт]</p>
+                </div>
+            </div>
+
+            <!--картинка к слову-->
+            <div class="py-0 px-2">
+                <div class="position-relative top-50 start-50 translate-middle">
+                    <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}">
+                </div>
+            </div>
+            <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
+
+            <!--пример слова в предложении-->
+            <div class="card-body">
+                <p class="card-text small">Пример слова в предложении</p>
+            </div>
+
+            <!--кнопки правления-->
+            <div class="card-footer-cover p-1 d-flex justify-content-between">
+
+                <div class="px-cover">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                    </svg>
+                </div>
+
+                <a href="#" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-2">1</strong></a>
+
+                <a href="#" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-2">0</strong></a>
+
+                <div class="px-cover">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.624 9.624 0 0 0 7.556 8a9.624 9.624 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.595 10.595 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.624 9.624 0 0 0 6.444 8a9.624 9.624 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5z"/>
+                        <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z"/>
+                    </svg>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!--Нижний заголовок-->
+    {% include "snippets/_footer.html" %}
+
+</div>
+{% endblock desktop_content %}

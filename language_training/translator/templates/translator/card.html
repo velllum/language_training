@@ -1,274 +1,186 @@
-<!doctype html>
+{% extends "base.html" %}
 {% load static %}
-<html lang="en" class="h-100">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="generator" content="Hugo 0.83.1">
 
-    <title>Title</title>
+<title>{% block title %}Слово{% endblock title %}</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
-    <link href="{% static 'css/cover.css' %}" type="text/css" rel="stylesheet">
+{% block mobile_content %}
+<div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">
+    <div class="card-header-cover p-1 d-flex justify-content-between">
+        <!--меню-->
+        {% include "snippets/_menu.html" %}
+        <!--Форма поиска-->
+        {% include "snippets/_search_form.html" %}
+    </div>
 
-  </head>
-  <body class="d-flex h-100 text-center">
-
-<!--  #############################################################-->
-
-<!--  мобильная версия-->
-    <div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">
-
-        <div class="card-header-cover p-1 d-flex justify-content-between">
-          <div class="dropdown text-start">
-
-<!--              меню-->
-            <button class="btn-cover" type="button" id="dropdownMenuButtonMobil" data-bs-toggle="dropdown" aria-expanded="true" style="">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
-              </svg>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButtonMobil">
-                  <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
-                  {% url 'word' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Список слов</a></li>
-                  {% url 'repeat_words' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Повтор слов</a></li>
-                  {% url 'audio_replay' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Аудио повтор</a></li>
-                  {% url 'settings' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Настройки</a></li>
-                <li><hr class="dropdown-divider"></li>
-                  {% url 'auth' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Войти</a></li>
-            </ul>
-          </div>
-
-<!--        форма поиска-->
-          <div class="pt-1">
-            <form action="" method="POST">
-              <input class="form-control form-control-sm" style="width: 15rem;" type="text" placeholder="Поиск">
-            </form>
-          </div>
-        </div>
-
-<!--        слово-->
-      <div class="card-body">
+    <!--слово-->
+    <div class="card-body">
         <div class="position-relative top-50 start-50 translate-middle">
-          <p class="card-title lead"><strong>{{ card_word.word }}</strong></p>
-          <p class="card-text">{{ card_word.transcript }}</p>
+            <p class="card-title lead"><strong>{{ card_word.word }}</strong></p>
+            <p class="card-text">{{ card_word.transcript }}</p>
         </div>
-      </div>
+    </div>
 
-<!--        картинка к слову-->
-      <div class="py-0 px-2">
+    <!--картинка к слову-->
+    <div class="py-0 px-2">
         <div class="position-relative top-50 start-50 translate-middle">
             <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}">
         </div>
-      </div>
-      <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
+    </div>
+    <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
 
-
-<!--        пример слова в предложении-->
-      <div class="card-body">
+    <!--пример слова в предложении-->
+    <div class="card-body">
         <p class="card-text small">{{ card_word.example }}</p>
-      </div>
+    </div>
 
-<!--        кнопки управления-->
-      <div class="card-footer-cover p-1 mt-auto d-flex justify-content-between">
+    <!--кнопки управления-->
+    <div class="card-footer-cover p-1 mt-auto d-flex justify-content-between">
         <div class="px-cover">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-          </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+            </svg>
         </div>
 
         <div class="px-cover">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.624 9.624 0 0 0 7.556 8a9.624 9.624 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.595 10.595 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.624 9.624 0 0 0 6.444 8a9.624 9.624 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5z"/>
-            <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z"/>
-          </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.624 9.624 0 0 0 7.556 8a9.624 9.624 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.595 10.595 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.624 9.624 0 0 0 6.444 8a9.624 9.624 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5z"/>
+                <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z"/>
+            </svg>
         </div>
 
         <div class="px-cover">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-caret-right-square" viewBox="0 0 16 16">
-            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-            <path d="M5.795 12.456A.5.5 0 0 1 5.5 12V4a.5.5 0 0 1 .832-.374l4.5 4a.5.5 0 0 1 0 .748l-4.5 4a.5.5 0 0 1-.537.082z"/>
-          </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-caret-right-square" viewBox="0 0 16 16">
+                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                <path d="M5.795 12.456A.5.5 0 0 1 5.5 12V4a.5.5 0 0 1 .832-.374l4.5 4a.5.5 0 0 1 0 .748l-4.5 4a.5.5 0 0 1-.537.082z"/>
+            </svg>
         </div>
 
         <button class="btn-cover" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExampleMobil" aria-expanded="false" aria-controls="collapseExample">
-          <div class="px-cover">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-            </svg>
-          </div>
+            <div class="px-cover">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                </svg>
+            </div>
         </button>
 
         <a href="{{ request.META.HTTP_REFERER }}" class="text-light">
-          <div class="px-cover">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
-                <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
-              </svg>
-          </div>
+            <div class="px-cover">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                    <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                </svg>
+            </div>
         </a>
 
-      </div>
-      <div>
-        <div class="collapse" id="collapseExampleMobil">
-          <div class="card card-body p-0">
-            <form action="" method="POST">
-              <div>
-                <input class="form-control form-control" type="text" placeholder="Проверь себя">
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-<!--      <div class="bg-dark">-->
-<!--        <span class="small">Все права защищены © 2021</span>-->
-<!--      </div>-->
-
     </div>
+    <div>
+        <div class="collapse" id="collapseExampleMobil">
+            <div class="card card-body p-0">
+                <form action="" method="POST">
+                    <div>
+                        <input class="form-control form-control" type="text" placeholder="Проверь себя">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock mobile_content %}
 
-<!--  #############################################################-->
 
-  <!--    Десктопная версия-->
-    <div class="d-none d-sm-block cover-container m-auto flex-column">
-
-<!--      <style>-->
-<!--       body {-->
-<!--        height: 200px; /* Высота блока */-->
-<!--        background: url({% static 'image/background-picture.png' %}) 100% 100% no-repeat; /* Добавляем фон */-->
-<!--        background-size: cover; /* Масштабируем фон */-->
-<!--       }-->
-<!--      </style>-->
-
-      <main>
+{% block desktop_content %}
+<div class="d-none d-sm-block cover-container m-auto flex-column">
+    <!--картинка фона-->
+    {% include "snippets/_background.html" %}
+    <main>
 
         <div class="card text-light bg-cover cover-container">
-          <div class="card-header-cover p-1 d-flex justify-content-between">
-            <div class="dropdown text-start">
-              <button class="btn-cover" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="true" style="">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
-                </svg>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton">
-                  <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
-                  {% url 'word' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Список слов</a></li>
-                  {% url 'repeat_words' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Повтор слов</a></li>
-                  {% url 'audio_replay' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Аудио повтор</a></li>
-                  {% url 'settings' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Настройки</a></li>
-                <li><hr class="dropdown-divider"></li>
-                  {% url 'auth' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Войти</a></li>
-              </ul>
+            <div class="card-header-cover p-1 d-flex justify-content-between">
+                <!--меню-->
+                {% include "snippets/_menu.html" %}
+                <!--Форма поиска-->
+                {% include "snippets/_search_form.html" %}
             </div>
 
-<!--              форма поиска-->
-              <div class="pt-1">
-                <form action="" method="POST">
-                  <input class="form-control form-control-sm" style="width: 15rem;" type="text" placeholder="Поиск">
-                </form>
-              </div>
-
-          </div>
-
-<!--            слово-->
-          <div class="card-body">
-            <div class="position-relative top-50 start-50 translate-middle">
-              <p class="card-title lead"><strong>{{ card_word.word }}</strong></p>
-              <p class="card-text">{{ card_word.transcript }}</p>
-            </div>
-          </div>
-
-<!--            картинка к слову-->
-          <div class="py-0 px-2">
-            <div class="position-relative top-50 start-50 translate-middle">
-                <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}">
-            </div>
-          </div>
-          <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
-
-<!--            пример слова в предложении-->
-          <div class="card-body">
-            <p class="card-text small">{{ card_word.example }}</p>
-          </div>
-
-<!--          Кнопки управления-->
-          <div class="card-footer-cover p-1 d-flex justify-content-between">
-
-            <div class="px-cover">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-              </svg>
-            </div>
-
-            <div class="px-cover">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.624 9.624 0 0 0 7.556 8a9.624 9.624 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.595 10.595 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.624 9.624 0 0 0 6.444 8a9.624 9.624 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5z"/>
-                <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z"/>
-              </svg>
-            </div>
-
-            <div class="px-cover">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-caret-right-square" viewBox="0 0 16 16">
-                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                <path d="M5.795 12.456A.5.5 0 0 1 5.5 12V4a.5.5 0 0 1 .832-.374l4.5 4a.5.5 0 0 1 0 .748l-4.5 4a.5.5 0 0 1-.537.082z"/>
-              </svg>
-            </div>
-
-            <button class="btn-cover" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-              <div class="px-cover">
-                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                </svg>
-              </div>
-            </button>
-
-              <a href="{{ request.META.HTTP_REFERER }}" class="text-light">
-                  <div class="px-cover">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
-                        <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
-                      </svg>
-                  </div>
-              </a>
-          </div>
-
-          <div class="collapse" id="collapseExample">
-            <div class="card card-body p-0">
-              <form action="" method="POST">
-                <div>
-                  <input class="form-control form-control" type="text" placeholder="Проверь себя">
+            <!--слово-->
+            <div class="card-body">
+                <div class="position-relative top-50 start-50 translate-middle">
+                    <p class="card-title lead"><strong>{{ card_word.word }}</strong></p>
+                    <p class="card-text">{{ card_word.transcript }}</p>
                 </div>
-              </form>
             </div>
-          </div>
 
+            <!--картинка к слову-->
+            <div class="py-0 px-2">
+                <div class="position-relative top-50 start-50 translate-middle">
+                    <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}">
+                </div>
+            </div>
+            <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
+
+            <!--пример слова в предложении-->
+            <div class="card-body">
+                <p class="card-text small">{{ card_word.example }}</p>
+            </div>
+
+            <!--Кнопки управления-->
+            <div class="card-footer-cover p-1 d-flex justify-content-between">
+
+                <div class="px-cover">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
+                </div>
+
+                <div class="px-cover">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.624 9.624 0 0 0 7.556 8a9.624 9.624 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.595 10.595 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.624 9.624 0 0 0 6.444 8a9.624 9.624 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5z"/>
+                        <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z"/>
+                    </svg>
+                </div>
+
+                <div class="px-cover">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-caret-right-square" viewBox="0 0 16 16">
+                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                        <path d="M5.795 12.456A.5.5 0 0 1 5.5 12V4a.5.5 0 0 1 .832-.374l4.5 4a.5.5 0 0 1 0 .748l-4.5 4a.5.5 0 0 1-.537.082z"/>
+                    </svg>
+                </div>
+
+                <button class="btn-cover" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <div class="px-cover">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                        </svg>
+                    </div>
+                </button>
+
+                <a href="{{ request.META.HTTP_REFERER }}" class="text-light">
+                    <div class="px-cover">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                            <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body p-0">
+                    <form action="" method="POST">
+                        <div>
+                            <input class="form-control form-control" type="text" placeholder="Проверь себя">
+                        </div>
+                    </form>
+                </div>
+            </div>
 
         </div>
-      </main>
+    </main>
 
-<!--      Нижний заголовок-->
-        <footer class="footer mt-auto py-3">
-            <span class="small text-black-50">Все права защищены © 2021</span>
-        </footer>
-    </div>
+    <!--Нижний заголовок-->
+    {% include "snippets/_footer.html" %}
 
-
-  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-
-  </body>
-</html>
+</div>
+{% endblock desktop_content %}

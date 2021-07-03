@@ -1,12 +1,21 @@
-<li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
-{% url 'word' category_slug as url %}
-<li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Список слов</a></li>
-{% url 'repeat_words' category_slug as url %}
-<li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Повтор слов</a></li>
-{% url 'audio_replay' category_slug as url %}
-<li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Аудио повтор</a></li>
-{% url 'settings' category_slug as url %}
-<li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Настройки</a></li>
-<li><hr class="dropdown-divider"></li>
-{% url 'auth' category_slug as url %}
-<li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Войти</a></li>
+<div class="dropdown text-start">
+    <button class="btn-cover" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="true" style="">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+        </svg>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton">
+        <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
+        {% url 'word' category_slug as url %}
+        <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Список слов</a></li>
+        {% url 'repeat_words' category_slug as url %}
+        <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Повтор слов</a></li>
+        {% url 'audio_replay' category_slug as url %}
+        <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Аудио повтор</a></li>
+        {% url 'settings' category_slug as url %}
+        <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Настройки</a></li>
+        <li><hr class="dropdown-divider"></li>
+        {% url 'auth' category_slug as url %}
+        <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Войти</a></li>
+    </ul>
+</div>

@@ -6,23 +6,10 @@
 {% block mobile_content %}
 <div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">
     <div class="card-header-cover p-1 d-flex justify-content-between">
-        <div class="dropdown text-start">
-            <!--Меню-->
-            <button class="btn-cover" type="button" id="dropdownMenuButtonMobil" data-bs-toggle="dropdown" aria-expanded="true" style="">
-                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
-                </svg>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButtonMobil">
-                {% include "snippets/_menu.html" %}
-            </ul>
-        </div>
+        <!--меню-->
+        {% include "snippets/_menu.html" %}
         <!--Форма поиска-->
-        <div class="pt-1">
-            <form action="" method="POST">
-                <input class="form-control form-control-sm" style="width: 15rem;" type="text" placeholder="Поиск">
-            </form>
-        </div>
+        {% include "snippets/_search_form.html" %}
     </div>
 
     <!--Контент (таблица) -->
@@ -66,43 +53,24 @@
                 <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
             </svg>
         </div>
-
     </div>
 
 </div>
-
 {% endblock mobile_content %}
 
 
-
 {% block desktop_content %}
-
 <div class="d-none d-sm-block cover-container m-auto flex-column">
-
+    <!--картинка фона-->
     {% include "snippets/_background.html" %}
 
     <main>
         <div class="card text-light bg-cover cover-container">
             <div class="card-header-cover p-1 d-flex justify-content-between">
-                <div class="dropdown text-start">
-
-                    <!--Меню-->
-                    <button class="btn-cover" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="true" style="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
-                        </svg>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton">
-                        {% include "snippets/_menu.html" %}
-                    </ul>
-                </div>
-
+                <!--меню-->
+                {% include "snippets/_menu.html" %}
                 <!--Форма поиска-->
-                <div class="pt-1">
-                    <form action="" method="POST">
-                        <input class="form-control form-control-sm" style="width: 15rem;" type="text" placeholder="Поиск">
-                    </form>
-                </div>
+                {% include "snippets/_search_form.html" %}
             </div>
 
             <!--Контент (таблица)-->
@@ -156,10 +124,8 @@
     </main>
 
     <!--Нижний заголовок-->
-    <footer class="footer mt-auto py-3">
-        <span class="small text-black-50">Все права защищены © 2021</span>
-    </footer>
-</div>
+    {% include "snippets/_footer.html" %}
 
+</div>
 {% endblock desktop_content %}
 

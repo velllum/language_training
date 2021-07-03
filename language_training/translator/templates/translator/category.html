@@ -1,28 +1,12 @@
-<!doctype html>
+{% extends "base.html" %}
 {% load static %}
-<html lang="en" class="h-100">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="generator" content="Hugo 0.83.1">
 
-    <title>Title</title>
+<title>{% block title %}{{ title }}{% endblock title %}</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
-    <link href="{% static 'css/cover.css' %}" type="text/css" rel="stylesheet">
-
-</head>
-<body class="d-flex h-100 text-center">
-
-<!--  #############################################################-->
-
-<!--  мобильная версия-->
+{% block mobile_content %}
 <div class="d-block d-sm-none d-flex w-100 h-100 mx-auto bg-cover">
 
-    <!--          Контент-->
+    <!--Контент-->
     <div class="bg-cover m-auto">
         <div class="d-grid gap-3">
             {% for category in categories %}
@@ -33,20 +17,16 @@
         </div>
     </div>
 </div>
+{% endblock mobile_content %}
 
-<!--  #############################################################-->
 
-<!--Десктопная версия-->
+{% block desktop_content %}
 <div class="d-none d-sm-block cover-container m-auto">
 
-    <!--      <style>-->
-    <!--       body {-->
-    <!--        height: 200px; /* Высота блока */-->
-    <!--        background: url({% static 'image/background-picture.jpg' %}) 100% 100% no-repeat; /* Добавляем фон */-->
-    <!--        background-size: cover; /* Масштабируем фон */-->
-    <!--       }-->
-    <!--      </style>-->
+    <!--картинка фона-->
+    {% include "snippets/_background.html" %}
 
+    <!--Контент-->
     <main>
         <div class="card bg-cover cover-container">
             <div class="d-grid gap-3 m-auto">
@@ -59,16 +39,7 @@
         </div>
     </main>
 
-    <!--      Нижний заголовок-->
-    <!--      <footer class="fixed-bottom">-->
-    <footer class="footer mt-auto py-3">
-        <span class="small text-black-50">Все права защищены © 2021</span>
-    </footer>
-
+    <!--Нижний заголовок-->
+    {% include "snippets/_footer.html" %}
 </div>
-
-
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-
-</body>
-</html>
+{% endblock desktop_content %}

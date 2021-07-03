@@ -1,12 +1,27 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView
+
 from . import models
 
 
-def category(request):
-    """- Все категории"""
-    categories = models.Category.objects.all()
-    return render(request, "translator/category.html", context={'categories': categories})
+# def category(request):
+#     """- Все категории"""
+#     categories = models.Category.objects.all()
+#     return render(request, "translator/category.html", context={'categories': categories})
+
+
+class Category(ListView):
+    """- Вывод категорий"""
+    model = models.Category
+    template_name = "translator/category.html"
+    context_object_name = "categories"
+    queryset = models.Category.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(Category, self).get_context_data(**kwargs)
+        context["title"] = "Категории"
+        return context
 
 
 def word(request, category_slug):

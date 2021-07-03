@@ -1,144 +1,56 @@
-<!doctype html>
+{% extends "base.html" %}
 {% load static %}
-<html lang="en" class="h-100">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="generator" content="Hugo 0.83.1">
 
-    <title>Title</title>
+<title>{% block title %}Авторизация{% endblock title %}</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
-    <link href="{% static 'css/cover.css' %}" type="text/css" rel="stylesheet">
+{% block mobile_content %}
+<div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">
 
-  </head>
-  <body class="d-flex h-100 text-center">
-
-<!--  #############################################################-->
-
-<!--  мобильная версия-->
-    <div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">
-
-        <div class="card-header-cover p-1 d-flex justify-content-between">
-          <div class="dropdown text-start">
-
-<!--              меню-->
-            <button class="btn-cover" type="button" id="dropdownMenuButtonMobil" data-bs-toggle="dropdown" aria-expanded="true" style="">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
-              </svg>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButtonMobil">
-                  <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
-                  {% url 'word' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Список слов</a></li>
-                  {% url 'repeat_words' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Повтор слов</a></li>
-                  {% url 'audio_replay' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Аудио повтор</a></li>
-                  {% url 'settings' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Настройки</a></li>
-                <li><hr class="dropdown-divider"></li>
-                  {% url 'auth' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Войти</a></li>
-            </ul>
-          </div>
-
-<!--            форма поиска-->
-              <div class="pt-1">
-                <form action="" method="POST">
-                  <input class="form-control form-control-sm" style="width: 15rem;" type="text" placeholder="Поиск">
-                </form>
-              </div>
-        </div>
-
-        <div class="d-grid gap-3 m-auto p-2">
-          <div class="col-auto">
-            <input type="text" id="logMobile" class="form-control" placeholder="Логин" aria-describedby="login_mobile">
-          </div>
-          <div class="col-auto">
-              <input type="password" id="passMobile" class="form-control" placeholder="Пароль" aria-describedby="password_mobile">
-          </div>
-          <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Войти</strong></button>
-          <a href="{% url 'register' category_slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Регистрация</strong></a>
-       </div>
-
+    <div class="card-header-cover p-1 d-flex justify-content-between">
+        <!--меню-->
+        {% include "snippets/_menu.html" %}
     </div>
 
-<!--  #############################################################-->
+    <div class="d-grid gap-3 m-auto p-2">
+        <div class="col-auto">
+            <input type="text" id="logMobile" class="form-control" placeholder="Логин" aria-describedby="login_mobile">
+        </div>
+        <div class="col-auto">
+            <input type="password" id="passMobile" class="form-control" placeholder="Пароль" aria-describedby="password_mobile">
+        </div>
+        <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Войти</strong></button>
+        <a href="{% url 'register' category_slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Регистрация</strong></a>
+    </div>
 
-  <!--    Десктопная версия-->
-    <div class="d-none d-sm-block cover-container m-auto flex-column">
+</div>
+{% endblock mobile_content %}
 
-<!--      <style>-->
-<!--       body {-->
-<!--        height: 200px; /* Высота блока */-->
-<!--        background: url({% static 'image/background-picture.png' %}) 100% 100% no-repeat; /* Добавляем фон */-->
-<!--        background-size: cover; /* Масштабируем фон */-->
-<!--       }-->
-<!--      </style>-->
 
-      <main>
-
+{% block desktop_content %}
+<div class="d-none d-sm-block cover-container m-auto flex-column">
+    <!--картинка фона-->
+    {% include "snippets/_background.html" %}
+    <main>
         <div class="card text-light bg-cover cover-container">
-          <div class="card-header-cover p-1 d-flex justify-content-between">
-            <div class="dropdown text-start">
-
-<!--                меню-->
-              <button class="btn-cover" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="true" style="">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
-                </svg>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton">
-                  <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
-                  {% url 'word' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Список слов</a></li>
-                  {% url 'repeat_words' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Повтор слов</a></li>
-                  {% url 'audio_replay' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Аудио повтор</a></li>
-                  {% url 'settings' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Настройки</a></li>
-                <li><hr class="dropdown-divider"></li>
-                  {% url 'auth' category_slug as url %}
-                <li><a {% if request.path == url %} class="active small dropdown-item-cover"{% endif %} class="small dropdown-item-cover" href="{{ url }}">Войти</a></li>
-              </ul>
+            <div class="card-header-cover p-1 d-flex justify-content-between">
+                <!--меню-->
+                {% include "snippets/_menu.html" %}
             </div>
 
-<!--              форма поиска-->
-              <div class="pt-1">
-                <form action="" method="POST">
-                  <input class="form-control form-control-sm" style="width: 15rem;" type="text" placeholder="Поиск">
-                </form>
-              </div>
-          </div>
-
             <div class="d-grid gap-3 m-auto p-2">
-              <div class="col-auto">
-                <input type="text" id="log" class="form-control" placeholder="Логин" aria-describedby="login">
-              </div>
-              <div class="col-auto">
-                  <input type="password" id="pass" class="form-control" placeholder="Пароль" aria-describedby="password">
-              </div>
-              <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Войти</strong></button>
-              <a href="{% url 'register' category_slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Регистрация</strong></a>
-           </div>
+                <div class="col-auto">
+                    <input type="text" id="log" class="form-control" placeholder="Логин" aria-describedby="login">
+                </div>
+                <div class="col-auto">
+                    <input type="password" id="pass" class="form-control" placeholder="Пароль" aria-describedby="password">
+                </div>
+                <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Войти</strong></button>
+                <a href="{% url 'register' category_slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Регистрация</strong></a>
+            </div>
 
         </div>
-      </main>
-
-<!--      Нижний заголовок-->
-        <footer class="footer mt-auto py-3">
-            <span class="small text-black-50">Все права защищены © 2021</span>
-        </footer>
-    </div>
-
-
-  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-
-  </body>
-</html>
+    </main>
+    <!--Нижний заголовок-->
+    {% include "snippets/_footer.html" %}
+</div>
+{% endblock desktop_content %}
