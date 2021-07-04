@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-<title>{% block title %}Аудио повтор{% endblock title %}</title>
+<title>{% block title %}{{ title }} :: {{ block.super }}{% endblock title %}</title>
 
 {% block mobile_content %}
 <div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">

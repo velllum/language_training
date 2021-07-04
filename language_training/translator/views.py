@@ -1,8 +1,9 @@
-from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView
+from django.shortcuts import render
+from django.views.generic import ListView, DetailView
+from django.conf import settings as sett
 
 from . import models
+from . import utils
 
 
 class Category(ListView):
@@ -10,7 +11,10 @@ class Category(ListView):
     model = models.Category
     template_name = "translator/category.html"
     context_object_name = "categories"
-    queryset = models.Category.objects.all()
+    allow_empty = False
+
+    def get_queryset(self):
+        return models.Category.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super(Category, self).get_context_data(**kwargs)
@@ -18,28 +22,37 @@ class Category(ListView):
         return context
 
 
-def word(request, category_slug):
-    """- Все слова"""
-    words = models.Word.objects.filter(category__slug=category_slug)
-    paginator = Paginator(words, 10)
-    page_number = request.GET.get('page')
-    page_words = paginator.get_page(page_number)
-    content = {
-        "page_words": page_words,
-        "category_slug": category_slug,
-    }
-    return render(request, "translator/words.html", context=content)
+class Word(utils.WordMixin, ListView):
+    """- Вывод списка слов"""
+    paginate_by = sett.NUMBER_PAGES
+    template_name = "translator/words.html"
+    context_object_name = "page_words"
+
+    def get_queryset(self):
+        return models.Word.objects.filter(category__slug=self.kwargs['category_slug'], is_free=True)
+
+    def get_context_data(self, **kwargs):
+        context = super(Word, self).get_context_data(**kwargs)
+        mixin_context = self.get_mixin_context(title="Список слов", category_slug=self.kwargs['category_slug'])
+        context = dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
-def card(request, word_slug, category_slug):
-    """- Карточка слова"""
-    card_word = get_object_or_404(models.Word, slug=word_slug)
-    return render(request, "translator/card.html", context={"card_word": card_word, "category_slug": category_slug})
+class ShowWord(utils.WordMixin, DetailView):
+    """- Вывод слова"""
+    template_name = "translator/show_word.html"
+    context_object_name = "word"
+    slug_url_kwarg = 'word_slug'
+
+    def get_context_data(self, **kwargs):
+        context = super(ShowWord, self).get_context_data(**kwargs)
+        mixin_context = self.get_mixin_context(title=self.object.translation, category_slug=self.kwargs['category_slug'])
+        context = dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
 
 def audio_replay(request, category_slug):
     """- Аудио повтор слов добавленных в закладки"""
-    print(category_slug)
     return render(request, "translator/audio_replay.html", context={"category_slug": category_slug})
 
 

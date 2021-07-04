@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-<title>{% block title %}Слово{% endblock title %}</title>
+<title>{% block title %}{{ title }} :: {{ block.super }}{% endblock title %}</title>
 
 {% block mobile_content %}
 <div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">
@@ -15,8 +15,8 @@
     <!--слово-->
     <div class="card-body">
         <div class="position-relative top-50 start-50 translate-middle">
-            <p class="card-title lead"><strong>{{ card_word.word }}</strong></p>
-            <p class="card-text">{{ card_word.transcript }}</p>
+            <p class="card-title lead"><strong>{{ word.word }}</strong></p>
+            <p class="card-text">{{ word.transcript }}</p>
         </div>
     </div>
 
@@ -26,11 +26,11 @@
             <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}">
         </div>
     </div>
-    <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
+    <a href="{{ word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;" target="_blank">Ссылка на ресурс фото</a>
 
     <!--пример слова в предложении-->
     <div class="card-body">
-        <p class="card-text small">{{ card_word.example }}</p>
+        <p class="card-text small">{{ word.example }}</p>
     </div>
 
     <!--кнопки управления-->
@@ -106,8 +106,8 @@
             <!--слово-->
             <div class="card-body">
                 <div class="position-relative top-50 start-50 translate-middle">
-                    <p class="card-title lead"><strong>{{ card_word.word }}</strong></p>
-                    <p class="card-text">{{ card_word.transcript }}</p>
+                    <p class="card-title lead"><strong>{{ word.word }}</strong></p>
+                    <p class="card-text">{{ word.transcript }}</p>
                 </div>
             </div>
 
@@ -117,11 +117,11 @@
                     <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}">
                 </div>
             </div>
-            <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
+            <a href="{{ word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;" target="_blank">Ссылка на ресурс фото</a>
 
             <!--пример слова в предложении-->
             <div class="card-body">
-                <p class="card-text small">{{ card_word.example }}</p>
+                <p class="card-text small">{{ word.example }}</p>
             </div>
 
             <!--Кнопки управления-->

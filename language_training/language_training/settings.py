@@ -137,3 +137,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
+# Количество вывода страниц пагинации.
+NUMBER_PAGES = 10
