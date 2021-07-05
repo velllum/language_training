@@ -31,3 +31,16 @@
 во всех шаблонах, или представлениях, или маршрутах
 
 Динамические маршруты
+
+from django.urls import include, path
+
+from . import views
+
+polls_patterns = ([
+    path('', views.IndexView.as_view(), name='index'),
+    path('<int:pk>/', views.DetailView.as_view(), name='detail'),
+], 'polls')
+
+urlpatterns = [
+    path('polls/', include(polls_patterns)),
+]
