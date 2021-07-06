@@ -29,7 +29,11 @@ class Word(utils.WordMixin, ListView):
     context_object_name = "page_words"
 
     def get_queryset(self):
-        return models.Word.objects.filter(category__slug=self.kwargs['category_slug'], is_free=True)
+        query = models.Word.objects.filter(category__slug=self.kwargs['category_slug']).order_by('-id')
+        query_is_free = query.filter(is_free=True)
+        if query_is_free:
+            return query_is_free
+        return query[:sett.NUMBER_PAGES]
 
     def get_context_data(self, **kwargs):
         context = super(Word, self).get_context_data(**kwargs)

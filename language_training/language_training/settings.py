@@ -14,6 +14,10 @@ import environ
 from pathlib import Path
 
 
+# django-environment позволяет использовать методологию с двенадцатью
+# факторами для настройки приложения Django с переменными среды.
+# https://github.com/joke2k/django-environ
+
 env = environ.Env()
 environ.Env.read_env(".env")
 
@@ -59,7 +63,7 @@ ROOT_URLCONF = 'language_training.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates", "language_training")],
+        'DIRS': [os.path.join(BASE_DIR, "templates"), os.path.join(BASE_DIR, "templates", "language_training")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
