@@ -19,6 +19,7 @@ User
 class Category(models.Model):
     """- Категории"""
     objects = None
+
     name = models.CharField(max_length=255, verbose_name='Наименование')
     slug = models.SlugField(unique=True, verbose_name='Ссылка')
 
@@ -40,6 +41,7 @@ class Category(models.Model):
 class Word(models.Model):
     """- Слова, примеры"""
     objects = None
+
     translation = models.CharField(max_length=255, verbose_name="Перевод")  # , help_text="указывать сумму в долларах")
     example_translate = models.CharField(max_length=255, verbose_name="Пример в тексте")
 
