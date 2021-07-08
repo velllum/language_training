@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-<title>{% block title %}Регистрация{% endblock title %}</title>
+<title>{% block title %}{{ title }} :: {{ block.super }}{% endblock title %}</title>
 
 {% block mobile_content %}
 <div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">
@@ -35,9 +35,24 @@
             </div>
 
             <div class="d-grid gap-3 m-auto">
-                <div class="col-auto">
-                    <input type="email" id="email" class="form-control" placeholder="email" aria-describedby="email">
-                </div>
+<!--                <div class="col-auto">-->
+<!--                    <input type="email" id="email" class="form-control" placeholder="email" aria-describedby="email">-->
+<!--                </div>-->
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    {% for form in forms %}
+                    {{ form }}
+                    <div class="col-auto">
+                        <input class="form-control" placeholder="{{ form.id_for_label }}">
+                        {{form.label}}{{ form }}
+                        <div class="form-error">{{ form.errors }}</div>
+                    </div>
+                    {% endfor %}
+
+                </form>
+
                 <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Отправить</strong></button>
             </div>
 

@@ -1,9 +1,11 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 from django.conf import settings as sett
 
 from . import models
 from . import utils
+from . import forms
 
 
 class Category(ListView):
@@ -17,7 +19,7 @@ class Category(ListView):
         return models.Category.objects.all()
 
     def get_context_data(self, **kwargs):
-        context = super(Category, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["title"] = "Категории"
         return context
 
@@ -36,7 +38,7 @@ class Word(utils.WordMixin, ListView):
         return query[:sett.NUMBER_PAGES]
 
     def get_context_data(self, **kwargs):
-        context = super(Word, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         mixin_context = self.get_mixin_context(title="Список слов", category_slug=self.kwargs['category_slug'])
         context = dict(list(context.items()) + list(mixin_context.items()))
         return context
@@ -49,7 +51,7 @@ class ShowWord(utils.WordMixin, DetailView):
     slug_url_kwarg = 'word_slug'
 
     def get_context_data(self, **kwargs):
-        context = super(ShowWord, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         mixin_context = self.get_mixin_context(title=self.object.translation, category_slug=self.kwargs['category_slug'])
         context = dict(list(context.items()) + list(mixin_context.items()))
         return context
@@ -83,4 +85,18 @@ def auth(request, category_slug):
 def register(request, category_slug):
     """- Регистрация"""
     return render(request, "translator/register.html", context={"category_slug": category_slug})
+
+
+class RegisterUser(utils.WordMixin, CreateView):
+    """- Регистрация"""
+    form_class = forms.RegisterUserForm
+    template_name = "translator/register.html"
+    success_url = reverse_lazy("auth")
+    context_object_name = "forms"
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(RegisterUser, self).get_context_data(**kwargs)
+        mixin_context = self.get_mixin_context(title="Регистрация", category_slug=self.kwargs['category_slug'])
+        context = dict(list(context.items()) + list(mixin_context.items()))
+        return context
 
