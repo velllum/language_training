@@ -43,12 +43,12 @@ class WordAdmin(ImportExportModelAdmin):
     )
     list_filter = ("category", "is_published", "is_free",)
     resource_class = resources.WordResource
-    # save_on_top = True
     save_as = True
     list_editable = (
         "translation", "word", "transcript",
         "is_free", "is_published", "slug",
     )
+    readonly_fields = ("get_html_photo", )
     fieldsets = (
         ("Выбор категории", {
             "fields": ("category",)
@@ -60,7 +60,7 @@ class WordAdmin(ImportExportModelAdmin):
             "fields": ("word", "example", "transcript")
         }),
         ("Картинка", {
-            "fields": ("image", "links_image")
+            "fields": ("image", "get_html_photo", "links_image")
         }),
         ("Статус", {
             "fields": ("is_free", "is_published")
@@ -78,6 +78,7 @@ class WordAdmin(ImportExportModelAdmin):
         """- Добавляет картинку к слову"""
         if obj.image:
             return mark_safe(f"<img src='{obj.image.url}' width=50>")
+        return mark_safe("<img src='/media/images/placeholder.png' width=50>")
 
     get_html_photo.short_description = "Миниатюра"
 

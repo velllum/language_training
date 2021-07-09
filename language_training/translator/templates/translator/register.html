@@ -35,25 +35,21 @@
             </div>
 
             <div class="d-grid gap-3 m-auto">
-<!--                <div class="col-auto">-->
-<!--                    <input type="email" id="email" class="form-control" placeholder="email" aria-describedby="email">-->
-<!--                </div>-->
-
                 <form method="post">
-                    {% csrf_token %}
 
-                    {% for form in forms %}
-                    {{ form }}
-                    <div class="col-auto">
-                        <input class="form-control" placeholder="{{ form.id_for_label }}">
-                        {{form.label}}{{ form }}
-                        <div class="form-error">{{ form.errors }}</div>
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="col-auto mb-2">
+                        <input class="form-control" name="{{ field.html_name }}" placeholder="{{ field.label }}" id="{{ field.id_for_label }}">
+                        <div class="form-error">{{ field.errors }}</div>
                     </div>
                     {% endfor %}
 
-                </form>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Отправить</strong></button>
+                    </div>
 
-                <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Отправить</strong></button>
+                </form>
             </div>
 
         </div>

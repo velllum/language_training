@@ -57,6 +57,19 @@ class ShowWord(utils.WordMixin, DetailView):
         return context
 
 
+class Register(utils.WordMixin, CreateView):
+    """- Регистрация"""
+    form_class = forms.RegisterUserForm
+    template_name = "translator/register.html"
+    success_url = reverse_lazy("auth")
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mixin_context = self.get_mixin_context(title="Регистрация", category_slug=self.kwargs['category_slug'])
+        context = dict(list(context.items()) + list(mixin_context.items()))
+        return context
+
+
 def audio_replay(request, category_slug):
     """- Аудио повтор слов добавленных в закладки"""
     return render(request, "translator/audio_replay.html", context={"category_slug": category_slug})
@@ -82,21 +95,10 @@ def auth(request, category_slug):
     return render(request, "translator/auth.html", context={"category_slug": category_slug})
 
 
-def register(request, category_slug):
-    """- Регистрация"""
-    return render(request, "translator/register.html", context={"category_slug": category_slug})
+# def register(request, category_slug):
+#     """- Регистрация"""
+#     return render(request, "translator/register.html", context={"category_slug": category_slug})
 
 
-class RegisterUser(utils.WordMixin, CreateView):
-    """- Регистрация"""
-    form_class = forms.RegisterUserForm
-    template_name = "translator/register.html"
-    success_url = reverse_lazy("auth")
-    context_object_name = "forms"
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(RegisterUser, self).get_context_data(**kwargs)
-        mixin_context = self.get_mixin_context(title="Регистрация", category_slug=self.kwargs['category_slug'])
-        context = dict(list(context.items()) + list(mixin_context.items()))
-        return context
 
