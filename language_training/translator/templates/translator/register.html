@@ -34,18 +34,28 @@
                 {% include "snippets/_menu.html" %}
             </div>
 
-            <div class="d-grid gap-3 m-auto">
-                <form method="post">
+            <div class="d-grid gap-2 col-9 m-auto">
+                <form method="post" novalidate>
 
                     {% csrf_token %}
                     {% for field in form %}
-                    <div class="col-auto mb-2">
-                        <input class="form-control" name="{{ field.html_name }}" placeholder="{{ field.label }}" id="{{ field.id_for_label }}">
-                        <div class="form-error">{{ field.errors }}</div>
+                    <div class="mb-3">
+                        {{ field }}
+                        {% if field.errors%}
+                            {% for error in field.errors %}
+
+                                <span class="small">{{ error }}</span><br>
+
+                            {% endfor %}
+                        {% endif %}
                     </div>
+
                     {% endfor %}
 
-                    <div class="col-auto">
+
+
+
+                    <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Отправить</strong></button>
                     </div>
 

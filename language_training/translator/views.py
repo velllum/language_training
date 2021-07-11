@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView
 from django.conf import settings as sett
 
@@ -39,8 +39,8 @@ class Word(utils.WordMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_mixin_context(title="Список слов", category_slug=self.kwargs['category_slug'])
-        context = dict(list(context.items()) + list(mixin_context.items()))
+        context["title"] = "Список слов"
+        context["category_slug"] = self.kwargs['category_slug']
         return context
 
 
@@ -52,8 +52,8 @@ class ShowWord(utils.WordMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_mixin_context(title=self.object.translation, category_slug=self.kwargs['category_slug'])
-        context = dict(list(context.items()) + list(mixin_context.items()))
+        context["title"] = self.object.translation
+        context["category_slug"] = self.kwargs['category_slug']
         return context
 
 
@@ -65,9 +65,13 @@ class Register(utils.WordMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_mixin_context(title="Регистрация", category_slug=self.kwargs['category_slug'])
-        context = dict(list(context.items()) + list(mixin_context.items()))
+        context["title"] = "Регистрация"
+        context["category_slug"] = self.kwargs['category_slug']
         return context
+
+
+
+
 
 
 def audio_replay(request, category_slug):
@@ -93,12 +97,5 @@ def settings(request, category_slug):
 def auth(request, category_slug):
     """- Авторизация"""
     return render(request, "translator/auth.html", context={"category_slug": category_slug})
-
-
-# def register(request, category_slug):
-#     """- Регистрация"""
-#     return render(request, "translator/register.html", context={"category_slug": category_slug})
-
-
 
 
