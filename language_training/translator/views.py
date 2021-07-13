@@ -31,7 +31,7 @@ class Word(utils.WordMixin, ListView):
     context_object_name = "page_words"
 
     def get_queryset(self):
-        query = models.Word.objects.filter(category__slug=self.kwargs['category_slug']).order_by('-id')
+        query = models.Word.objects.filter(category__slug=self.kwargs['category_slug'])
         query_is_free = query.filter(is_free=True)
         if query_is_free:
             return query_is_free
@@ -52,8 +52,12 @@ class ShowWord(utils.WordMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = self.object.translation
         context["category_slug"] = self.kwargs['category_slug']
+        context["title"] = self.object.translation
+        context["previous"] = models.Word.objects.filter(is_free=True, id__lt=self.object.id).last()
+        context["next"] = models.Word.objects.filter(is_free=True, id__gt=self.object.id).first()
+        context["all_count"] = models.Word.objects.filter(is_free=True).count()
+        context["last_count"] = models.Word.objects.filter(is_free=True, id__lte=self.object.id).count()
         return context
 
 
