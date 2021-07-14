@@ -1,4 +1,7 @@
-from django.shortcuts import render
+from django.conf.urls import url
+from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView
 from django.conf import settings as sett
@@ -74,8 +77,37 @@ class Register(utils.WordMixin, CreateView):
         return context
 
 
+class Search(utils.WordMixin, DetailView):
+    """- Поиск"""
+    # template_name = "translator/show_word.html"
+    context_object_name = "word"
+    # pk_url_kwarg = 'pk'
+    # query_pk_and_slug = True
+    # slug_field = 'category_slug'
+    # slug_url_kwarg = 'category_slug'
 
+    def get_queryset(self, *args, **kwargs):
+        # qs = super().get_queryset()
+        query = self.request.GET.get('q')
+        queryset = self.model.objects.filter(
+            Q(translation__icontains=query) | Q(word__icontains=query)
+        )
 
+        # return queryset
+
+        q = queryset[0]
+
+        print("queryset", q.pk, q.slug, q.category.slug)
+        dic = {"category_slug": self.kwargs['category_slug'], "word_slug": q.slug}
+        print(dic)
+        return HttpResponseRedirect(reverse("card", kwargs=dic))
+
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #
+    #     print(context)
+    #
+    #     return context
 
 
 def audio_replay(request, category_slug):
