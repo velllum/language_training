@@ -79,40 +79,30 @@ class Register(utils.WordMixin, CreateView):
 
 class Search(utils.WordMixin, DetailView):
     """- Поиск"""
-    # template_name = "translator/show_word.html"
-    # context_object_name = "word"
-    # pk_url_kwarg = 'pk'
-    # query_pk_and_slug = True
-    # slug_field = 'category_slug'
-    # slug_url_kwarg = 'category_slug'
-    #
-    # def get_object(self, queryset=None):
-    #     print(queryset)
+    template_name = "translator/show_word.html"
+    context_object_name = "word"
+    slug_url_kwarg = 'word_slug'
+    pk_url_kwarg = 'pk'
 
     def get_queryset(self, *args, **kwargs):
-        # qs = super().get_queryset()
-        # print(len(qs))
         query = self.request.GET.get('q')
-        queryset = self.model.objects.filter(
+        queryset = models.Word.objects.filter(
             Q(translation__icontains=query) | Q(word__icontains=query)
         ).first()
+        print(queryset.word)
+        return queryset
 
-        # return queryset
-
-        q = queryset
-
-        print("queryset", q.pk, q.slug, q.category.slug)
-        self.kwargs["word_slug"] = q.slug
-        print(self.kwargs)
-        print(reverse(viewname="card", kwargs=self.kwargs))
-        return HttpResponseRedirect(reverse(viewname="card", kwargs=self.kwargs))
-
-    # def get_context_data(self, *, object_list=None, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #
-    #     print(context)
-    #
-    #     return context
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """- Вывод слова"""
+        context = super().get_context_data(**kwargs)
+        context["category_slug"] = self.kwargs['category_slug']
+        context["title"] = self.object.translation
+        context["previous"] = models.Word.objects.filter(is_free=True, id__lt=self.object.id).last()
+        context["next"] = models.Word.objects.filter(is_free=True, id__gt=self.object.id).first()
+        context["all_count"] = models.Word.objects.filter(is_free=True).count()
+        context["last_count"] = models.Word.objects.filter(is_free=True, id__lte=self.object.id).count()
+        print(context)
+        return context
 
 
 def audio_replay(request, category_slug):
