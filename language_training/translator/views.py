@@ -80,27 +80,32 @@ class Register(utils.WordMixin, CreateView):
 class Search(utils.WordMixin, DetailView):
     """- Поиск"""
     # template_name = "translator/show_word.html"
-    context_object_name = "word"
+    # context_object_name = "word"
     # pk_url_kwarg = 'pk'
     # query_pk_and_slug = True
     # slug_field = 'category_slug'
     # slug_url_kwarg = 'category_slug'
+    #
+    # def get_object(self, queryset=None):
+    #     print(queryset)
 
     def get_queryset(self, *args, **kwargs):
         # qs = super().get_queryset()
+        # print(len(qs))
         query = self.request.GET.get('q')
         queryset = self.model.objects.filter(
             Q(translation__icontains=query) | Q(word__icontains=query)
-        )
+        ).first()
 
         # return queryset
 
-        q = queryset[0]
+        q = queryset
 
         print("queryset", q.pk, q.slug, q.category.slug)
-        dic = {"category_slug": self.kwargs['category_slug'], "word_slug": q.slug}
-        print(dic)
-        return HttpResponseRedirect(reverse("card", kwargs=dic))
+        self.kwargs["word_slug"] = q.slug
+        print(self.kwargs)
+        print(reverse(viewname="card", kwargs=self.kwargs))
+        return HttpResponseRedirect(reverse(viewname="card", kwargs=self.kwargs))
 
     # def get_context_data(self, *, object_list=None, **kwargs):
     #     context = super().get_context_data(**kwargs)

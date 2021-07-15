@@ -12,7 +12,7 @@ urlpatterns = [
         path('settings/', views.settings, name='settings'),
         path('audio-replay/', views.audio_replay, name='audio_replay'),
         path('repeat-words/', views.repeat_words, name='repeat_words'),
-        path('search', views.Search.as_view(), name='search'),
+        path('search/', views.Search.as_view(), name='search'),
 
         path('<word_slug>/', views.ShowWord.as_view(), name='card'),
 
