@@ -77,32 +77,51 @@ class Register(utils.WordMixin, CreateView):
         return context
 
 
-class Search(utils.WordMixin, DetailView):
+def search(request, category_slug):
     """- Поиск"""
-    template_name = "translator/show_word.html"
-    context_object_name = "word"
-    slug_url_kwarg = 'word_slug'
-    pk_url_kwarg = 'pk'
-
-    def get_queryset(self, *args, **kwargs):
-        query = self.request.GET.get('q')
-        queryset = models.Word.objects.filter(
-            Q(translation__icontains=query) | Q(word__icontains=query)
+    q = str(request.GET.get('q')).strip()
+    if q:
+        queryset = models.Word.objects.filter(category__slug=category_slug).filter(
+            Q(translation__icontains=q) | Q(word__icontains=q)
         ).first()
-        print(queryset.word)
-        return queryset
+        if queryset:
+            print("ok")
+            print(reverse("category"))
+            return redirect(reverse('card', args=(category_slug, queryset.slug)))
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """- Вывод слова"""
-        context = super().get_context_data(**kwargs)
-        context["category_slug"] = self.kwargs['category_slug']
-        context["title"] = self.object.translation
-        context["previous"] = models.Word.objects.filter(is_free=True, id__lt=self.object.id).last()
-        context["next"] = models.Word.objects.filter(is_free=True, id__gt=self.object.id).first()
-        context["all_count"] = models.Word.objects.filter(is_free=True).count()
-        context["last_count"] = models.Word.objects.filter(is_free=True, id__lte=self.object.id).count()
-        print(context)
-        return context
+    return redirect(reverse("word", args=(category_slug, )))
+
+
+# class Search(DetailView):
+#     """- Поиск"""
+    # template_name = "translator/show_word.html"
+    # context_object_name = "word"
+    # slug_url_kwarg = 'word_slug'
+    # pk_url_kwarg = 'pk'
+    # model = models.Word
+
+    # def get_queryset(self, *args, **kwargs):
+    #     query = self.request.GET.get('q')
+    #     print(query)
+    #     queryset = models.Word.objects.filter(
+    #         Q(translation__icontains=query) | Q(word__icontains=query)
+    #     ).first()
+    #     print(queryset.word)
+    #     # return queryset
+    #
+    #     return HttpResponseRedirect(reverse('card', args=(self.kwargs.get("category_slug"), queryset.slug)))
+
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     """- Вывод слова"""
+    #     context = super().get_context_data(**kwargs)
+    #     context["category_slug"] = self.kwargs['category_slug']
+    #     context["title"] = self.object.translation
+    #     context["previous"] = models.Word.objects.filter(is_free=True, id__lt=self.object.id).last()
+    #     context["next"] = models.Word.objects.filter(is_free=True, id__gt=self.object.id).first()
+    #     context["all_count"] = models.Word.objects.filter(is_free=True).count()
+    #     context["last_count"] = models.Word.objects.filter(is_free=True, id__lte=self.object.id).count()
+    #     print(context)
+    #     return context
 
 
 def audio_replay(request, category_slug):
