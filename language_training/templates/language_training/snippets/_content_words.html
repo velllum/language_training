@@ -1,0 +1,16 @@
+<div class="text-dark small" style="line-height: 1.5;">
+    <strong>
+    {% if "russian" in request.path %}
+    {{ word.translation }}
+    {% else %}
+    {{ word.word }}
+    {% endif %}
+    </strong>
+</div>
+<div class="text-muted small-cover">
+    {% if "russian" in request.path %}
+    {{ word.example_translate|truncatechars:40 }}
+    {% else %}
+    {{ word.example|truncatechars:40 }}
+    {% endif %}
+</div>

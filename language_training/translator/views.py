@@ -1,6 +1,4 @@
-from django.conf.urls import url
 from django.db.models import Q
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView
@@ -57,10 +55,10 @@ class ShowWord(utils.WordMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["category_slug"] = self.kwargs['category_slug']
         context["title"] = self.object.translation
-        context["previous"] = models.Word.objects.filter(is_free=True, id__lt=self.object.id).last()
-        context["next"] = models.Word.objects.filter(is_free=True, id__gt=self.object.id).first()
-        context["all_count"] = models.Word.objects.filter(is_free=True).count()
-        context["last_count"] = models.Word.objects.filter(is_free=True, id__lte=self.object.id).count()
+        context["previous"] = self.model.objects.order_by("-pk").filter(is_free=True, pk__lt=self.object.pk, category__slug=self.kwargs['category_slug']).first()
+        context["next"] = self.model.objects.filter(is_free=True, pk__gt=self.object.pk, category__slug=self.kwargs['category_slug']).first()
+        context["all_count"] = self.model.objects.filter(is_free=True, category__slug=self.kwargs['category_slug']).count()
+        context["last_count"] = self.model.objects.filter(is_free=True, pk__lte=self.object.pk, category__slug=self.kwargs['category_slug']).count()
         return context
 
 

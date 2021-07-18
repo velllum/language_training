@@ -22,6 +22,15 @@
 <!--Десктопная версия-->
 {% block desktop_content %}{% endblock desktop_content %}
 
+{% comment %}
+{{ request.path }}<br>
+{{ request.get_port }}<br>
+{{ request.get_full_path_info }}<br>
+{{ request.build_absolute_uri }}<br>
+{{ request.resolver_match }}<br>
+{{ request.get_host }}<br>
+{% endcomment %}
+
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script src="{% static 'js/scripts.js' %}"></script>
