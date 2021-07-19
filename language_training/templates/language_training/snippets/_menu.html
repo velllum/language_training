@@ -6,11 +6,11 @@
     </button>
     <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton">
         <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
-        <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'word' %}active{% endif %}" href="{% url 'word' category_slug %}">Список слов</a></li>
-        <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'repeat_words' %}active{% endif %}" href="{% url 'repeat_words' category_slug %}">Повтор слов</a></li>
-        <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'audio_replay' %}active{% endif %}" href="{% url 'audio_replay' category_slug %}">Аудио повтор</a></li>
-        <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'settings' %}active{% endif %}" href="{% url 'settings' category_slug %}">Настройки</a></li>
+        <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'word' %}active{% endif %}" href="{% url 'url_translator:word' category_slug %}">Список слов</a></li>
+        <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'repeat_words' %}active{% endif %}" href="{% url 'url_translator:repeat_words' category_slug %}">Повтор слов</a></li>
+        <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'audio_replay' %}active{% endif %}" href="{% url 'url_translator:audio_replay' category_slug %}">Аудио повтор</a></li>
+        <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'settings' %}active{% endif %}" href="{% url 'url_translator:settings' category_slug %}">Настройки</a></li>
         <li><hr class="dropdown-divider"></li>
-        <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'auth' %}active{% endif %}" href="{% url 'auth' category_slug %}">Войти</a></li>
+        <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'auth' %}active{% endif %}" href="{% url 'url_translator:auth' category_slug %}">Войти</a></li>
     </ul>
 </div>

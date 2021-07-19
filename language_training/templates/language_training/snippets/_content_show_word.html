@@ -4,7 +4,7 @@
   <div class="position-relative top-50 start-50 translate-middle">
     <div class="card-text lead">
       <strong>
-        {% if "russian" in request.path %}
+        {% if "russian" in request.resolver_match.route %}
         {{ word.translation }}
         {% else %}
         {{ word.word }} - {{ word.transcript }}
@@ -19,8 +19,8 @@
   <div class="position-relative top-50 start-50 translate-middle">
     <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}" usemap="#workmap">
     <map name="workmap">
-      <area shape="rect" coords="0,0,180,270" href="{% if 'russian' in request.path %}/russian{% endif %}{{ previous.get_absolute_url }}">
-      <area shape="rect" coords="180,0,360,270" href="{% if 'russian' in request.path %}/russian{% endif %}{{ next.get_absolute_url }}">
+      <area shape="rect" coords="0,0,180,270" href="{% if '/russian/' in request.path %}/russian{% endif %}{{ previous.get_absolute_url }}">
+      <area shape="rect" coords="180,0,360,270" href="{% if '/russian/' in request.path %}/russian{% endif %}{{ next.get_absolute_url }}">
     </map>
   </div>
 </div>
@@ -29,7 +29,7 @@
 <!--пример слова в предложении-->
 <div class="card-body">
   <span class="card-text small">
-      {% if "russian" in request.path %}
+      {% if "russian" in request.resolver_match.route %}
       {{ word.example_translate }}
       {% else %}
       {{ word.example }}

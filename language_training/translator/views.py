@@ -42,6 +42,7 @@ class Word(utils.WordMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Список слов"
         context["category_slug"] = self.kwargs['category_slug']
+        # context["word"] = self.object_list
         return context
 
 
@@ -66,7 +67,7 @@ class Register(utils.WordMixin, CreateView):
     """- Регистрация"""
     form_class = forms.RegisterUserForm
     template_name = "translator/register.html"
-    success_url = reverse_lazy("auth")
+    success_url = reverse_lazy("url_translator:auth")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -83,11 +84,9 @@ def search(request, category_slug):
             Q(translation__icontains=q) | Q(word__icontains=q)
         ).first()
         if queryset:
-            print("ok")
-            print(reverse("category"))
-            return redirect(reverse('card', args=(category_slug, queryset.slug)))
+            return redirect(reverse('url_translator:card', args=(category_slug, queryset.slug)))
 
-    return redirect(reverse("word", args=(category_slug, )))
+    return redirect(reverse("url_translator:word", args=(category_slug, )))
 
 
 # class Search(DetailView):

@@ -28,7 +28,7 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         """- Получить url для списка категорий"""
-        return reverse("word", kwargs={"category_slug": self.slug})
+        return reverse("url_translator:word", kwargs={"category_slug": self.slug})
 
     def __str__(self):
         return self.name
@@ -65,7 +65,7 @@ class Word(models.Model):
 
     def get_absolute_url(self):
         """- Получить url для списка слов"""
-        return reverse("card", kwargs={"category_slug": self.category.slug, "word_slug": self.slug})
+        return reverse("url_translator:card", kwargs={"category_slug": self.category.slug, "word_slug": self.slug})
 
     def __str__(self):
         return self.translation
