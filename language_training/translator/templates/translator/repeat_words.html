@@ -12,25 +12,8 @@
         {% include "snippets/_search_form.html" %}
     </div>
 
-    <!--слово-->
-    <div class="card-body">
-        <div class="position-relative top-50 start-50 translate-middle">
-            <p class="card-text lead"><strong>Слова на Анг. [Транскрипция]</strong></p>
-        </div>
-    </div>
-
-    <!--картинка к слову-->
-    <div class="py-0 px-2">
-        <div class="position-relative top-50 start-50 translate-middle">
-            <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}">
-        </div>
-    </div>
-    <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
-
-    <!--пример слова в предложении-->
-    <div class="card-body">
-        <p class="card-text small">Пример слова в предложении Анг.</p>
-    </div>
+    <!--Контент-->
+    {% include "snippets/_content_show_word.html" %}
 
     <!--кнопки правления-->
     <div class="card-footer-cover p-1 mt-auto d-flex justify-content-evenly">
@@ -44,7 +27,7 @@
             </div>
         </button>
 
-        <a href="{% url 'extend_replay' category_slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
+        <a href="{% url 'url_translator:extend_replay' category_slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
 
     </div>
 
@@ -76,25 +59,8 @@
                 {% include "snippets/_search_form.html" %}
             </div>
 
-            <!--слово-->
-            <div class="card-body">
-                <div class="position-relative top-50 start-50 translate-middle">
-                    <p class="show card-text lead"><strong>Слова на Анг. [Транскрипция]</strong></p>
-                </div>
-            </div>
-
-            <!--картинка к слову-->
-            <div class="py-0 px-2">
-                <div class="position-relative top-50 start-50 translate-middle">
-                    <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}">
-                </div>
-            </div>
-            <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
-
-            <!--пример слова в предложении-->
-            <div class="card-body">
-                <p class="card-text small">Пример слова в предложении Анг.</p>
-            </div>
+            <!--Контент-->
+            {% include "snippets/_content_show_word.html" %}
 
             <div class="card-footer-cover d-flex p-1 justify-content-evenly">
 
@@ -107,7 +73,7 @@
                     </div>
                 </button>
 
-                <a href="{% url 'extend_replay' category_slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
+                <a href="{% url 'url_translator:extend_replay' category_slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
 
             </div>
 

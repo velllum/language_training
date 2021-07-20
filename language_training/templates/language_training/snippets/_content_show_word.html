@@ -19,12 +19,13 @@
   <div class="position-relative top-50 start-50 translate-middle">
     <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}" usemap="#workmap">
     <map name="workmap">
-      <area shape="rect" coords="0,0,180,270" href="{% if '/russian/' in request.path %}/russian{% endif %}{{ previous.get_absolute_url }}">
-      <area shape="rect" coords="180,0,360,270" href="{% if '/russian/' in request.path %}/russian{% endif %}{{ next.get_absolute_url }}">
+      <area shape="rect" coords="0,0,180,270" href="{% url 'url_translator:card' category_slug previous.slug %}">
+      <area shape="rect" coords="180,0,360,270" href="{% url 'url_translator:card' category_slug next.slug %}">
     </map>
   </div>
 </div>
 <a href="{{ word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;" target="_blank">Ссылка на ресурс фото</a>
+{{ request.resolver_match.url_name }}
 
 <!--пример слова в предложении-->
 <div class="card-body">

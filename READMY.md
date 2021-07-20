@@ -67,3 +67,13 @@ urlpatterns = [
 4. как передать не зарегистрированному пользователю временные данные настроек настройки 
 
 5. добавить маршрутизатор отвечающий за реализацию страницу переведенной на русский язык
+=====================================
+ознакомится
+Диспетчер URL
+https://docs.djangoproject.com/en/3.2/topics/http/urls/#how-django-processes-a-request
+========================================
+Объекты запроса и ответа
+https://docs.djangoproject.com/en/3.2/ref/request-response/
+=======================================
+django.urlsслужебные функции
+https://docs.djangoproject.com/en/3.2/ref/urlresolvers/

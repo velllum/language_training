@@ -42,7 +42,6 @@ class Word(utils.WordMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Список слов"
         context["category_slug"] = self.kwargs['category_slug']
-        # context["word"] = self.object_list
         return context
 
 
@@ -59,7 +58,10 @@ class ShowWord(utils.WordMixin, DetailView):
         context["previous"] = self.model.objects.order_by("-pk").filter(is_free=True, pk__lt=self.object.pk, category__slug=self.kwargs['category_slug']).first()
         context["next"] = self.model.objects.filter(is_free=True, pk__gt=self.object.pk, category__slug=self.kwargs['category_slug']).first()
         context["all_count"] = self.model.objects.filter(is_free=True, category__slug=self.kwargs['category_slug']).count()
-        context["last_count"] = self.model.objects.filter(is_free=True, pk__lte=self.object.pk, category__slug=self.kwargs['category_slug']).count()
+
+        last_count = self.model.objects.filter(is_free=True, pk__lte=self.object.pk, category__slug=self.kwargs['category_slug']).count()
+        context["last_count"] = last_count
+        context["number_page"] = ((last_count-1) // 10) + 1
         return context
 
 
@@ -121,14 +123,14 @@ def search(request, category_slug):
     #     return context
 
 
-def audio_replay(request, category_slug):
-    """- Аудио повтор слов добавленных в закладки"""
-    return render(request, "translator/audio_replay.html", context={"category_slug": category_slug})
-
-
 def repeat_words(request, category_slug):
     """- Повторение слов добавленных в закладки"""
     return render(request, "translator/repeat_words.html", context={"category_slug": category_slug})
+
+
+def audio_replay(request, category_slug):
+    """- Аудио повтор слов добавленных в закладки"""
+    return render(request, "translator/audio_replay.html", context={"category_slug": category_slug})
 
 
 def extend_replay(request, category_slug):
