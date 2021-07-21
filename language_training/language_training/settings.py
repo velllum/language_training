@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'translator.apps.TranslatorConfig',
-    'translator.tamplatetags.translator_tags',
     'import_export',
 ]
 
