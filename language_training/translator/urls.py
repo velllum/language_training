@@ -1,4 +1,4 @@
-from django.urls import path, include, reverse
+from django.urls import path, include
 
 from . import views
 
@@ -22,7 +22,7 @@ word_patterns = ([
 urlpatterns = [
     path('', views.Category.as_view(), name='category'),
     path('russian-<category_slug>/', include(word_patterns, namespace="rus")),
-    path('<category_slug>/', include(word_patterns, namespace="over")),
+    path('<category_slug>-russian/', include(word_patterns, namespace="over")),
 ]
 
 

@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.conf import settings as sett
 
 from . import models
-from . import utils
+from . import mixins
 from . import forms
 
 
@@ -25,7 +25,7 @@ class Category(ListView):
         return context
 
 
-class Word(utils.WordMixin, ListView):
+class Word(mixins.WordMixin, ListView):
     """- Вывод списка слов"""
     paginate_by = sett.NUMBER_PAGES
     template_name = "translator/words.html"
@@ -45,7 +45,7 @@ class Word(utils.WordMixin, ListView):
         return context
 
 
-class ShowWord(utils.WordMixin, DetailView):
+class ShowWord(mixins.WordMixin, DetailView):
     """- Вывод слова"""
     template_name = "translator/show_word.html"
     context_object_name = "word"
@@ -63,58 +63,12 @@ class ShowWord(utils.WordMixin, DetailView):
                                                category__slug=self.kwargs['category_slug']).count()
         context["last_count"] = last_count
         context["number_page"] = ((last_count - 1) // 10) + 1
+        context["get_url_translate"] = self.get_url_translate()
 
-        print(self.object.get_absolute_url())
         return context
 
-    def get_url_page(self, pk__):
-        """- Получить ссылку следующей и новой статьи"""
-        res = resolve(self.request.path)
-        query = self.model.objects.filter(
-            **{pk__: self.object.pk},
-            is_free=True,
-            category__slug=self.kwargs['category_slug'],
-        )
-        if query:
-            if pk__ in "pk__lt":
-                query = query.order_by("-pk").first()
-            else:
-                query = query.first()
-            if res.kwargs.get("word_slug"):
-                res.kwargs["word_slug"] = query.slug
-            return reverse(res.view_name, kwargs=res.kwargs)
 
-    # def get_url(self, slug=None):
-    #     """- Получить ссылку"""
-    #     res = resolve(self.request.path)
-    #     if slug:
-    #         res.kwargs["word_slug"] = slug
-    #     return reverse(res.view_name, kwargs=res.kwargs)
-    #
-    # def next_page(self):
-    #     """- Следующая страница"""
-    #     query = self.model.objects.filter(
-    #         is_free=True,
-    #         pk__gt=self.object.pk,
-    #         category__slug=self.kwargs['category_slug']
-    #     ).first()
-    #     if query:
-    #         return self.get_url(query.slug)
-    #
-    # def previous_page(self):
-    #     """- Предыдущая страница"""
-    #     dic = {"pk__lt": self.object.pk}
-    #     query = self.model.objects\
-    #         .filter(
-    #             **dic,
-    #             is_free=True,
-    #             category__slug=self.kwargs['category_slug']
-    #         ).order_by("-pk").first()
-    #     if query:
-    #         return self.get_url(query.slug)
-
-
-class Register(utils.WordMixin, CreateView):
+class Register(mixins.WordMixin, CreateView):
     """- Регистрация"""
     form_class = forms.RegisterUserForm
     template_name = "translator/register.html"
