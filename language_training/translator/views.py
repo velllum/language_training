@@ -1,5 +1,4 @@
 from django.db.models import Q
-from django.http import HttpRequest, HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse, path, resolve
 from django.views.generic import ListView, DetailView, CreateView
@@ -56,42 +55,63 @@ class ShowWord(utils.WordMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["category_slug"] = self.kwargs['category_slug']
         context["title"] = self.object.translation
-        context["previous"] = self.previous_page()
-        context["next"] = self.next_page()
+        context["previous"] = self.get_url_page("pk__lt")
+        context["next"] = self.get_url_page("pk__gt")
         context["all_count"] = self.model.objects.filter(is_free=True,
                                                          category__slug=self.kwargs['category_slug']).count()
         last_count = self.model.objects.filter(is_free=True, pk__lte=self.object.pk,
                                                category__slug=self.kwargs['category_slug']).count()
         context["last_count"] = last_count
         context["number_page"] = ((last_count - 1) // 10) + 1
+
+        print(self.object.get_absolute_url())
         return context
 
-    def get_url(self, slug=None):
-        """- Получить ссылку"""
+    def get_url_page(self, pk__):
+        """- Получить ссылку следующей и новой статьи"""
         res = resolve(self.request.path)
-        if slug:
-            res.kwargs["word_slug"] = slug
-        return reverse(res.view_name, kwargs=res.kwargs)
-
-    def next_page(self):
-        """- Следующая страница"""
         query = self.model.objects.filter(
+            **{pk__: self.object.pk},
             is_free=True,
-            pk__gt=self.object.pk,
-            category__slug=self.kwargs['category_slug']
-        ).first()
+            category__slug=self.kwargs['category_slug'],
+        )
         if query:
-            return self.get_url(query.slug)
+            if pk__ in "pk__lt":
+                query = query.order_by("-pk").first()
+            else:
+                query = query.first()
+            if res.kwargs.get("word_slug"):
+                res.kwargs["word_slug"] = query.slug
+            return reverse(res.view_name, kwargs=res.kwargs)
 
-    def previous_page(self):
-        """- Предыдущая страница"""
-        query = self.model.objects.order_by("-pk").filter(
-            is_free=True,
-            pk__lt=self.object.pk,
-            category__slug=self.kwargs['category_slug']
-        ).first()
-        if query:
-            return self.get_url(query.slug)
+    # def get_url(self, slug=None):
+    #     """- Получить ссылку"""
+    #     res = resolve(self.request.path)
+    #     if slug:
+    #         res.kwargs["word_slug"] = slug
+    #     return reverse(res.view_name, kwargs=res.kwargs)
+    #
+    # def next_page(self):
+    #     """- Следующая страница"""
+    #     query = self.model.objects.filter(
+    #         is_free=True,
+    #         pk__gt=self.object.pk,
+    #         category__slug=self.kwargs['category_slug']
+    #     ).first()
+    #     if query:
+    #         return self.get_url(query.slug)
+    #
+    # def previous_page(self):
+    #     """- Предыдущая страница"""
+    #     dic = {"pk__lt": self.object.pk}
+    #     query = self.model.objects\
+    #         .filter(
+    #             **dic,
+    #             is_free=True,
+    #             category__slug=self.kwargs['category_slug']
+    #         ).order_by("-pk").first()
+    #     if query:
+    #         return self.get_url(query.slug)
 
 
 class Register(utils.WordMixin, CreateView):
