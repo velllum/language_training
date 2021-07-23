@@ -5,9 +5,9 @@
     <div class="card-text lead">
       <strong>
         {% if "rus" in request.resolver_match.namespace %}
-        {{ word.translation }}
+            {{ object.translation }}
         {% else %}
-        {{ word.word }} - {{ word.transcript }}
+            {{ object.word }} - {{ object.transcript }}
         {% endif %}
       </strong>
     </div>
@@ -24,15 +24,15 @@
     </map>
   </div>
 </div>
-<a href="{{ word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;" target="_blank">Ссылка на ресурс фото</a>
+<a href="{{ object.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;" target="_blank">Ссылка на ресурс фото</a>
 
 <!--пример слова в предложении-->
 <div class="card-body">
   <span class="card-text small">
       {% if "rus" in request.resolver_match.namespace %}
-      {{ word.example_translate }}
+        {{ object.example_translate }}
       {% else %}
-      {{ word.example }}
+        {{ object.example }}
       {% endif %}
   </span>
 </div>

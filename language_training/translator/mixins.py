@@ -13,18 +13,23 @@ class WordMixin(BaseDetailView):
     def setup(self, request, *args, **kwargs):
         """Инициализируйте атрибуты, общие для всех методов представления."""
         self.args = args
-        self.request = request
         self.kwargs = kwargs
+        self.request = request
         self.model = models.Word
-        self.res = resolve(self.request.path)
-        # self.get_url_translate()
+
+    def get_context_data(self, **kwargs):
+        kwargs["previous"] = self.get_url_page("pk__lt")
+        kwargs["next"] = self.get_url_page("pk__gt")
+        kwargs["get_url_translate"] = self.get_url_translate()
+        return kwargs
 
     def get_url_page(self, pk__):
         """- Получить ссылку следующей и новой статьи"""
-        # res = copy.deepcopy(self.res)
-        # print(res)
+        res = resolve(self.request.path)
         query = self.model.objects.filter(
-            **{pk__: self.object.pk}, is_free=True, category__slug=self.kwargs['category_slug'],
+            **{pk__: self.object.pk},
+            is_free=True,
+            category__slug=self.kwargs['category_slug'],
         )
         if not query:
             return None
@@ -32,20 +37,15 @@ class WordMixin(BaseDetailView):
             query = query.order_by("-pk").first()
         else:
             query = query.first()
-        if self.res.kwargs.get("word_slug"):
-            self.res.kwargs["word_slug"] = query.slug
-        return reverse(self.res.view_name, kwargs=self.res.kwargs)
+        if res.kwargs.get("word_slug"):
+            res.kwargs["word_slug"] = query.slug
+        return reverse(res.view_name, kwargs=res.kwargs)
 
     def get_url_translate(self):
         """- Ссылка для кнопки перевода контента"""
-        if "rus" not in self.res.namespace:
-            # print(reverse(self.res.view_name, kwargs=self.res.kwargs))
-            # print(self.res.view_name)
-            # print(self.res.url_name)
-            # print(self.res.namespace)
-            # print(self.res)
-            #
-            # print(f"rus:{self.res.url_name}")
-            return reverse(f"rus:{self.res.url_name}", kwargs=self.res.kwargs)
+        res = resolve(self.request.path)
+        if "rus" not in res.namespace:
+            view_name = f"rus:{res.url_name}"
         else:
-            return reverse(f"over:{self.res.url_name}", kwargs=self.res.kwargs)
+            view_name = f"over:{res.url_name}"
+        return reverse(viewname=view_name, kwargs=res.kwargs)

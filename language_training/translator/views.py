@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy, reverse, path, resolve
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView
 from django.conf import settings as sett
 
@@ -19,51 +19,56 @@ class Category(ListView):
     def get_queryset(self):
         return models.Category.objects.all()
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self,  *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Категории"
         return context
 
 
-class Word(mixins.WordMixin, ListView):
+class Word(ListView):
     """- Вывод списка слов"""
     paginate_by = sett.NUMBER_PAGES
     template_name = "translator/words.html"
-    context_object_name = "page_words"
 
     def get_queryset(self):
         query = models.Word.objects.filter(category__slug=self.kwargs['category_slug'])
-        query_is_free = query.filter(is_free=True)
-        if query_is_free:
-            return query_is_free
+        is_free = query.filter(is_free=True)
+        if is_free:
+            return is_free
         return query[:sett.NUMBER_PAGES]
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Список слов"
         context["category_slug"] = self.kwargs['category_slug']
+        print(context)
+        print(object_list)
         return context
 
 
 class ShowWord(mixins.WordMixin, DetailView):
     """- Вывод слова"""
     template_name = "translator/show_word.html"
-    context_object_name = "word"
     slug_url_kwarg = 'word_slug'
+
+    def get_queryset(self):
+        query = self.model.objects.filter(
+            category__slug=self.kwargs['category_slug'],
+            slug=self.kwargs['word_slug'],
+        )
+        if query:
+            return query
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["category_slug"] = self.kwargs['category_slug']
         context["title"] = self.object.translation
-        context["previous"] = self.get_url_page("pk__lt")
-        context["next"] = self.get_url_page("pk__gt")
         context["all_count"] = self.model.objects.filter(is_free=True,
                                                          category__slug=self.kwargs['category_slug']).count()
         last_count = self.model.objects.filter(is_free=True, pk__lte=self.object.pk,
                                                category__slug=self.kwargs['category_slug']).count()
         context["last_count"] = last_count
         context["number_page"] = ((last_count - 1) // 10) + 1
-        context["get_url_translate"] = self.get_url_translate()
 
         return context
 
