@@ -1,12 +1,10 @@
-import copy
-
 from django.urls import resolve, reverse
-from django.views.generic.detail import BaseDetailView
+from django.views import View
 
 from . import models
 
 
-class WordMixin(BaseDetailView):
+class WordMixin(View):
     """- Переопределяет контекст"""
     allow_empty = False
 
@@ -16,11 +14,14 @@ class WordMixin(BaseDetailView):
         self.kwargs = kwargs
         self.request = request
         self.model = models.Word
+        res = resolve(self.request.path)
+        print(res)
+        print(reverse(res.view_name, kwargs=res.kwargs))
 
     def get_context_data(self, **kwargs):
         kwargs["previous"] = self.get_url_page("pk__lt")
         kwargs["next"] = self.get_url_page("pk__gt")
-        kwargs["get_url_translate"] = self.get_url_translate()
+        kwargs["get_url_translate"] = self.get_url()
         return kwargs
 
     def get_url_page(self, pk__):
@@ -41,8 +42,16 @@ class WordMixin(BaseDetailView):
             res.kwargs["word_slug"] = query.slug
         return reverse(res.view_name, kwargs=res.kwargs)
 
-    def get_url_translate(self):
+    def get_url(self):
         """- Ссылка для кнопки перевода контента"""
+        res = resolve(self.request.path)
+        if "rus" not in res.namespace:
+            view_name = f"rus:{res.url_name}"
+        else:
+            view_name = f"over:{res.url_name}"
+        return reverse(viewname=view_name, kwargs=res.kwargs)
+
+    def get_menu_url(self):
         res = resolve(self.request.path)
         if "rus" not in res.namespace:
             view_name = f"rus:{res.url_name}"

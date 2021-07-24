@@ -14,7 +14,7 @@
 
     <!--Контент (таблица) -->
     <ul class="list-group h-100 w-100 list-group-flush">
-        {% for word in object_list %}
+        {% for word in words_list %}
         <a href="{% url 'url_translator:card' category_slug word.slug %}" style="text-decoration: none;" class="list-group-item-cover h-100 w-100 d-flex align-items-center">
             <div class="d-flex align-items-center">
                 <img class="bd-placeholder-img rounded-0" width="13%"  src="{% static 'image/placeholder.png' %}">
@@ -77,7 +77,7 @@
             <!--Контент (таблица)-->
             <div class="card-body p-1 pb-0">
                 <ul class="list-group list-group-flush">
-                    {% for word in object_list %}
+                    {% for word in words_list %}
                     <li class="list-group-item-cover">
                         <a href="{% url 'url_translator:card' category_slug word.slug %}" style="text-decoration: none;">
                             <div class="d-flex justify-content-start align-items-center">

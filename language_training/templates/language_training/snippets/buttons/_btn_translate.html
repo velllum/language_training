@@ -1,4 +1,4 @@
-<a href="{{ get_url_translate }}"
+<a href="{{ get_url_translate }}{% if page_obj %}?page={{ page_obj.number }}{% endif %}"
 class="text-light">
     <div class="px-cover">
         <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">

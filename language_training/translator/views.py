@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy, reverse, resolve
 from django.views.generic import ListView, DetailView, CreateView
 from django.conf import settings as sett
 
@@ -25,13 +25,14 @@ class Category(ListView):
         return context
 
 
-class Word(ListView):
+class Word(ListView, mixins.WordMixin):
     """- Вывод списка слов"""
     paginate_by = sett.NUMBER_PAGES
     template_name = "translator/words.html"
+    context_object_name = "words_list"
 
     def get_queryset(self):
-        query = models.Word.objects.filter(category__slug=self.kwargs['category_slug'])
+        query = self.model.objects.filter(category__slug=self.kwargs.get("category_slug"))
         is_free = query.filter(is_free=True)
         if is_free:
             return is_free
@@ -40,9 +41,9 @@ class Word(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Список слов"
-        context["category_slug"] = self.kwargs['category_slug']
+        context["category_slug"] = self.kwargs.get("category_slug")
+        context["get_url_translate"] = self.get_url()
         print(context)
-        print(object_list)
         return context
 
 
@@ -53,27 +54,31 @@ class ShowWord(mixins.WordMixin, DetailView):
 
     def get_queryset(self):
         query = self.model.objects.filter(
-            category__slug=self.kwargs['category_slug'],
-            slug=self.kwargs['word_slug'],
+            category__slug=self.kwargs.get("category_slug"),
+            slug=self.kwargs.get("word_slug"),
         )
         if query:
             return query
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["category_slug"] = self.kwargs['category_slug']
+        context["category_slug"] = self.kwargs.get("category_slug")
         context["title"] = self.object.translation
         context["all_count"] = self.model.objects.filter(is_free=True,
-                                                         category__slug=self.kwargs['category_slug']).count()
+                                                         category__slug=self.kwargs.get("category_slug")).count()
         last_count = self.model.objects.filter(is_free=True, pk__lte=self.object.pk,
-                                               category__slug=self.kwargs['category_slug']).count()
+                                               category__slug=self.kwargs.get("category_slug")).count()
         context["last_count"] = last_count
         context["number_page"] = ((last_count - 1) // 10) + 1
-
         return context
 
 
-class Register(mixins.WordMixin, CreateView):
+class AudioReplay(ShowWord):
+    """- Аудио повтор слов"""
+    template_name = "translator/audio_replay.html"
+
+
+class Register(CreateView):
     """- Регистрация"""
     form_class = forms.RegisterUserForm
     template_name = "translator/register.html"
@@ -82,20 +87,21 @@ class Register(mixins.WordMixin, CreateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Регистрация"
-        context["category_slug"] = self.kwargs['category_slug']
+        context["category_slug"] = self.kwargs.get("category_slug")
         return context
 
 
 def search(request, category_slug):
     """- Поиск"""
     q = str(request.GET.get('q')).strip()
+    res = resolve(request.path)
     if q:
         queryset = models.Word.objects.filter(category__slug=category_slug).filter(
             Q(translation__icontains=q) | Q(word__icontains=q)
         ).first()
         if queryset:
-            return redirect(reverse('url_translator:card', args=(category_slug, queryset.slug)))
-    return redirect(reverse("url_translator:word", args=(category_slug,)))
+            return redirect(reverse(f"{res.namespace}:card", args=(category_slug, queryset.slug)))
+    return redirect(reverse(f"{res.namespace}:word", args=(category_slug,)))
 
 
 # class Search(DetailView):
