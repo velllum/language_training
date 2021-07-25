@@ -26,7 +26,7 @@ class Category(ListView):
         return context
 
 
-class Word(ListView, mixins.WordMixin):
+class Word(mixins.TranslateContentMixin, ListView):
     """- Вывод списка слов"""
     paginate_by = sett.NUMBER_PAGES
     template_name = "translator/words.html"
@@ -43,12 +43,10 @@ class Word(ListView, mixins.WordMixin):
         context = super().get_context_data(**kwargs)
         context["title"] = "Список слов"
         context["category_slug"] = self.kwargs.get("category_slug")
-        context["get_url_translate"] = self.get_url_translate()
-        # context["get_absolute_url"] = self.get_absolute_url(url_name="word")
         return context
 
 
-class ShowWord(mixins.WordMixin, DetailView):
+class ShowWord(DetailView, mixins.TranslateContentMixin, mixins.NavigatingPagesMixin):
     """- Вывод слова"""
     template_name = "translator/show_word.html"
     slug_url_kwarg = 'word_slug'
@@ -65,19 +63,15 @@ class ShowWord(mixins.WordMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["category_slug"] = self.kwargs.get("category_slug")
         context["title"] = self.object.translation
-        context["all_count"] = self.model.objects.filter(is_free=True,
-                                                         category__slug=self.kwargs.get("category_slug")).count()
-        last_count = self.model.objects.filter(is_free=True, pk__lte=self.object.pk,
-                                               category__slug=self.kwargs.get("category_slug")).count()
+        context["all_count"] = self.model.objects.filter(
+                                is_free=True, category__slug=self.kwargs.get("category_slug")
+                            ).count()
+        last_count = self.model.objects.filter(
+                                is_free=True, pk__lte=self.object.pk, category__slug=self.kwargs.get("category_slug")
+                            ).count()
         context["last_count"] = last_count
         context["number_page"] = ((last_count - 1) // 10) + 1
-        # context["get_absolute_url"] = self.get_absolute_url(url_name="card")
         return context
-
-
-class AudioReplay(ShowWord):
-    """- Аудио повтор слов"""
-    template_name = "translator/audio_replay.html"
 
 
 class Register(CreateView):
@@ -104,38 +98,6 @@ def search(request, category_slug):
         if queryset:
             return redirect(reverse(f"{res.namespace}:card", args=(category_slug, queryset.slug)))
     return redirect(reverse(f"{res.namespace}:word", args=(category_slug,)))
-
-
-# class Search(DetailView):
-#     """- Поиск"""
-# template_name = "translator/show_word.html"
-# context_object_name = "word"
-# slug_url_kwarg = 'word_slug'
-# pk_url_kwarg = 'pk'
-# model = models.Word
-
-# def get_queryset(self, *args, **kwargs):
-#     query = self.request.GET.get('q')
-#     print(query)
-#     queryset = models.Word.objects.filter(
-#         Q(translation__icontains=query) | Q(word__icontains=query)
-#     ).first()
-#     print(queryset.word)
-#     # return queryset
-#
-#     return HttpResponseRedirect(reverse('card', args=(self.kwargs.get("category_slug"), queryset.slug)))
-
-# def get_context_data(self, *, object_list=None, **kwargs):
-#     """- Вывод слова"""
-#     context = super().get_context_data(**kwargs)
-#     context["category_slug"] = self.kwargs['category_slug']
-#     context["title"] = self.object.translation
-#     context["previous"] = models.Word.objects.filter(is_free=True, id__lt=self.object.id).last()
-#     context["next"] = models.Word.objects.filter(is_free=True, id__gt=self.object.id).first()
-#     context["all_count"] = models.Word.objects.filter(is_free=True).count()
-#     context["last_count"] = models.Word.objects.filter(is_free=True, id__lte=self.object.id).count()
-#     print(context)
-#     return context
 
 
 def repeat_words(request, category_slug):

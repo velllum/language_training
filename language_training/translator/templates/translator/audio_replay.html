@@ -13,10 +13,46 @@
     </div>
 
     <!--Контент-->
-    {% include "snippets/_content_show_word.html" %}
+    <!--слово-->
+    <div class="card-body">
+        <div class="position-relative top-50 start-50 translate-middle">
+            <div class="card-text lead">
+                <strong>
+                    {% if "rus" in request.resolver_match.namespace %}
+                    Слова на Анг.
+                    {% else %}
+                    Words in English. [Transcription]
+                    {% endif %}
+                </strong>
+            </div>
+        </div>
+    </div>
+
+    <!--картинка к слову-->
+    <div class="py-0 px-2">
+        <div class="position-relative top-50 start-50 translate-middle">
+            <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}" usemap="#workmap">
+            <map name="workmap">
+                <area shape="rect" coords="0,0,180,270" href="#">
+                <area shape="rect" coords="180,0,360,270" href="#">
+            </map>
+        </div>
+    </div>
+    <a href="#" style="font-size: 0.675em; color: #5b92ad!important;" target="_blank">Ссылка на ресурс фото</a>
+
+    <!--пример слова в предложении-->
+    <div class="card-body">
+          <span class="card-text small">
+              {% if "rus" in request.resolver_match.namespace %}
+              Пример слова в предложении
+              {% else %}
+              Example of a word in a sentence
+              {% endif %}
+          </span>
+    </div>
 
     <!--Навигация на пред. и новую страницу-->
-    {% include "snippets/_next_previous.html" %}
+    {#% include "snippets/_next_previous.html" %#}
 
     <!--кнопки правления-->
     <div class="card-footer-cover p-1 d-flex justify-content-between">
@@ -63,10 +99,46 @@
             </div>
 
             <!--Контент-->
-            {% include "snippets/_content_show_word.html" %}
+            <!--слово-->
+            <div class="card-body">
+                <div class="position-relative top-50 start-50 translate-middle">
+                    <div class="card-text lead">
+                        <strong>
+                            {% if "rus" in request.resolver_match.namespace %}
+                            Слова на Анг.
+                            {% else %}
+                            Words in English. [Transcription]
+                            {% endif %}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+
+            <!--картинка к слову-->
+            <div class="py-0 px-2">
+                <div class="position-relative top-50 start-50 translate-middle">
+                    <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}" usemap="#workmap">
+                    <map name="workmap">
+                        <area shape="rect" coords="0,0,180,270" href="#">
+                        <area shape="rect" coords="180,0,360,270" href="#">
+                    </map>
+                </div>
+            </div>
+            <a href="#" style="font-size: 0.675em; color: #5b92ad!important;" target="_blank">Ссылка на ресурс фото</a>
+
+            <!--пример слова в предложении-->
+            <div class="card-body">
+                  <span class="card-text small">
+                      {% if "rus" in request.resolver_match.namespace %}
+                      Пример слова в предложении
+                      {% else %}
+                      Example of a word in a sentence
+                      {% endif %}
+                  </span>
+            </div>
 
             <!--Навигация на пред. и новую страницу-->
-            {% include "snippets/_next_previous.html" %}
+            {#% include "snippets/_next_previous.html" %#}
 
             <!--кнопки правления-->
             <div class="card-footer-cover p-1 d-flex justify-content-between">
