@@ -84,3 +84,8 @@ https://docs.djangoproject.com/en/3.2/ref/request-response/
 =======================================
 django.urlsслужебные функции
 https://docs.djangoproject.com/en/3.2/ref/urlresolvers/
+
+---------------------------------------------------------
+
+
+   

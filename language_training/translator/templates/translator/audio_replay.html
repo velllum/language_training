@@ -12,27 +12,11 @@
         {% include "snippets/_search_form.html" %}
     </div>
 
-    <!--слова и транскрипция-->
-    <div class="card-body">
-        <div class="position-relative top-50 start-50 translate-middle">
-            <p class="show card-text lead"><strong>Слова на Анг. [Транскрипция]</strong></p>
-            <p class="hidden card-text lead"><strong>Слова на русском</strong></p>
-        </div>
-    </div>
+    <!--Контент-->
+    {% include "snippets/_content_show_word.html" %}
 
-    <!--картинка к слову-->
-    <div class="py-0 px-2">
-        <div class="position-relative top-50 start-50 translate-middle">
-            <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}">
-        </div>
-    </div>
-    <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
-
-    <!--пример слова в предложении-->
-    <div class="card-body">
-        <p class="show card-text small">Пример слова в предложении на иностранном.</p>
-        <p class="hidden card-text small">Пример слова в предложении на русском.</p>
-    </div>
+    <!--Навигация на пред. и новую страницу-->
+    {% include "snippets/_next_previous.html" %}
 
     <!--кнопки правления-->
     <div class="card-footer-cover p-1 d-flex justify-content-between">
@@ -78,27 +62,11 @@
                 {% include "snippets/_search_form.html" %}
             </div>
 
-            <!--слова-->
-            <div class="card-body">
-                <div class="position-relative top-50 start-50 translate-middle">
-                    <p class="show card-text lead"><strong>Слова на Анг. [Транскрипция]</strong></p>
-                    <p class="hidden card-text lead"><strong>Слова на русском</strong></p>
-                </div>
-            </div>
+            <!--Контент-->
+            {% include "snippets/_content_show_word.html" %}
 
-            <!--картинка к слову-->
-            <div class="py-0 px-2">
-                <div class="position-relative top-50 start-50 translate-middle">
-                    <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}">
-                </div>
-            </div>
-            <a href="{{ card_word.links_image }}" style="font-size: 0.675em; color: #5b92ad!important;">Ссылка на ресурс фото</a>
-
-            <!--пример слова в предложении-->
-            <div class="card-body">
-                <p class="show card-text small">Пример слова в предложении на иностранном.</p>
-                <p class="hidden card-text small">Пример слова в предложении на русском.</p>
-            </div>
+            <!--Навигация на пред. и новую страницу-->
+            {% include "snippets/_next_previous.html" %}
 
             <!--кнопки правления-->
             <div class="card-footer-cover p-1 d-flex justify-content-between">

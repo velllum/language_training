@@ -22,6 +22,7 @@ class Category(ListView):
     def get_context_data(self,  *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Категории"
+        print(self.request.resolver_match)
         return context
 
 
@@ -42,8 +43,8 @@ class Word(ListView, mixins.WordMixin):
         context = super().get_context_data(**kwargs)
         context["title"] = "Список слов"
         context["category_slug"] = self.kwargs.get("category_slug")
-        context["get_url_translate"] = self.get_url()
-        print(context)
+        context["get_url_translate"] = self.get_url_translate()
+        # context["get_absolute_url"] = self.get_absolute_url(url_name="word")
         return context
 
 
@@ -70,6 +71,7 @@ class ShowWord(mixins.WordMixin, DetailView):
                                                category__slug=self.kwargs.get("category_slug")).count()
         context["last_count"] = last_count
         context["number_page"] = ((last_count - 1) // 10) + 1
+        # context["get_absolute_url"] = self.get_absolute_url(url_name="card")
         return context
 
 
@@ -159,3 +161,4 @@ def settings(request, category_slug):
 def auth(request, category_slug):
     """- Авторизация"""
     return render(request, "translator/auth.html", context={"category_slug": category_slug})
+
