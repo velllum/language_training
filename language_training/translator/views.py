@@ -74,6 +74,42 @@ class ShowWord(DetailView, mixins.TranslateContentMixin, mixins.NavigatingPagesM
         return context
 
 
+class AudioReplay(mixins.TranslateContentMixin, ListView):
+    """- Аудио повтор слов добавленных в закладки"""
+    template_name = "translator/audio_replay.html"
+
+    def get_queryset(self):
+        query = self.model.objects.filter(
+            category__slug=self.kwargs.get("category_slug"),
+        )
+        if query:
+            return query
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["category_slug"] = self.kwargs.get("category_slug")
+        context["title"] = "Аудио повтор"
+        return context
+
+
+class ExtendReplay(mixins.TranslateContentMixin, ListView):
+    """- Продление повтора"""
+    template_name = "translator/extend_replay.html"
+
+    def get_queryset(self):
+        query = self.model.objects.filter(
+            category__slug=self.kwargs.get("category_slug"),
+        )
+        if query:
+            return query
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["category_slug"] = self.kwargs.get("category_slug")
+        context["title"] = "Добавить слово в повтор"
+        return context
+
+
 class Register(CreateView):
     """- Регистрация"""
     form_class = forms.RegisterUserForm

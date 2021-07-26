@@ -10,9 +10,9 @@ word_patterns = ([
     path('settings/', views.settings, name='settings'),
     path('repeat-words/', views.repeat_words, name='repeat_words'),
     path('search/', views.search, name='search'),
-    path('audio-replay/', views.audio_replay, name='audio_replay'),
+    path('audio-replay/', views.AudioReplay.as_view(), name='audio_replay'),
     path('<word_slug>/', views.ShowWord.as_view(), name='card'),
-    path('repeat-words/extend-replay', views.extend_replay, name='extend_replay'),
+    path('repeat-words/extend-replay', views.ExtendReplay.as_view(), name='extend_replay'),
 ], "url_translator")
 
 
