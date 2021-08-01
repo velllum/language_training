@@ -6,16 +6,16 @@
 <div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">
     <div class="card-header-cover p-1 d-flex justify-content-between">
         <!--меню-->
-        {% include "snippets/_menu.html" %}
+        {% include "translator/snippets/_menu.html" %}
         <!--Форма поиска-->
-        {% include "snippets/_search_form.html" %}
+        {% include "translator/snippets/_search_form.html" %}
     </div>
 
     <!--Контент-->
-    {% include "snippets/_content_show_word.html" %}
+    {% include "translator/snippets/_content_show_word.html" %}
 
     <!--Навигация на пред. и новую страницу-->
-    {% include "snippets/_next_previous.html" %}
+    {% include "translator/snippets/_next_previous.html" %}
 
     <div class="collapse" id="collapseExampleMobil">
         <div class="card card-body p-0">
@@ -36,7 +36,7 @@
         </div>
 
         <!--Кнопка перевода-->
-        {% include "snippets/buttons/_btn_translate.html" %}
+        {% include "translator/snippets/buttons/_btn_translate.html" %}
 
         <button class="btn-cover" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExampleMobil" aria-expanded="false" aria-controls="collapseExample">
             <div class="px-cover">
@@ -48,7 +48,7 @@
         </button>
 
         <!--Кнопка для возврата на страницу родителя-->
-        {% include "snippets/buttons/_btn_back.html" %}
+        {% include "translator/snippets/buttons/_btn_back.html" %}
 
     </div>
 </div>
@@ -58,22 +58,22 @@
 {% block desktop_content %}
 <div class="d-none d-sm-block cover-container m-auto flex-column">
     <!--картинка фона-->
-    {% include "snippets/_background.html" %}
+    {% include "translator/snippets/_background.html" %}
     <main>
 
         <div class="card text-light bg-cover cover-container">
             <div class="card-header-cover p-1 d-flex justify-content-between">
                 <!--меню-->
-                {% include "snippets/_menu.html" %}
+                {% include "translator/snippets/_menu.html" %}
                 <!--Форма поиска-->
-                {% include "snippets/_search_form.html" %}
+                {% include "translator/snippets/_search_form.html" %}
             </div>
 
             <!--Контент-->
-            {% include "snippets/_content_show_word.html" %}
+            {% include "translator/snippets/_content_show_word.html" %}
 
             <!--Навигация на пред. и новую страницу-->
-            {% include "snippets/_next_previous.html" %}
+            {% include "translator/snippets/_next_previous.html" %}
 
             <div class="collapse" id="collapseExample">
                 <div class="card card-body p-0">
@@ -95,7 +95,7 @@
                 </div>
 
                 <!--Кнопка перевода-->
-                {% include "snippets/buttons/_btn_translate.html" %}
+                {% include "translator/snippets/buttons/_btn_translate.html" %}
 
                 <button class="btn-cover" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     <div class="px-cover">
@@ -107,7 +107,7 @@
                 </button>
 
                 <!--Кнопка для возврата на страницу родителя-->
-                {% include "snippets/buttons/_btn_back.html" %}
+                {% include "translator/snippets/buttons/_btn_back.html" %}
 
             </div>
 
@@ -115,7 +115,7 @@
     </main>
 
     <!--Нижний заголовок-->
-    {% include "snippets/_footer.html" %}
+    {% include "translator/snippets/_footer.html" %}
 
 </div>
 {% endblock desktop_content %}

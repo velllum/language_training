@@ -2,10 +2,11 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse, resolve
 from django.views.generic import ListView, DetailView, CreateView
+
 from django.conf import settings as sett
 
 from . import models
-from . import mixins
+from . import utils
 from . import forms
 
 
@@ -22,18 +23,17 @@ class Category(ListView):
     def get_context_data(self,  *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Категории"
-        print(self.request.resolver_match)
         return context
 
 
-class Word(mixins.TranslateContentMixin, ListView):
+class Word(utils.TranslateContentMixin, ListView):
     """- Вывод списка слов"""
     paginate_by = sett.NUMBER_PAGES
     template_name = "translator/words.html"
     context_object_name = "words_list"
 
     def get_queryset(self):
-        query = self.model.objects.filter(category__slug=self.kwargs.get("category_slug"))
+        query = self.model.objects.filter(category__slug=self.kwargs.get("category_slug")).select_related('category')
         is_free = query.filter(is_free=True)
         if is_free:
             return is_free
@@ -43,10 +43,11 @@ class Word(mixins.TranslateContentMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Список слов"
         context["category_slug"] = self.kwargs.get("category_slug")
+        print(self.request.content_params)
         return context
 
 
-class ShowWord(DetailView, mixins.TranslateContentMixin, mixins.NavigatingPagesMixin):
+class ShowWord(DetailView, utils.TranslateContentMixin, utils.NavigatingPagesMixin):
     """- Вывод слова"""
     template_name = "translator/show_word.html"
     slug_url_kwarg = 'word_slug'
@@ -55,9 +56,13 @@ class ShowWord(DetailView, mixins.TranslateContentMixin, mixins.NavigatingPagesM
         query = self.model.objects.filter(
             category__slug=self.kwargs.get("category_slug"),
             slug=self.kwargs.get("word_slug"),
-        )
+        ).select_related('category')
         if query:
             return query
+
+    def get_object(self, **kwargs):
+        print("get_object", self.kwargs)
+        return super().get_object(**kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -74,16 +79,14 @@ class ShowWord(DetailView, mixins.TranslateContentMixin, mixins.NavigatingPagesM
         return context
 
 
-class AudioReplay(mixins.TranslateContentMixin, ListView):
+class AudioReplay(utils.TranslateContentMixin, ListView):
     """- Аудио повтор слов добавленных в закладки"""
     template_name = "translator/audio_replay.html"
 
     def get_queryset(self):
-        query = self.model.objects.filter(
-            category__slug=self.kwargs.get("category_slug"),
-        )
+        query = self.model.objects.filter(category__slug=self.kwargs.get("category_slug")).select_related('category')
         if query:
-            return query
+            return query.select_related('category')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -92,14 +95,12 @@ class AudioReplay(mixins.TranslateContentMixin, ListView):
         return context
 
 
-class ExtendReplay(mixins.TranslateContentMixin, ListView):
+class ExtendReplay(utils.TranslateContentMixin, ListView):
     """- Продление повтора"""
     template_name = "translator/extend_replay.html"
 
     def get_queryset(self):
-        query = self.model.objects.filter(
-            category__slug=self.kwargs.get("category_slug"),
-        )
+        query = self.model.objects.filter(category__slug=self.kwargs.get("category_slug")).select_related('category')
         if query:
             return query
 

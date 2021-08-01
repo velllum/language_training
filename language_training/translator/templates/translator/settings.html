@@ -7,7 +7,7 @@
 <div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">
     <div class="card-header-cover p-1 d-flex justify-content-between">
         <!--меню-->
-        {% include "snippets/_menu.html" %}
+        {% include "translator/snippets/_menu.html" %}
     </div>
 
     <div class="d-grid gap-3 m-auto">
@@ -78,13 +78,13 @@
 {% block desktop_content %}
 <div class="d-none d-sm-block cover-container m-auto flex-column">
 
-    {% include "snippets/_background.html" %}
+    {% include "translator/snippets/_background.html" %}
 
     <main>
         <div class="card text-light bg-cover cover-container">
             <div class="card-header-cover p-1 d-flex justify-content-between">
                 <!--меню-->
-                {% include "snippets/_menu.html" %}
+                {% include "translator/snippets/_menu.html" %}
             </div>
 
             <div class="d-grid gap-3 m-auto">
@@ -154,7 +154,7 @@
     </main>
 
     <!--Нижний заголовок-->
-    {% include "snippets/_footer.html" %}
+    {% include "translator/snippets/_footer.html" %}
 
 </div>
 {% endblock desktop_content %}

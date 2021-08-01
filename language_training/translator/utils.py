@@ -1,6 +1,7 @@
 from django.urls import reverse, resolve
+from django.views import View
 from django.views.generic.detail import BaseDetailView
-from django.views.generic.list import BaseListView, View
+from django.views.generic.list import BaseListView
 
 from . import models
 
