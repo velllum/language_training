@@ -161,3 +161,8 @@ def auth(request, category_slug):
     """- Авторизация"""
     return render(request, "translator/auth.html", context={"category_slug": category_slug})
 
+
+def gtts(request):
+    """- Пример работы воспроизведением в слух слов"""
+    return render(request, "gtts.html")
+

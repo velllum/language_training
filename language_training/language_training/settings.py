@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'translator.apps.TranslatorConfig',
     'import_export',
+    'gTTS',
 ]
 
 MIDDLEWARE = [

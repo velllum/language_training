@@ -1,5 +1,6 @@
 <!doctype html>
 {% load static %}
+{%  load  gTTS  %}
 <html lang="en" class="h-100">
 <head>
     <meta charset="utf-8">
@@ -35,5 +36,9 @@
 {{ request.resolver_match }}<br>
 {{ request.resolver_match.kwargs }}<br>
 {{ request.slug_category }}<br>
+<audio
+    src="{% say 'en-us' 'text to say' %}"
+    controls
+></audio>
 </html>
 

@@ -17,6 +17,7 @@ word_patterns = ([
 
 
 urlpatterns = [
+    path('gtts/', views.gtts, name='gtts'),
     path('', views.Category.as_view(), name='category'),
     path('russian-<category_slug>/', include(word_patterns, namespace="rus")),
     path('<category_slug>-russian/', include(word_patterns, namespace="over")),
