@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load gTTS %}
 
 <title>{% block title %}{{ title }} :: {{ block.super }}{% endblock title %}</title>
 
@@ -18,9 +19,11 @@
             <div class="card-text lead">
                 <strong>
                     {% if "rus" in request.resolver_match.namespace %}
-                    Слова на Анг.
+                    <audio id="ruMob" src="{% say 'ru' 'Слова на Анг' %}"></audio>
+                    <a style="cursor: pointer" onclick="document.getElementById('ruMob').play()">Слова на Анг</a>
                     {% else %}
-                    Words in English. [Transcription]
+                    <audio id="enMob" src="{% say 'en-uk' 'Words in English' %}"></audio>
+                    <a style="cursor: pointer" onclick="document.getElementById('enMob').play()">Words in English. [Transcription]</a>
                     {% endif %}
                 </strong>
             </div>
@@ -43,9 +46,11 @@
     <div class="card-body">
           <span class="card-text small">
               {% if "rus" in request.resolver_match.namespace %}
-              Пример слова в предложении
+              <audio id="ruMobEx" src="{% say 'ru' 'Пример слова в предложении' %}"></audio>
+              <a style="cursor: pointer" onclick="document.getElementById('ruMobEx').play()">Пример слова в предложении</a>
               {% else %}
-              Example of a word in a sentence
+              <audio id="enMobEx" src="{% say 'en-uk' 'Example of a word in a sentence' %}"></audio>
+              <a style="cursor: pointer" onclick="document.getElementById('enMobEx').play()">Example of a word in a sentence</a>
               {% endif %}
           </span>
     </div>
@@ -93,9 +98,11 @@
                     <div class="card-text lead">
                         <strong>
                             {% if "rus" in request.resolver_match.namespace %}
-                            Слова на Анг.
+                            <audio id="ruDes" src="{% say 'ru' 'Слова на Анг' %}"></audio>
+                            <a style="cursor: pointer" onclick="document.getElementById('ruDes').play()">Слова на Анг</a>
                             {% else %}
-                            Words in English. [Transcription]
+                            <audio id="enDes" src="{% say 'en-uk' 'Words in English' %}"></audio>
+                            <a style="cursor: pointer" onclick="document.getElementById('enDes').play()">Words in English. [Transcription]</a>
                             {% endif %}
                         </strong>
                     </div>
@@ -117,11 +124,13 @@
             <!--пример слова в предложении-->
             <div class="card-body">
               <span class="card-text small">
-                  {% if "rus" in request.resolver_match.namespace %}
-                  Пример слова в предложении
-                  {% else %}
-                  Example of a word in a sentence
-                  {% endif %}
+                    {% if "rus" in request.resolver_match.namespace %}
+                    <audio id="ruDesEx" src="{% say 'ru' 'Пример слова в предложении' %}"></audio>
+                    <a style="cursor: pointer" onclick="document.getElementById('ruDesEx').play()">Пример слова в предложении</a>
+                    {% else %}
+                    <audio id="enDesEx" src="{% say 'en-uk' 'Example of a word in a sentence' %}"></audio>
+                    <a style="cursor: pointer" onclick="document.getElementById('enDesEx').play()">Example of a word in a sentence</a>
+                    {% endif %}
               </span>
             </div>
 
