@@ -6,11 +6,11 @@
     <div class="card-text lead">
       <strong>
         {% if "rus" in request.resolver_match.namespace %}
-        <audio id="ruMob" src="{% say 'ru' object.translation %}"></audio>
-        <a style="cursor: pointer" onclick="document.getElementById('ruMob').play()">{{ object.translation }}</a>
+        <audio id="ru" src="{% say 'ru' object.translation %}"></audio>
+        <a style="cursor: pointer" onclick="document.getElementById('ru').play()">{{ object.translation }}</a>
         {% else %}
-        <audio id="enMob" src="{% say 'en-uk' object.word %}"></audio>
-        <a style="cursor: pointer" onclick="document.getElementById('enMob').play()">{{ object.word }} - {{ object.transcript }}</a>
+        <audio id="en" src="{% say 'en-uk' object.word %}"></audio>
+        <a style="cursor: pointer" onclick="document.getElementById('en').play()">{{ object.word }} - {{ object.transcript }}</a>
         {% endif %}
       </strong>
     </div>
@@ -33,11 +33,11 @@
 <div class="card-body">
   <span class="card-text small">
       {% if "rus" in request.resolver_match.namespace %}
-      <audio id="ruMobEx" src="{% say 'ru' object.example_translate %}"></audio>
-      <a style="cursor: pointer" onclick="document.getElementById('ruMobEx').play()">{{ object.example_translate }}</a>
+      <audio id="ruEx" src="{% say 'ru' object.example_translate %}"></audio>
+      <a style="cursor: pointer" onclick="document.getElementById('ruEx').play()">{{ object.example_translate }}</a>
       {% else %}
-      <audio id="enMobEx" src="{% say 'en-uk' object.example %}"></audio>
-      <a style="cursor: pointer" onclick="document.getElementById('enMobEx').play()">{{ object.example }}</a>
+      <audio id="enEx" src="{% say 'en-uk' object.example %}"></audio>
+      <a style="cursor: pointer" onclick="document.getElementById('enEx').play()">{{ object.example }}</a>
       {% endif %}
   </span>
 </div>

@@ -1,0 +1,24 @@
+{% load gTTS %}
+
+{% for word in words_list %}
+{% if "rus" in request.resolver_match.namespace %}
+<audio src="{% say 'ru' word.translation %}"></audio>
+<audio src="{% say 'ru' word.example_translate %}"></audio>
+{% else %}
+<audio src="{% say 'en-uk' word.word %}"></audio>
+<audio src="{% say 'en-uk' word.example %}"></audio>
+{% endif %}
+{% endfor %}
+
+<script>
+    function playAllWords(){
+    var audio = document.getElementsByTagName("audio");
+    for (let i = 0; i < audio.length; i++) {
+      audio[i].addEventListener('ended', function() {
+        if (audio[i].duration === audio[i].currentTime) {
+          audio[i + 1].play();
+        }
+      });
+    }
+}
+</script>

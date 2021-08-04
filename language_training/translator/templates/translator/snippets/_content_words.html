@@ -1,5 +1,6 @@
 <div class="text-dark small" style="line-height: 1.5;">
     <strong>
+    {% comment %}{% endcomment %}
     {% if "rus" in request.resolver_match.namespace %}
         {{ word.translation }}
     {% else %}
@@ -8,9 +9,11 @@
     </strong>
 </div>
 <div class="text-muted small-cover">
+    {% comment %}{% endcomment %}
     {% if "rus" in request.resolver_match.namespace %}
         {{ word.example_translate|truncatechars:40 }}
     {% else %}
         {{ word.example|truncatechars:40 }}
     {% endif %}
 </div>
+
