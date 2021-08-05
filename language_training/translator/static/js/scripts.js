@@ -1,36 +1,73 @@
-function playAllWords(){
+
+function playAllWords(task){
     var audio = document.getElementsByTagName("audio");
-//    var object = new Audio()
-    console.log(audio, audio.length);
-//    console.log(object);
+    var el = document.getElementById('desktopSwitch');
+    var length = audio.length - 1;
+    var playing = false; // текущее состояние плеера
+//    var count = 0;
+    var i;
+
+    console.log(audio, task, i)
+
+    // слушаем нажатие на кнопку
+    el.addEventListener('click', function(){
+
+        if (task == "play"){
+            if (i == undefined){
+                audio[0].play();
+            } else {
+                audio[i].play();
+            }
+
+        }
+
+        if (task == "pause"){
+            audio[i].pause();
+        }
+
+    });
 
 
-    for (let i = 0; i < audio.length; i++){
 
-        console.log(audio[i], audio[i].currentSrc);
+//    el.addEventListener('click', playPause); // слушаем нажатие на кнопку
+//
+//    function playPause() {
+//        if( playing) {
+//            audio[0].pause();
+////            el.innerText = "Paused";
+//        } else {
+//            audio[0].play();
+////            el.innerText = "Playing..";
+//        }
+//        playing = !playing;
+//    }
 
-        audio[i].addEventListener("ended", function(){
+    for (let i = 0; i < length; i++) {
+        audio[i].addEventListener('ended', function() {
 
-            console.log(audio[i]);
-            var object = new Audio(audio[i+1].currentSrc)
-//            object.src = audio[i].currentSrc;
-            object.play();
+
+            console.log(i, audio.length)
+            audio[i + 1].play();
 
         });
 
     }
-//    audio[0].play();
-//    for (let i = 0; i < audio.length; i++) {
-//      object.addEventListener('canplaythrough ended', function() {
-//
-//          console.log(i, audio[i].currentSrc, audio[i].duration);
-////          audio[i + 1].play();
-//          object.src = audio[i].currentSrc;
-//          object.play();
-//
-//      });
-//    }
 }
+
+
+/* Подстановка перевода, при клике по кнопке */
+$(function() {
+    $('.btn-hidden').toggle();
+    $("#desktopSwitch, #mobileSwitch").click(function () {
+        if ($('.btn-show').is(":visible")) {
+            $('.btn-show').toggle();
+            $('.btn-hidden').toggle();
+        } else {
+            $('.btn-hidden').toggle();
+            $('.btn-show').toggle();
+        }
+    });
+});
 
 
 
