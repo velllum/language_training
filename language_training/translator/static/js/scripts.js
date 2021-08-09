@@ -193,23 +193,62 @@
 //}
 
 
+var audio = document.getElementsByClassName("audio");
+var array = []
 
-
-function onlyPlayOneIn(container) {
-  container.addEventListener("play", function(event) {
-  audio_elements = container.getElementsByTagName("audio")
-    for(i=0; i < audio_elements.length; i++) {
-      audio_element = audio_elements[i];
-      if (audio_element !== event.target) {
-        audio_element.pause();
-      }
-    }
-  }, true);
+for (let a of audio) {
+    array.push(a.getAttribute('src'))
 }
+count = 0;
 
-document.addEventListener("DOMContentLoaded", function() {
-  onlyPlayOneIn(document.body);
+console.log(audio)
+console.log(array)
+
+$(".my_audio").trigger('load');
+
+function play_audio(task) {
+    console.log(count, array.length)
+    if (count == array.length) {
+        $(".my_audio").trigger('stop');
+        $(".my_audio").prop("currentTime",0);
+        count = 0;
+    }
+    if(task == 'play'){
+       $(".my_audio").trigger('play');
+    }
+    if(task == 'stop'){
+       $(".my_audio").trigger('pause');
+       $(".my_audio").prop("currentTime",0);
+    }
+ }
+
+$('.my_audio').append("<source id='sound_src' src=" + array[0] + " type='audio/mpeg'>");
+
+console.log(array[0])
+
+//count = 0;
+$('.my_audio').on('ended', function() {
+   count++;
+
+    $("#sound_src").attr("src", array[count])[0];
+     if (count == array.length) {
+        play_audio('stop');
+    } else {
+        console.log(array[count])
+       $(".my_audio").trigger('load');
+       play_audio('play');
+    }
+
 });
+
+
+
+
+
+
+
+
+
 
 
 

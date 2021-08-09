@@ -2,10 +2,15 @@
 
 {% for word in words_list %}
 {% if "rus" in request.resolver_match.namespace %}
-<audio src="{% say 'ru' word.translation %}"></audio>
-<audio src="{% say 'ru' word.example_translate %}"></audio>
+<audio class="audio" src="{% say 'ru' word.translation %}"></audio>
+<audio class="audio" src="{% say 'ru' word.example_translate %}"></audio>
 {% else %}
-<audio src="{% say 'en-uk' word.word %}"></audio>
-<audio src="{% say 'en-uk' word.example %}"></audio>
+<audio class="audio" src="{% say 'en-uk' word.word %}"></audio>
+<audio class="audio" src="{% say 'en-uk' word.example %}"></audio>
 {% endif %}
 {% endfor %}
+
+<audio class="my_audio">
+    <source id="sound_src" src="">
+</audio>
+
