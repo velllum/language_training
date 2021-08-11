@@ -19,7 +19,7 @@
             <input type="password" id="passMobile" class="form-control" placeholder="Пароль" aria-describedby="password_mobile">
         </div>
         <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Войти</strong></button>
-        <a href="{% url 'register' category_slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Регистрация</strong></a>
+        <a href="{% url 'url_translator:register' request.slug_category %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Регистрация</strong></a>
     </div>
 
 </div>
@@ -45,7 +45,7 @@
                     <input type="password" id="pass" class="form-control" placeholder="Пароль" aria-describedby="password">
                 </div>
                 <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Войти</strong></button>
-                <a href="{% url 'register' category_slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Регистрация</strong></a>
+                <a href="{% url 'url_translator:register' request.slug_category %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Регистрация</strong></a>
             </div>
 
         </div>

@@ -13,11 +13,11 @@ class RegisterUserForm(UserCreationForm):
     }
 
     email = forms.EmailField(error_messages=default_errors, label='Email', widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email', 'autocomplete': "off"}))
-    password1 = forms.CharField(error_messages=default_errors, label='Пароль', widget=forms.PasswordInput(render_value=True, attrs={'class': 'form-control', 'placeholder': 'Пароль', 'autocomplete': "off"}))
-    password2 = forms.CharField(error_messages=default_errors, label='Повтор пароля', widget=forms.PasswordInput(render_value=True, attrs={'class': 'form-control', 'placeholder': 'Повтор пароля', 'autocomplete': "off"}))
+    # password1 = forms.CharField(error_messages=default_errors, label='Пароль', widget=forms.PasswordInput(render_value=True, attrs={'class': 'form-control', 'placeholder': 'Пароль', 'autocomplete': "off"}))
+    # password2 = forms.CharField(error_messages=default_errors, label='Повтор пароля', widget=forms.PasswordInput(render_value=True, attrs={'class': 'form-control', 'placeholder': 'Повтор пароля', 'autocomplete': "off"}))
 
     class Meta:
         model = User
-        fields = ('email', 'password1', 'password2')
+        fields = ('email',)
 
 

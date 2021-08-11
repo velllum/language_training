@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse, resolve
@@ -117,6 +118,12 @@ class Register(CreateView):
     template_name = "translator/register.html"
     success_url = reverse_lazy("url_translator:auth")
 
+    print(
+        User.objects.make_random_password(
+            length=10, allowed_chars='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+        )
+    )
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Регистрация"
@@ -161,8 +168,4 @@ def auth(request, category_slug):
     """- Авторизация"""
     return render(request, "translator/auth.html", context={"category_slug": category_slug})
 
-
-def gtts(request):
-    """- Пример работы воспроизведением в слух слов"""
-    return render(request, "gtts.html")
 
