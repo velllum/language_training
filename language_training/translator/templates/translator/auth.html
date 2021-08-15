@@ -37,15 +37,27 @@
                 {% include "translator/snippets/_menu.html" %}
             </div>
 
-            <div class="d-grid gap-3 m-auto p-2">
-                <div class="col-auto">
-                    <input type="text" id="log" class="form-control" placeholder="Логин" aria-describedby="login">
-                </div>
-                <div class="col-auto">
-                    <input type="password" id="pass" class="form-control" placeholder="Пароль" aria-describedby="password">
-                </div>
-                <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Войти</strong></button>
-                <a href="{% url 'url_translator:register' request.slug_category %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Регистрация</strong></a>
+            <div class="d-grid gap-2 col-9 m-auto">
+                <form method="post" novalidate>
+
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="mb-3">
+                        {{ field }}
+                        {% if field.errors%}
+                            {% for error in field.errors %}
+                                <span class="small">{{ error }}</span><br>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Отправить</strong></button>
+                        <a href="{% url 'url_translator:register' request.slug_category %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Регистрация</strong></a>
+                    </div>
+
+                </form>
             </div>
 
         </div>

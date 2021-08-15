@@ -101,9 +101,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {
-            'min_length': 6,
-        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -148,3 +145,5 @@ IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 # Количество вывода страниц пагинации.
 NUMBER_PAGES = 10
+
+# AUTH_USER_MODEL = 'translator.User'

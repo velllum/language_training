@@ -1,8 +1,9 @@
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy, reverse, resolve
-from django.views.generic import ListView, DetailView, CreateView
+from django.urls import reverse, resolve
+from django import views
 
 from django.conf import settings as sett
 
@@ -11,7 +12,7 @@ from . import utils
 from . import forms
 
 
-class Category(ListView):
+class Category(views.generic.ListView):
     """- Вывод категорий"""
     model = models.Category
     template_name = "translator/category.html"
@@ -27,7 +28,7 @@ class Category(ListView):
         return context
 
 
-class Word(utils.TranslateContentMixin, ListView):
+class Word(utils.TranslateContentMixin, views.generic.ListView):
     """- Вывод списка слов"""
     paginate_by = sett.NUMBER_PAGES
     template_name = "translator/words.html"
@@ -48,7 +49,7 @@ class Word(utils.TranslateContentMixin, ListView):
         return context
 
 
-class ShowWord(DetailView, utils.TranslateContentMixin, utils.NavigatingPagesMixin):
+class ShowWord(views.generic.DetailView, utils.TranslateContentMixin, utils.NavigatingPagesMixin):
     """- Вывод слова"""
     template_name = "translator/show_word.html"
     slug_url_kwarg = 'word_slug'
@@ -80,7 +81,7 @@ class ShowWord(DetailView, utils.TranslateContentMixin, utils.NavigatingPagesMix
         return context
 
 
-class AudioReplay(utils.TranslateContentMixin, ListView):
+class AudioReplay(utils.TranslateContentMixin, views.generic.ListView):
     """- Аудио повтор слов добавленных в закладки"""
     template_name = "translator/audio_replay.html"
 
@@ -96,7 +97,7 @@ class AudioReplay(utils.TranslateContentMixin, ListView):
         return context
 
 
-class ExtendReplay(utils.TranslateContentMixin, ListView):
+class ExtendReplay(utils.TranslateContentMixin, views.generic.ListView):
     """- Продление повтора"""
     template_name = "translator/extend_replay.html"
 
@@ -112,23 +113,74 @@ class ExtendReplay(utils.TranslateContentMixin, ListView):
         return context
 
 
-class Register(CreateView):
+class Login(views.generic.View):
+    """- Авторизация"""
+    def get(self, request, **kwargs):
+        """- Отобразить форму на странице"""
+        form = forms.LoginForm(request.POST or None)
+        context = {
+            "form": form,
+            "title": "Авторизация",
+            'category_slug': kwargs.get("category_slug"),
+        }
+        return render(request, "translator/auth.html", context)
+
+    def post(self, request, **kwargs):
+        """- Работа с данными от формы"""
+        res = resolve(request.path)
+        form = forms.LoginForm(request.POST or None)
+        if form.is_valid():
+            email = form.cleaned_data.get("email")
+            password = form.cleaned_data.get("password")
+            user = User.objects.get(email=email)
+            if user.check_password(password):
+                login(request, user)
+                return redirect(reverse(f"{res.namespace}:word", kwargs={"category_slug": kwargs.get("category_slug")}))
+        context = {
+            "form": form,
+            "title": "Авторизация",
+            'category_slug': kwargs.get("category_slug"),
+        }
+        return render(request, "translator/auth.html", context)
+
+
+class Register(views.View):
     """- Регистрация"""
-    form_class = forms.RegisterUserForm
-    template_name = "translator/register.html"
-    success_url = reverse_lazy("url_translator:auth")
+    def get(self, request, **kwargs):
+        """- Отобразить форму на странице"""
+        form = forms.RegisterForm(request.POST or None)
+        context = {
+            "form": form,
+            "title": "Регистрация",
+            'category_slug': kwargs.get("category_slug"),
+        }
+        return render(request, "translator/register.html", context)
 
-    print(
-        User.objects.make_random_password(
-            length=10, allowed_chars='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-        )
-    )
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Регистрация"
-        context["category_slug"] = self.kwargs.get("category_slug")
-        return context
+    def post(self, request, **kwargs):
+        """- Работа с данными от формы"""
+        res = resolve(request.path)
+        form = forms.RegisterForm(request.POST or None)
+        if form.is_valid():
+            new_user = form.save(commit=False)
+            new_user.username = str(form.cleaned_data.get("email")).replace("@", "_")
+            new_user.email = form.cleaned_data.get("email")
+            new_user.save()
+            new_password = User.objects.make_random_password(length=10)
+            print(new_password)
+            new_user.set_password(new_password)
+            new_user.save()
+            user = authenticate(
+                username=str(form.cleaned_data.get("email")).replace("@", "_"),
+                password=new_password,
+            )
+            login(request, user)
+            return redirect(reverse(f"{res.namespace}:word", kwargs={"category_slug": kwargs.get("category_slug")}))
+        context = {
+            "form": form,
+            "title": "Регистрация",
+            'category_slug': kwargs.get("category_slug"),
+        }
+        return render(request, "translator/register.html", context)
 
 
 def search(request, category_slug):
@@ -140,8 +192,17 @@ def search(request, category_slug):
             Q(translation__icontains=q) | Q(word__icontains=q)
         ).first()
         if queryset:
-            return redirect(reverse(f"{res.namespace}:card", args=(category_slug, queryset.slug)))
-    return redirect(reverse(f"{res.namespace}:word", args=(category_slug,)))
+            return redirect(reverse(f"{res.namespace}:card", kwargs={
+                "category_slug": category_slug, "word_slug": queryset.slug
+            }))
+    return redirect(reverse(f"{res.namespace}:word", kwargs={"category_slug": category_slug}))
+
+
+def logout_user(request, category_slug):
+    """- выход пользователя на сайте"""
+    logout(request)
+    res = resolve(request.path)
+    return redirect(reverse(f"{res.namespace}:word", kwargs={"category_slug": category_slug}))
 
 
 def repeat_words(request, category_slug):
@@ -162,10 +223,3 @@ def extend_replay(request, category_slug):
 def settings(request, category_slug):
     """- Настойки"""
     return render(request, "translator/settings.html", context={"category_slug": category_slug})
-
-
-def auth(request, category_slug):
-    """- Авторизация"""
-    return render(request, "translator/auth.html", context={"category_slug": category_slug})
-
-

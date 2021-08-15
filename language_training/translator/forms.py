@@ -1,23 +1,82 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import check_password
+
+User = get_user_model()
 
 
-class RegisterUserForm(UserCreationForm):
+class LoginForm(forms.ModelForm):
+    """- Форма авторизации"""
     use_required_attribute = False
     default_errors = {
-        # 'required': 'required',
         'invalid': 'Введите правильный адрес почты.',
-        'max_length': 3,
-        'min_length': 3,
     }
 
-    email = forms.EmailField(error_messages=default_errors, label='Email', widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email', 'autocomplete': "off"}))
-    # password1 = forms.CharField(error_messages=default_errors, label='Пароль', widget=forms.PasswordInput(render_value=True, attrs={'class': 'form-control', 'placeholder': 'Пароль', 'autocomplete': "off"}))
-    # password2 = forms.CharField(error_messages=default_errors, label='Повтор пароля', widget=forms.PasswordInput(render_value=True, attrs={'class': 'form-control', 'placeholder': 'Повтор пароля', 'autocomplete': "off"}))
+    email = forms.EmailField(
+        error_messages=default_errors,
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Почта',
+            }
+        )
+    )
+
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            render_value=True,
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Пароль',
+            }
+        )
+    )
+
+    def clean_email(self):
+        """- проверка почты на валидность"""
+        email = self.cleaned_data.get("email")
+        if not User.objects.filter(email=email).first():
+            raise forms.ValidationError("Почтовый адрес не найден.")
+        return email
+
+    def clean_password(self):
+        """- проверка пароля на валидность"""
+        password = self.cleaned_data.get("password")
+        email = self.cleaned_data.get("email")
+        user = User.objects.filter(email=email)
+        for u in user:
+            if not check_password(password, u.password):
+                raise forms.ValidationError("Не верный пароль")
+        return password
+
+    class Meta:
+        model = User
+        fields = ('email', 'password')
+
+
+class RegisterForm(forms.ModelForm):
+    """- Форма регистрации"""
+    use_required_attribute = False
+    default_errors = {
+        'invalid': 'Введите правильный адрес почты.',
+    }
+
+    email = forms.EmailField(
+        error_messages=default_errors,
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Почта'
+            }
+        )
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Почтовый адрес зарегистрирован")
+        return email
 
     class Meta:
         model = User
         fields = ('email',)
-
-

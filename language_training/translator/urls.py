@@ -5,7 +5,8 @@ from . import views
 
 word_patterns = ([
     path('', views.Word.as_view(), name='word'),
-    path('auth/', views.auth, name='auth'),
+    path('auth/', views.Login.as_view(), name='auth'),
+    path('logout/', views.logout_user, name='logout'),
     path('register/', views.Register.as_view(), name='register'),
     path('settings/', views.settings, name='settings'),
     path('repeat-words/', views.repeat_words, name='repeat_words'),

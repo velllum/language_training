@@ -11,6 +11,10 @@
         <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'audio_replay' %}active{% endif %}" href="{% url 'url_translator:audio_replay' request.slug_category %}">Аудио повтор</a></li>
         <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'settings' %}active{% endif %}" href="{% url 'url_translator:settings' request.slug_category %}">Настройки</a></li>
         <li><hr class="dropdown-divider"></li>
+        {% if request.user.is_authenticated %}
+        <li><a class="small dropdown-item-cover" href="{% url 'url_translator:logout' request.slug_category %}">Выйти</a></li>
+        {% else %}
         <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'auth' %}active{% endif %}" href="{% url 'url_translator:auth' request.slug_category %}">Войти</a></li>
+        {% endif %}
     </ul>
 </div>
