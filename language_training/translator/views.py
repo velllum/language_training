@@ -1,5 +1,6 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse, resolve
@@ -161,14 +162,17 @@ class Register(views.View):
         res = resolve(request.path)
         form = forms.RegisterForm(request.POST or None)
         if form.is_valid():
+
+            new_password = User.objects.make_random_password(length=10)
+            new_email = form.cleaned_data.get("email")
+            # superusers_emails = User.objects.filter(is_superuser=True).values_list('email')
             new_user = form.save(commit=False)
             new_user.username = str(form.cleaned_data.get("email")).replace("@", "_")
-            new_user.email = form.cleaned_data.get("email")
+            new_user.email = new_email
             new_user.save()
-            new_password = User.objects.make_random_password(length=10)
-            print(new_password)
             new_user.set_password(new_password)
             new_user.save()
+            self.sending_mail(new_email, new_password)
             user = authenticate(
                 username=str(form.cleaned_data.get("email")).replace("@", "_"),
                 password=new_password,
@@ -181,6 +185,12 @@ class Register(views.View):
             'category_slug': kwargs.get("category_slug"),
         }
         return render(request, "translator/register.html", context)
+
+    @staticmethod
+    def sending_mail(email, pas):
+        subject = 'Регистрация на сайте'
+        message = f'Логи: {email}, пароль: {pas}'
+        send_mail(subject, message, sett.EMAIL_HOST_USER, [email], fail_silently=False,)
 
 
 def search(request, category_slug):

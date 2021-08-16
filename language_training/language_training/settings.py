@@ -147,3 +147,15 @@ IMPORT_EXPORT_USE_TRANSACTIONS = True
 NUMBER_PAGES = 10
 
 # AUTH_USER_MODEL = 'translator.User'
+
+# Настройка отправки писем email в Django для яндекс
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+SERVER_EMAIL = env("EMAIL_HOST_USER")
+DEFAULT_FROM_EMAIL = env("EMAIL_HOST_USER")
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+
