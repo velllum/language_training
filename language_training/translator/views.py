@@ -46,7 +46,6 @@ class Word(utils.TranslateContentMixin, views.generic.ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Список слов"
         context["category_slug"] = self.kwargs.get("category_slug")
-        print(self.request.content_params)
         return context
 
 
@@ -64,7 +63,6 @@ class ShowWord(views.generic.DetailView, utils.TranslateContentMixin, utils.Navi
             return query
 
     def get_object(self, **kwargs):
-        print("get_object", self.kwargs)
         return super().get_object(**kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -114,13 +112,17 @@ class ExtendReplay(utils.TranslateContentMixin, views.generic.ListView):
         return context
 
 
-class Login(views.generic.View):
+class Login(views.View):
     """- Авторизация"""
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        self.form = forms.LoginForm(request.POST or None)
+        self.res = resolve(request.path)
+
     def get(self, request, **kwargs):
         """- Отобразить форму на странице"""
-        form = forms.LoginForm(request.POST or None)
         context = {
-            "form": form,
+            "form": self.form,
             "title": "Авторизация",
             'category_slug': kwargs.get("category_slug"),
         }
@@ -128,17 +130,15 @@ class Login(views.generic.View):
 
     def post(self, request, **kwargs):
         """- Работа с данными от формы"""
-        res = resolve(request.path)
-        form = forms.LoginForm(request.POST or None)
-        if form.is_valid():
-            email = form.cleaned_data.get("email")
-            password = form.cleaned_data.get("password")
+        if self.form.is_valid():
+            email = self.form.cleaned_data.get("email")
+            password = self.form.cleaned_data.get("password")
             user = User.objects.get(email=email)
             if user.check_password(password):
                 login(request, user)
-                return redirect(reverse(f"{res.namespace}:word", kwargs={"category_slug": kwargs.get("category_slug")}))
+                return redirect(reverse(f"{self.res.namespace}:word", kwargs={"category_slug": kwargs.get("category_slug")}))
         context = {
-            "form": form,
+            "form": self.form,
             "title": "Авторизация",
             'category_slug': kwargs.get("category_slug"),
         }
@@ -147,11 +147,15 @@ class Login(views.generic.View):
 
 class Register(views.View):
     """- Регистрация"""
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        self.form = forms.RegisterForm(request.POST or None)
+        self.res = resolve(request.path)
+
     def get(self, request, **kwargs):
         """- Отобразить форму на странице"""
-        form = forms.RegisterForm(request.POST or None)
         context = {
-            "form": form,
+            "form": self.form,
             "title": "Регистрация",
             'category_slug': kwargs.get("category_slug"),
         }
@@ -159,35 +163,30 @@ class Register(views.View):
 
     def post(self, request, **kwargs):
         """- Работа с данными от формы"""
-        res = resolve(request.path)
-        form = forms.RegisterForm(request.POST or None)
-        if form.is_valid():
-
+        if self.form.is_valid():
             new_password = User.objects.make_random_password(length=10)
-            new_email = form.cleaned_data.get("email")
-            # superusers_emails = User.objects.filter(is_superuser=True).values_list('email')
-            new_user = form.save(commit=False)
-            new_user.username = str(form.cleaned_data.get("email")).replace("@", "_")
+            new_email = self.form.cleaned_data.get("email")
+            new_user_name = str(self.form.cleaned_data.get("email")).replace("@", "_")
+            new_user = self.form.save(commit=False)
+            new_user.username = new_user_name
             new_user.email = new_email
             new_user.save()
             new_user.set_password(new_password)
             new_user.save()
-            self.sending_mail(new_email, new_password)
-            user = authenticate(
-                username=str(form.cleaned_data.get("email")).replace("@", "_"),
-                password=new_password,
-            )
+            self.create_mail(new_email, new_password)
+            user = authenticate(username=new_user_name, password=new_password)
             login(request, user)
-            return redirect(reverse(f"{res.namespace}:word", kwargs={"category_slug": kwargs.get("category_slug")}))
+            return redirect(reverse(f"{self.res.namespace}:word", kwargs={"category_slug": kwargs.get("category_slug")}))
         context = {
-            "form": form,
+            "form": self.form,
             "title": "Регистрация",
             'category_slug': kwargs.get("category_slug"),
         }
         return render(request, "translator/register.html", context)
 
     @staticmethod
-    def sending_mail(email, pas):
+    def create_mail(email, pas):
+        """- Создание почты"""
         subject = 'Регистрация на сайте'
         message = f'Логи: {email}, пароль: {pas}'
         send_mail(subject, message, sett.EMAIL_HOST_USER, [email], fail_silently=False,)

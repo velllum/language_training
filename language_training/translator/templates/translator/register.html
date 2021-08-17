@@ -10,11 +10,26 @@
         {% include "translator/snippets/_menu.html" %}
     </div>
 
-    <div class="d-grid gap-3 m-auto">
-        <div class="col-auto">
-            <input type="email" id="emailMobil" class="form-control" placeholder="email" aria-describedby="email_mpbil">
-        </div>
-        <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Отправить</strong></button>
+    <div class="d-grid gap-2 col-9 m-auto">
+        <form method="post" novalidate>
+
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                {{ field }}
+                {% if field.errors%}
+                    {% for error in field.errors %}
+                        <span class="small">{{ error }}</span><br>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-outline-light" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Отправить</strong></button>
+            </div>
+
+        </form>
     </div>
 
 </div>
@@ -35,7 +50,7 @@
             </div>
 
             <div class="d-grid gap-2 col-9 m-auto">
-                <form method="post" novalidate>
+                <form method="post">
 
                     {% csrf_token %}
                     {% for field in form %}

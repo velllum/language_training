@@ -63,6 +63,8 @@ class Word(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_date = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
 
+    # добавить поле связь многие ко многим СЛОВА и ПОЛЬЗОВАТЕЛЯ
+
     def get_absolute_url(self):
         """- Получить url для списка слов"""
         return reverse("url_translator:card", kwargs={"category_slug": self.category.slug, "word_slug": self.slug})

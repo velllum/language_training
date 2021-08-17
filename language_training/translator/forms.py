@@ -13,6 +13,7 @@ class LoginForm(forms.ModelForm):
     }
 
     email = forms.EmailField(
+        initial='',
         error_messages=default_errors,
         widget=forms.EmailInput(
             attrs={
@@ -23,6 +24,7 @@ class LoginForm(forms.ModelForm):
     )
 
     password = forms.CharField(
+        initial='',
         widget=forms.PasswordInput(
             render_value=True,
             attrs={
