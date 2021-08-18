@@ -1,13 +1,42 @@
+from django.shortcuts import redirect
 from django.urls import reverse, resolve
 from django.views.generic.detail import BaseDetailView
 from django.views.generic.list import BaseListView
 
 from . import models
+from . import forms
 
 
 class BaseMixin:
     def __init__(self):
         self.model = models.Word
+
+
+class RepetitionWordsMixin(BaseMixin, BaseListView):
+    """- Ссылка перевода контента"""
+
+    def __init__(self):
+        super().__init__()
+        self.object = None
+
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        self.form = forms.RepetitionWordsForm(request.POST or None)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form_hidden"] = self.form
+        context["form_hidden"].fields['id'].initial = self.object.pk
+        return context
+
+    def post(self, request, **kwargs):
+        form = forms.RepetitionWordsForm(request.POST or None)
+        res = resolve(request.path)
+        if form.is_valid():
+            idd = form.cleaned_data.get("id")
+            print("form", idd)
+            # user = User.objects.get(email=email)
+            return redirect(reverse(f"{res.namespace}:word", kwargs={"category_slug": kwargs.get("category_slug")}))
 
 
 class TranslateContentMixin(BaseMixin, BaseListView):

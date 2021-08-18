@@ -49,7 +49,7 @@ class Word(utils.TranslateContentMixin, views.generic.ListView):
         return context
 
 
-class ShowWord(views.generic.DetailView, utils.TranslateContentMixin, utils.NavigatingPagesMixin):
+class ShowWord(views.generic.DetailView, utils.RepetitionWordsMixin, utils.TranslateContentMixin, utils.NavigatingPagesMixin):
     """- Вывод слова"""
     template_name = "translator/show_word.html"
     slug_url_kwarg = 'word_slug'
@@ -77,6 +77,7 @@ class ShowWord(views.generic.DetailView, utils.TranslateContentMixin, utils.Navi
                             ).count()
         context["last_count"] = last_count
         context["number_page"] = ((last_count - 1) // 10) + 1
+        # context["form_hidden"] = forms.RepetitionWordsForm()
         return context
 
 

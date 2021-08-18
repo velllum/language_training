@@ -92,5 +92,16 @@ FhuXNs2naY
 
 uuP2YwqnWS
 
+--------------------------------------------------------
+
+Пример работы с сессиями 
+https://djangodoc.ru/3.1/topics/http/sessions/
+
+self.request.session["visit"] = int(self.request.session.get("visit", 0))+1
+if self.request.session.get("visit") == 10:
+    self.request.session.clear()
+print(self.request.session.get("visit"))
+print(self.request.session.items())
+
 
    

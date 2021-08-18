@@ -2,7 +2,19 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
 
+from . import models
+
 User = get_user_model()
+
+
+class RepetitionWordsForm(forms.ModelForm):
+    """- Скрытое поле формы"""
+    class Meta:
+        model = models.Word
+        fields = ('id',)
+
+    # id = forms.CharField(widget=forms.HiddenInput(attrs={'value': word.pk}))
+    id = forms.CharField(widget=forms.HiddenInput())
 
 
 class LoginForm(forms.ModelForm):
@@ -15,23 +27,13 @@ class LoginForm(forms.ModelForm):
     email = forms.EmailField(
         initial='',
         error_messages=default_errors,
-        widget=forms.EmailInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Почта',
-            }
-        )
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Почта'})
     )
 
     password = forms.CharField(
         initial='',
         widget=forms.PasswordInput(
-            render_value=True,
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Пароль',
-            }
-        )
+            render_value=True, attrs={'class': 'form-control', 'placeholder': 'Пароль'})
     )
 
     def clean_email(self):
