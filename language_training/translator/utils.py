@@ -1,3 +1,6 @@
+import datetime
+
+from django.contrib.sessions.models import Session
 from django.shortcuts import redirect
 from django.urls import reverse, resolve
 from django.views.generic.detail import BaseDetailView
@@ -12,31 +15,43 @@ class BaseMixin:
         self.model = models.Word
 
 
-class RepetitionWordsMixin(BaseMixin, BaseListView):
-    """- Ссылка перевода контента"""
+class RepetitionWordsMixin(BaseListView):
+    """- Добавить, удалить слова из повтора"""
 
     def __init__(self):
         super().__init__()
+        self.list_slugs = None
         self.object = None
+        self.form = None
 
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
         self.form = forms.RepetitionWordsForm(request.POST or None)
+        self.list_slugs = [slug for slug, _ in request.session['repeat_words']]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form_hidden"] = self.form
-        context["form_hidden"].fields['id'].initial = self.object.pk
+        context["list_slugs"] = self.list_slugs
         return context
 
     def post(self, request, **kwargs):
-        form = forms.RepetitionWordsForm(request.POST or None)
         res = resolve(request.path)
-        if form.is_valid():
-            idd = form.cleaned_data.get("id")
-            print("form", idd)
-            # user = User.objects.get(email=email)
-            return redirect(reverse(f"{res.namespace}:word", kwargs={"category_slug": kwargs.get("category_slug")}))
+        now = datetime.datetime.now()
+
+        if self.form.is_valid():
+            tup_data = [kwargs.get("word_slug"), now.timestamp()]
+            word_slug = kwargs.get("word_slug")
+
+            if word_slug in self.list_slugs:
+                el_index = self.list_slugs.index(word_slug)
+                request.session['repeat_words'].pop(el_index)
+            else:
+                request.session['repeat_words'].append(tup_data)
+
+            print(request.session['repeat_words'])
+
+            return redirect(reverse(viewname=res.view_name, kwargs=res.kwargs))
 
 
 class TranslateContentMixin(BaseMixin, BaseListView):

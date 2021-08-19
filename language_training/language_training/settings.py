@@ -158,4 +158,8 @@ DEFAULT_FROM_EMAIL = env("EMAIL_HOST_USER")
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
+# Изменить поведение сессий, чтобы они записывали любое своё
+# изменение в базу данных и отправляли куки
+SESSION_SAVE_EVERY_REQUEST = True
+
 
