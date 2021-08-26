@@ -50,10 +50,7 @@ class Word(utils.TranslateContentMixin, views.generic.ListView):
 
 
 class ShowWord(
-    views.generic.DetailView,
-    utils.RepetitionWordsMixin,
-    utils.TranslateContentMixin,
-    utils.NavigatingPagesMixin
+    views.generic.DetailView, utils.RepetitionWordsMixin, utils.TranslateContentMixin, utils.NavigatingPagesMixin
 ):
     """- Вывод слова"""
     template_name = "translator/show_word.html"
@@ -61,8 +58,7 @@ class ShowWord(
 
     def get_queryset(self):
         query = self.model.objects.filter(
-            category__slug=self.kwargs.get("category_slug"),
-            slug=self.kwargs.get("word_slug"),
+            category__slug=self.kwargs.get("category_slug"), slug=self.kwargs.get("word_slug")
         ).select_related('category')
         if query:
             return query
@@ -119,10 +115,15 @@ class ExtendReplay(utils.TranslateContentMixin, views.generic.ListView):
 
 class Login(views.View):
     """- Авторизация"""
+    def __init__(self, **kwargs):
+        super().__init__(kwargs)
+        self.form = None
+        self.res = None
+
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
-        self.form = forms.LoginForm(request.POST or None)
         self.res = resolve(request.path)
+        self.form - forms.LoginForm(request.POST or None)
 
     def get(self, request, **kwargs):
         """- Отобразить форму на странице"""
@@ -152,6 +153,11 @@ class Login(views.View):
 
 class Register(views.View):
     """- Регистрация"""
+    def __init__(self, **kwargs):
+        super().__init__(kwargs)
+        self.form = None
+        self.res = None
+
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
         self.form = forms.RegisterForm(request.POST or None)
@@ -222,6 +228,23 @@ def logout_user(request, category_slug):
 def repeat_words(request, category_slug):
     """- Повторение слов добавленных в закладки"""
     return render(request, "translator/repeat_words.html", context={"category_slug": category_slug})
+
+
+class RepeatWords(views.generic.DetailView, utils.RepetitionWordsMixin, utils.NavigatingPagesMixin):
+    """- Повтор"""
+    template_name = "translator/repeat_words.html"
+    # slug_url_kwarg = 'word_slug'
+
+    # def get_queryset(self):
+    #     query = self.model.objects.filter(category__slug=self.kwargs.get("category_slug")).select_related('category')
+    #     if query:
+    #         return query
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["category_slug"] = self.kwargs.get("category_slug")
+        context["title"] = "Добавить слово в повтор"
+        return context
 
 
 def audio_replay(request, category_slug):
