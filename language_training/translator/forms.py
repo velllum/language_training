@@ -28,13 +28,13 @@ class LoginForm(forms.ModelForm):
     email = forms.EmailField(
         initial='',
         error_messages=default_errors,
-        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Почта'})
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Почта', 'autocomplete': 'off'})
     )
 
     password = forms.CharField(
         initial='',
         widget=forms.PasswordInput(
-            render_value=True, attrs={'class': 'form-control', 'placeholder': 'Пароль'})
+            render_value=True, attrs={'class': 'form-control', 'placeholder': 'Пароль', 'autocomplete': 'off'})
     )
 
     def clean_email(self):

@@ -1,6 +1,5 @@
 import datetime
 
-from django.contrib.sessions.models import Session
 from django.shortcuts import redirect
 from django.urls import reverse, resolve
 from django.views.generic.detail import BaseDetailView
@@ -17,7 +16,6 @@ class BaseMixin:
 
 class RepetitionWordsMixin(BaseListView):
     """- Добавить, удалить слова из повтора"""
-
     def __init__(self):
         super().__init__()
         self.list_slugs = None
@@ -27,7 +25,16 @@ class RepetitionWordsMixin(BaseListView):
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
         self.form = forms.RepetitionWordsForm(request.POST or None)
-        self.list_slugs = [slug for slug, _ in request.session['repeat_words']]
+        self.list_slugs = self.get_session_data(request)
+
+    @staticmethod
+    def get_session_data(request):
+        """- получить данные из сессии"""
+        repeat_words = request.session.get("repeat_words", None)
+        if repeat_words:
+            return [slug for slug, _ in repeat_words]
+        else:
+            return request.session.setdefault('repeat_words', [])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -38,25 +45,19 @@ class RepetitionWordsMixin(BaseListView):
     def post(self, request, **kwargs):
         res = resolve(request.path)
         now = datetime.datetime.now()
-
         if self.form.is_valid():
-            tup_data = [kwargs.get("word_slug"), now.timestamp()]
             word_slug = kwargs.get("word_slug")
-
+            tup_data = [word_slug, now.timestamp()]
             if word_slug in self.list_slugs:
                 el_index = self.list_slugs.index(word_slug)
                 request.session['repeat_words'].pop(el_index)
             else:
                 request.session['repeat_words'].append(tup_data)
-
-            print(request.session['repeat_words'])
-
             return redirect(reverse(viewname=res.view_name, kwargs=res.kwargs))
 
 
 class TranslateContentMixin(BaseMixin, BaseListView):
     """- Ссылка перевода контента"""
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["get_url_translate"] = self.get_url_translate()
@@ -74,7 +75,6 @@ class TranslateContentMixin(BaseMixin, BaseListView):
 
 class NavigatingPagesMixin(BaseMixin, BaseDetailView):
     """- Навигация по предыдущей и следующей страницей"""
-
     def get_context_data(self, **kwargs):
         kwargs["previous"] = self.get_url_page("pk__lt")
         kwargs["next"] = self.get_url_page("pk__gt")
