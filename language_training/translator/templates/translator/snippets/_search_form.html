@@ -1,5 +1,5 @@
 <div class="pt-1">
-    <form action="{% url 'url_translator:search' category_slug %}" method="get">
+    <form action="{% url 'url_translator:search' request.slug_category %}" method="get">
         <input name="q" class="form-control form-control-sm" style="width: 15rem;" type="text" value="{{ form }}" placeholder="Поиск">
     </form>
 </div>

@@ -81,6 +81,29 @@ class ShowWord(
         return context
 
 
+class RepeatWords(utils.RepetitionWordsMixin, views.generic.DetailView):
+    """- Повтор"""
+    template_name = "translator/repeat_words.html"
+    slug_url_kwarg = 'word_slug'
+
+    def get_queryset(self):
+        query = self.model.objects.filter(
+            category__slug=self.kwargs.get("category_slug"), slug=self.kwargs.get("word_slug")
+        ).select_related('category')
+        if query:
+            return query
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["category_slug"] = self.kwargs.get("category_slug")
+        context["title"] = "Повтор слов"
+        return context
+
+
+
+
+
+
 class AudioReplay(utils.TranslateContentMixin, views.generic.ListView):
     """- Аудио повтор слов добавленных в закладки"""
     template_name = "translator/audio_replay.html"
@@ -223,28 +246,6 @@ def logout_user(request, category_slug):
     logout(request)
     res = resolve(request.path)
     return redirect(reverse(f"{res.namespace}:word", kwargs={"category_slug": category_slug}))
-
-
-def repeat_words(request, category_slug):
-    """- Повторение слов добавленных в закладки"""
-    return render(request, "translator/repeat_words.html", context={"category_slug": category_slug})
-
-
-class RepeatWords(views.generic.DetailView, utils.RepetitionWordsMixin, utils.NavigatingPagesMixin):
-    """- Повтор"""
-    template_name = "translator/repeat_words.html"
-    # slug_url_kwarg = 'word_slug'
-
-    # def get_queryset(self):
-    #     query = self.model.objects.filter(category__slug=self.kwargs.get("category_slug")).select_related('category')
-    #     if query:
-    #         return query
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["category_slug"] = self.kwargs.get("category_slug")
-        context["title"] = "Добавить слово в повтор"
-        return context
 
 
 def audio_replay(request, category_slug):

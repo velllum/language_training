@@ -7,8 +7,10 @@
     <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton">
         <li><a class="small dropdown-item-cover" href="{% url 'category' %}">Категории</a></li>
         <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'word' %}active{% endif %}" href="{% url 'url_translator:word' request.slug_category %}">Список слов</a></li>
-        <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'repeat_words' %}active{% endif %}" href="{% url 'url_translator:repeat_words' request.slug_category %}">Повтор слов</a></li>
+        {% if request.session.repeat_words %}
+        <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'repeat_words' %}active{% endif %}" href="{% url 'url_translator:repeat_words' request.slug_category request.session.repeat_words.0.0 %}">Повтор слов</a></li>
         <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'audio_replay' %}active{% endif %}" href="{% url 'url_translator:audio_replay' request.slug_category %}">Аудио повтор</a></li>
+        {% endif %}
         <li><a class="small dropdown-item-cover {% if request.resolver_match.url_name == 'settings' %}active{% endif %}" href="{% url 'url_translator:settings' request.slug_category %}">Настройки</a></li>
         <li><hr class="dropdown-divider"></li>
         {% if request.user.is_authenticated %}

@@ -2,7 +2,7 @@
 {% load static %}
 {% load gTTS %}
 
-<title>{% block title %}Повтор слов{% endblock title %}</title>
+<title>{% block title %}{{ title }} :: {{ block.super }}{% endblock title %}</title>
 
 {% block mobile_content %}
 <div class="d-block d-sm-none d-flex w-100 h-100 mx-auto flex-column bg-cover text-light">
@@ -78,7 +78,7 @@
             </div>
         </button>
 
-        <a href="{% url 'url_translator:extend_replay' category_slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
+        <a href="{% url 'url_translator:extend_replay' request.slug_category %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
 
     </div>
 
@@ -164,7 +164,7 @@
                     </div>
                 </button>
 
-                <a href="{% url 'url_translator:extend_replay' category_slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
+                <a href="{% url 'url_translator:extend_replay' request.slug_category %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
 
             </div>
 

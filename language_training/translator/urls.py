@@ -13,7 +13,8 @@ word_patterns = ([
     path('audio-replay/', views.AudioReplay.as_view(), name='audio_replay'),
     path('<word_slug>/', views.ShowWord.as_view(), name='card'),
     path('repeat-words/extend-replay/', views.ExtendReplay.as_view(), name='extend_replay'),
-    path('repeat-words/', views.RepeatWords.as_view(), name='repeat_words'),
+    path('repeat-words/<word_slug>/', views.RepeatWords.as_view(), name='repeat_words'),
+
 ], "url_translator")
 
 

@@ -14,7 +14,7 @@ class BaseMixin:
         self.model = models.Word
 
 
-class RepetitionWordsMixin(BaseListView):
+class RepetitionWordsMixin(BaseMixin, BaseListView):
     """- Добавить, удалить слова из повтора"""
     def __init__(self):
         super().__init__()
