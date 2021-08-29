@@ -10,7 +10,9 @@
             {% endif %}
         </div>
 
+        {% if not all_count == 1 %}
         <div class="col-4 mt-1 small">{{ last_count }} / {{ all_count }}</div>
+        {% endif %}
 
         <div class="col-4 text-start">
             {% if next %}

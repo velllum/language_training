@@ -9,7 +9,6 @@ User = get_user_model()
 
 class RepetitionWordsForm(forms.ModelForm):
     """- Скрытое поле, передача pk слова для добавление в сессию"""
-
     class Meta:
         model = models.Word
         fields = ('word_id',)
@@ -19,7 +18,6 @@ class RepetitionWordsForm(forms.ModelForm):
 
 class LoginForm(forms.ModelForm):
     """- Форма авторизации"""
-
     use_required_attribute = False
     default_errors = {
         'invalid': 'Введите правильный адрес почты.',
@@ -39,7 +37,6 @@ class LoginForm(forms.ModelForm):
 
     def clean_email(self):
         """- проверка почты на валидность"""
-
         email = self.cleaned_data.get("email")
         if not User.objects.filter(email=email).first():
             raise forms.ValidationError("Почтовый адрес не найден.")
@@ -47,7 +44,6 @@ class LoginForm(forms.ModelForm):
 
     def clean_password(self):
         """- проверка пароля на валидность"""
-
         password = self.cleaned_data.get("password")
         email = self.cleaned_data.get("email")
         user = User.objects.filter(email=email)
@@ -63,7 +59,6 @@ class LoginForm(forms.ModelForm):
 
 class RegisterForm(forms.ModelForm):
     """- Форма регистрации"""
-
     use_required_attribute = False
     default_errors = {
         'invalid': 'Введите правильный адрес почты.',

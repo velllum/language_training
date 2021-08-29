@@ -14,47 +14,10 @@
     </div>
 
     <!--Контент-->
-    <!--слово-->
-    <div class="card-body">
-        <div class="position-relative top-50 start-50 translate-middle">
-            <div class="card-text lead">
-                <strong>
-                    {% if "rus" in request.resolver_match.namespace %}
-                    <audio id="ruMob" src="{% say 'ru' 'Слова на Анг' %}"></audio>
-                    <a style="cursor: pointer" onclick="document.getElementById('ruMob').play()">Слова на Анг</a>
-                    {% else %}
-                    <audio id="enMob" src="{% say 'en-uk' 'Words in English' %}"></audio>
-                    <a style="cursor: pointer" onclick="document.getElementById('enMob').play()">Words in English. [Transcription]</a>
-                    {% endif %}
-                </strong>
-            </div>
-        </div>
-    </div>
+    {% include "translator/snippets/_content_show_word.html" %}
 
-    <!--картинка к слову-->
-    <div class="py-0 px-2">
-        <div class="position-relative top-50 start-50 translate-middle">
-            <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}" usemap="#workmap">
-            <map name="workmap">
-                <area shape="rect" coords="0,0,180,270" href="#">
-                <area shape="rect" coords="180,0,360,270" href="#">
-            </map>
-        </div>
-    </div>
-    <a href="#" style="font-size: 0.675em; color: #5b92ad!important;" target="_blank">Ссылка на ресурс фото</a>
-
-    <!--пример слова в предложении-->
-    <div class="card-body">
-      <span class="card-text small">
-          {% if "rus" in request.resolver_match.namespace %}
-          <audio id="ruMobEx" src="{% say 'ru' 'Пример слова в предложении' %}"></audio>
-          <a style="cursor: pointer" onclick="document.getElementById('ruMobEx').play()">Пример слова в предложении</a>
-          {% else %}
-          <audio id="enMobEx" src="{% say 'en-uk' 'Example of a word in a sentence' %}"></audio>
-          <a style="cursor: pointer" onclick="document.getElementById('enMobEx').play()">Example of a word in a sentence</a>
-          {% endif %}
-      </span>
-    </div>
+    <!--Навигация на пред. и новую страницу-->
+    {% include "translator/snippets/_next_previous.html" %}
 
     <div class="collapse" id="collapseExampleMobil">
         <div class="card card-body p-0">
@@ -78,7 +41,7 @@
             </div>
         </button>
 
-        <a href="{% url 'url_translator:extend_replay' request.slug_category %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
+        <a href="{% url 'url_translator:extend_replay' request.slug_category request.session.repeat_words.0.0 %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
 
     </div>
 
@@ -101,47 +64,10 @@
             </div>
 
             <!--Контент-->
-            <!--слово-->
-            <div class="card-body">
-                <div class="position-relative top-50 start-50 translate-middle">
-                    <div class="card-text lead">
-                        <strong>
-                            {% if "rus" in request.resolver_match.namespace %}
-                            <audio id="ruDes" src="{% say 'ru' 'Слова на Анг' %}"></audio>
-                            <a style="cursor: pointer" onclick="document.getElementById('ruDes').play()">Слова на Анг</a>
-                            {% else %}
-                            <audio id="enDes" src="{% say 'en-uk' 'Words in English' %}"></audio>
-                            <a style="cursor: pointer" onclick="document.getElementById('enDes').play()">Words in English. [Transcription]</a>
-                            {% endif %}
-                        </strong>
-                    </div>
-                </div>
-            </div>
+            {% include "translator/snippets/_content_show_word.html" %}
 
-            <!--картинка к слову-->
-            <div class="py-0 px-2">
-                <div class="position-relative top-50 start-50 translate-middle">
-                    <img class="bd-placeholder-img rounded-0 w-100" src="{% static 'image/placeholder3.jpg' %}" usemap="#workmap">
-                    <map name="workmap">
-                        <area shape="rect" coords="0,0,180,270" href="#">
-                        <area shape="rect" coords="180,0,360,270" href="#">
-                    </map>
-                </div>
-            </div>
-            <a href="#" style="font-size: 0.675em; color: #5b92ad!important;" target="_blank">Ссылка на ресурс фото</a>
-
-            <!--пример слова в предложении-->
-            <div class="card-body">
-                  <span class="card-text small">
-                        {% if "rus" in request.resolver_match.namespace %}
-                        <audio id="ruDesEx" src="{% say 'ru' 'Пример слова в предложении' %}"></audio>
-                        <a style="cursor: pointer" onclick="document.getElementById('ruDesEx').play()">Пример слова в предложении</a>
-                        {% else %}
-                        <audio id="enDesEx" src="{% say 'en-uk' 'Example of a word in a sentence' %}"></audio>
-                        <a style="cursor: pointer" onclick="document.getElementById('enDesEx').play()">Example of a word in a sentence</a>
-                        {% endif %}
-                  </span>
-            </div>
+            <!--Навигация на пред. и новую страницу-->
+            {% include "translator/snippets/_next_previous.html" %}
 
             <div class="collapse" id="collapseExample">
                 <div class="card card-body p-0">
@@ -164,7 +90,7 @@
                     </div>
                 </button>
 
-                <a href="{% url 'url_translator:extend_replay' request.slug_category %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
+                <a href="{% url 'url_translator:extend_replay' request.slug_category request.session.repeat_words.0.0 %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
 
             </div>
 

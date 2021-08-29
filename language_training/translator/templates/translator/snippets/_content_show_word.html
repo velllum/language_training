@@ -5,7 +5,7 @@
   <div class="position-relative top-50 start-50 translate-middle">
     <div class="card-text lead">
       <strong>
-        {% if "rus" in request.resolver_match.namespace %}
+        {% if name_space in request.resolver_match.namespace %}
         <audio id="ru" src="{% say 'ru' object.translation %}"></audio>
         <a style="cursor: pointer" onclick="document.getElementById('ru').play()">{{ object.translation }}</a>
         {% else %}
@@ -32,7 +32,7 @@
 <!--пример слова в предложении-->
 <div class="card-body">
   <span class="card-text small">
-      {% if "rus" in request.resolver_match.namespace %}
+      {% if name_space in request.resolver_match.namespace %}
       <audio id="ruEx" src="{% say 'ru' object.example_translate %}"></audio>
       <a style="cursor: pointer" onclick="document.getElementById('ruEx').play()">{{ object.example_translate }}</a>
       {% else %}

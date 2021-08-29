@@ -45,7 +45,6 @@ class Word(utils.TranslateContentMixin, views.generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Список слов"
-        context["category_slug"] = self.kwargs.get("category_slug")
         return context
 
 
@@ -56,32 +55,25 @@ class ShowWord(
     template_name = "translator/show_word.html"
     slug_url_kwarg = 'word_slug'
 
-    def get_queryset(self):
-        query = self.model.objects.filter(
-            category__slug=self.kwargs.get("category_slug"), slug=self.kwargs.get("word_slug")
-        ).select_related('category')
-        if query:
-            return query
-
-    def get_object(self, **kwargs):
-        return super().get_object(**kwargs)
-
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["category_slug"] = self.kwargs.get("category_slug")
         context["title"] = self.object.translation
         context["all_count"] = self.model.objects.filter(
                                 is_free=True, category__slug=self.kwargs.get("category_slug")
-                            ).count()
-        last_count = self.model.objects.filter(
+                            ).count()  # число всех данных из базы
+        self.last_count = self.model.objects.filter(
                                 is_free=True, pk__lte=self.object.pk, category__slug=self.kwargs.get("category_slug")
                             ).count()
-        context["last_count"] = last_count
-        context["number_page"] = ((last_count - 1) // 10) + 1
+        context["last_count"] = self.last_count  # число текущего номера в массиве из базы
+        context["number_page"] = self.get_number_page  # число текущей страницы, для ссылки
         return context
 
+    @property
+    def get_number_page(self):
+        return ((self.last_count - 1) // 10) + 1
 
-class RepeatWords(utils.RepetitionWordsMixin, views.generic.DetailView):
+
+class RepeatWords(views.generic.DetailView, utils.RepetitionNavigatingPagesMixin):
     """- Повтор"""
     template_name = "translator/repeat_words.html"
     slug_url_kwarg = 'word_slug'
@@ -95,18 +87,54 @@ class RepeatWords(utils.RepetitionWordsMixin, views.generic.DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["category_slug"] = self.kwargs.get("category_slug")
         context["title"] = "Повтор слов"
         return context
 
 
+class ExtendReplay(views.generic.DetailView, utils.RepetitionNavigatingPagesMixin, utils.TranslateContentMixin):
+    """- Ответ, Продление повтора"""
+    template_name = "translator/extend_replay.html"
+    slug_url_kwarg = 'word_slug'
+
+    def get_queryset(self):
+        query = self.model.objects.filter(
+            category__slug=self.kwargs.get("category_slug"), slug=self.kwargs.get("word_slug")
+        ).select_related('category')
+        if query:
+            return query
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Повтор слов"
+        return context
+
+    @property
+    def get_url_kwargs(self):
+        """- переопределить словарь kwargs"""
+        if "word_slug" in self.kwargs:
+            if not self.list_slugs:
+                del self.kwargs["word_slug"]
+            else:
+                self.kwargs["word_slug"] = self.get_session_data[0]
+            return self.kwargs
+
+    @property
+    def get_url_name(self):
+        """- имя страницы редиректа"""
+        if not self.list_slugs:
+            return "word"
+        return "repeat_words"
+
+    @property
+    def get_name_space(self):
+        """- меняем русский контент на иностранный"""
+        return "over"
 
 
-
-
-class AudioReplay(utils.TranslateContentMixin, views.generic.ListView):
+class AudioReplay(views.generic.DetailView, utils.RepetitionNavigatingPagesMixin, utils.TranslateContentMixin):
     """- Аудио повтор слов добавленных в закладки"""
     template_name = "translator/audio_replay.html"
+    slug_url_kwarg = 'word_slug'
 
     def get_queryset(self):
         query = self.model.objects.filter(category__slug=self.kwargs.get("category_slug")).select_related('category')
@@ -115,38 +143,32 @@ class AudioReplay(utils.TranslateContentMixin, views.generic.ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["category_slug"] = self.kwargs.get("category_slug")
-        context["title"] = "Аудио повтор"
+        context["title"] = "Аудио повтор слов"
         return context
 
+    @property
+    def get_url_kwargs(self):
+        """- переопределить словарь kwargs, при удалении первого слова"""
+        if "word_slug" in self.kwargs:
+            if not self.list_slugs:
+                del self.kwargs["word_slug"]
+            else:
+                self.kwargs["word_slug"] = self.get_session_data[0]
+            return self.kwargs
 
-class ExtendReplay(utils.TranslateContentMixin, views.generic.ListView):
-    """- Продление повтора"""
-    template_name = "translator/extend_replay.html"
-
-    def get_queryset(self):
-        query = self.model.objects.filter(category__slug=self.kwargs.get("category_slug")).select_related('category')
-        if query:
-            return query
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["category_slug"] = self.kwargs.get("category_slug")
-        context["title"] = "Добавить слово в повтор"
-        return context
+    @property
+    def get_url_name(self):
+        """- имя страницы редиректа, если больше в списке слов не осталось"""
+        if not self.list_slugs:
+            return "word"
+        return self.res.url_name
 
 
-class Login(views.View):
+class Login(utils.BaseMixin):
     """- Авторизация"""
-    def __init__(self, **kwargs):
-        super().__init__(kwargs)
-        self.form = None
-        self.res = None
-
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
-        self.res = resolve(request.path)
-        self.form - forms.LoginForm(request.POST or None)
+        self.form = forms.LoginForm(request.POST or None)
 
     def get(self, request, **kwargs):
         """- Отобразить форму на странице"""
@@ -174,17 +196,11 @@ class Login(views.View):
         return render(request, "translator/auth.html", context)
 
 
-class Register(views.View):
+class Register(utils.BaseMixin):
     """- Регистрация"""
-    def __init__(self, **kwargs):
-        super().__init__(kwargs)
-        self.form = None
-        self.res = None
-
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
         self.form = forms.RegisterForm(request.POST or None)
-        self.res = resolve(request.path)
 
     def get(self, request, **kwargs):
         """- Отобразить форму на странице"""
