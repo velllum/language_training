@@ -1,7 +1,6 @@
 <form method="post">
     {% csrf_token %}
-    {{ form_hidden }}
-    <button class="btn-cover" type="submit">
+    <button class="btn-cover" type="submit" name="today" value="today">
         <div class="px-cover">
             {% if object.slug in list_slugs %}
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">

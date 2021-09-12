@@ -2,18 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
 
-from . import models
 
 User = get_user_model()
-
-
-class RepetitionWordsForm(forms.ModelForm):
-    """- Скрытое поле, передача pk слова для добавление в сессию"""
-    class Meta:
-        model = models.Word
-        fields = ('word_id',)
-
-    word_id = forms.CharField(widget=forms.HiddenInput(), required=False)
 
 
 class LoginForm(forms.ModelForm):

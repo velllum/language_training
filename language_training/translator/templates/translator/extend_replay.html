@@ -17,7 +17,7 @@
     {% include "translator/snippets/_content_show_word.html" %}
 
     <!--Навигация на пред. и новую страницу-->
-    {% include "translator/snippets/_next_previous.html" %}
+    {#% include "translator/snippets/_next_previous.html" %#}
 
     <!--кнопки правления-->
     <div class="card-footer-cover p-1 mt-auto d-flex justify-content-between">
@@ -57,7 +57,7 @@
             {% include "translator/snippets/_content_show_word.html" %}
 
             <!--Навигация на пред. и новую страницу-->
-            {% include "translator/snippets/_next_previous.html" %}
+            {#% include "translator/snippets/_next_previous.html" %#}
 
             <!--кнопки правления-->
             <div class="card-footer-cover p-1 d-flex justify-content-between">
@@ -65,9 +65,19 @@
                 <!--Кнопка добавить в повтор, удалить из повтора-->
                 {% include "translator/snippets/buttons/_btn_add_del_select.html" %}
 
-                <a href="#" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-2">1</strong></a>
+                <form method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-light" type="submit" name="next_day" value="next_day" style="border: 2px solid #ffffffbf;">
+                        <strong class="mx-2">1</strong>
+                    </button>
+                </form>
 
-                <a href="#" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-2">0</strong></a>
+                <form method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-light" type="submit" name="repeat" value="repeat" style="border: 2px solid #ffffffbf;">
+                        <strong class="mx-2">0</strong>
+                    </button>
+                </form>
 
                 <!--Кнопка перевода-->
                 {% include "translator/snippets/buttons/_btn_translate.html" %}

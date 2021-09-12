@@ -41,7 +41,7 @@
             </div>
         </button>
 
-        <a href="{% url 'url_translator:extend_replay' request.slug_category request.session.repeat_words.0.0 %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
+        <a href="{% url 'url_translator:extend_replay' request.slug_category object.slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
 
     </div>
 
@@ -90,7 +90,7 @@
                     </div>
                 </button>
 
-                <a href="{% url 'url_translator:extend_replay' request.slug_category request.session.repeat_words.0.0 %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
+                <a href="{% url 'url_translator:extend_replay' request.slug_category object.slug %}" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-1">Ответ</strong></a>
 
             </div>
 

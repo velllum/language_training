@@ -49,7 +49,7 @@ class Word(utils.TranslateContentMixin, views.generic.ListView):
 
 
 class ShowWord(
-    views.generic.DetailView, utils.RepetitionWordsMixin, utils.TranslateContentMixin, utils.NavigatingPagesMixin
+    views.generic.DetailView, utils.AddReplayWordMixin, utils.TranslateContentMixin, utils.NavigatingPagesMixin
 ):
     """- Вывод слова"""
     template_name = "translator/show_word.html"
@@ -73,35 +73,22 @@ class ShowWord(
         return ((self.last_count - 1) // 10) + 1
 
 
-class RepeatWords(views.generic.DetailView, utils.RepetitionNavigatingPagesMixin):
+class RepeatWords(views.generic.DetailView, utils.AddReplayWordAndNavigatingMixin):
     """- Повтор"""
     template_name = "translator/repeat_words.html"
     slug_url_kwarg = 'word_slug'
 
-    def get_queryset(self):
-        query = self.model.objects.filter(
-            category__slug=self.kwargs.get("category_slug"), slug=self.kwargs.get("word_slug")
-        ).select_related('category')
-        if query:
-            return query
-
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Повтор слов"
+        context["name_space"] = self.name_space
         return context
 
 
-class ExtendReplay(views.generic.DetailView, utils.RepetitionNavigatingPagesMixin, utils.TranslateContentMixin):
+class ExtendReplay(views.generic.DetailView, utils.AddReplayWordAndNavigatingMixin, utils.TranslateContentMixin):
     """- Ответ, Продление повтора"""
     template_name = "translator/extend_replay.html"
     slug_url_kwarg = 'word_slug'
-
-    def get_queryset(self):
-        query = self.model.objects.filter(
-            category__slug=self.kwargs.get("category_slug"), slug=self.kwargs.get("word_slug")
-        ).select_related('category')
-        if query:
-            return query
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -110,12 +97,12 @@ class ExtendReplay(views.generic.DetailView, utils.RepetitionNavigatingPagesMixi
 
     @property
     def get_url_kwargs(self):
-        """- переопределить словарь kwargs"""
+        """- получить словарь kwargs"""
         if "word_slug" in self.kwargs:
             if not self.list_slugs:
                 del self.kwargs["word_slug"]
             else:
-                self.kwargs["word_slug"] = self.get_session_data[0]
+                self.kwargs["word_slug"] = self.next_redirect_page  # переписать чтоб редирект вел на след страницу
             return self.kwargs
 
     @property
@@ -131,15 +118,10 @@ class ExtendReplay(views.generic.DetailView, utils.RepetitionNavigatingPagesMixi
         return "over"
 
 
-class AudioReplay(views.generic.DetailView, utils.RepetitionNavigatingPagesMixin, utils.TranslateContentMixin):
+class AudioReplay(views.generic.DetailView, utils.AddReplayWordAndNavigatingMixin, utils.TranslateContentMixin):
     """- Аудио повтор слов добавленных в закладки"""
     template_name = "translator/audio_replay.html"
     slug_url_kwarg = 'word_slug'
-
-    def get_queryset(self):
-        query = self.model.objects.filter(category__slug=self.kwargs.get("category_slug")).select_related('category')
-        if query:
-            return query.select_related('category')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -153,7 +135,7 @@ class AudioReplay(views.generic.DetailView, utils.RepetitionNavigatingPagesMixin
             if not self.list_slugs:
                 del self.kwargs["word_slug"]
             else:
-                self.kwargs["word_slug"] = self.get_session_data[0]
+                self.kwargs["word_slug"] = self.next_redirect_page
             return self.kwargs
 
     @property
@@ -262,16 +244,6 @@ def logout_user(request, category_slug):
     logout(request)
     res = resolve(request.path)
     return redirect(reverse(f"{res.namespace}:word", kwargs={"category_slug": category_slug}))
-
-
-def audio_replay(request, category_slug):
-    """- Аудио повтор слов добавленных в закладки"""
-    return render(request, "translator/audio_replay.html", context={"category_slug": category_slug})
-
-
-def extend_replay(request, category_slug):
-    """- Продление повтора"""
-    return render(request, "translator/extend_replay.html", context={"category_slug": category_slug})
 
 
 def settings(request, category_slug):
