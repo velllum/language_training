@@ -68,7 +68,7 @@
                 <form method="post">
                     {% csrf_token %}
                     <button class="btn btn-outline-light" type="submit" name="next_day" value="next_day" style="border: 2px solid #ffffffbf;">
-                        <strong class="mx-2">1</strong>
+                        <strong class="mx-2">{{ interval }}</strong>
                     </button>
                 </form>
 

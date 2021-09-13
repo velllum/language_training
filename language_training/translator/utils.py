@@ -90,18 +90,19 @@ class AddReplayWordMixin(BaseMixin, BaseDetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["list_slugs"] = self.list_slugs
+        context["list_slugs"] = self.get_filter_list_slugs
         return context
 
-    # @property
-    # def get_filter_list_slugs(self):
-    #     """- получить фильтрованные данные по дате и времени"""
-    #     pass
-    #     list_slugs = []
-    #     for slug, time, _ in self.request.session.get("repeat_words", None):
-    #         if time < datetime.datetime.now().timestamp():
-    #             list_slugs.append(slug)
-    #     return list_slugs
+    @property
+    def get_filter_list_slugs(self):
+        """- получить фильтрованные данные по дате и времени"""
+        list_slugs = []
+        date = datetime.datetime.now().timestamp()
+        for slug, time, _ in self.request.session.get("repeat_words", None):
+            if time > date:
+                continue
+            list_slugs.append(slug)
+        return list_slugs
 
     @property
     def get_session_list_slugs(self):
@@ -110,7 +111,7 @@ class AddReplayWordMixin(BaseMixin, BaseDetailView):
         repeat_words = self.request.session.get("repeat_words", None)
         if repeat_words:
             return [slug for slug, _, _ in repeat_words]
-        return self.request.session.setdefault('repeat_words', list())
+        return self.request.session.setdefault('repeat_words', [])
 
     @property
     def get_url_kwargs(self):
@@ -130,7 +131,7 @@ class AddReplayWordMixin(BaseMixin, BaseDetailView):
             ind = self.list_slugs.index(word_slug)
             if len_list != ind and len_list > ind:
                 ind += 1
-            elif len_list < ind or len_list == ind:
+            else:
                 ind -= 1
             self.next_redirect_page = self.list_slugs[ind]
 
@@ -153,7 +154,7 @@ class AddReplayWordMixin(BaseMixin, BaseDetailView):
         """- получить присвоенный интервал дня повтора, при добавлении"""
         if word_slug in self.list_slugs:
             ind = self.list_slugs.index(word_slug)
-            print(request.session['repeat_words'][ind][2])
+            print("request.session['repeat_words'][ind][2]", request.session['repeat_words'][ind][2])
             return request.session['repeat_words'][ind][2]
 
     @staticmethod
@@ -169,22 +170,15 @@ class AddReplayWordMixin(BaseMixin, BaseDetailView):
         if word_slug in self.list_slugs and interval in self.list_repeat_day_interval:
             ind_slug = self.list_slugs.index(word_slug)
             ind_interval = self.list_repeat_day_interval.index(interval)
-            new_current_interval = self.list_repeat_day_interval[ind_interval + 1]
+            len_repeat_interval = len(self.list_repeat_day_interval) - 1
+            if len_repeat_interval != ind_interval and len_repeat_interval > ind_interval:
+                ind_interval += 1
+            new_current_interval = self.list_repeat_day_interval[ind_interval]
             request.session['repeat_words'][ind_slug] = new_current_interval
-
-            #  не мешало бы добавить проверку (данных в сессии и по списку интервалов), что то типа
-
-            # if word_slug in self.list_slugs:
-            #     ind = self.list_slugs.index(word_slug)
-            #     if len_list != ind and len_list > ind:
-            #         ind += 1
-            #     elif len_list < ind or len_list == ind:
-            #         ind -= 1
-            #     self.next_redirect_page = self.list_slugs[ind]
-
             return new_current_interval
 
     def post(self, request, **kwargs):
+        """- события по кнопкам добавления повтора и т.д."""
         word_slug = kwargs.get("word_slug")
         now = datetime.datetime.now()  # получить текущею дату
         current_interval = self.get_current_interval(request, word_slug)  # получить текущий интервал
@@ -204,6 +198,7 @@ class AddReplayWordMixin(BaseMixin, BaseDetailView):
             """- продлить временную точку повтора"""
             # получить дату следующего показа (обновить дату след показа)
             new_date_repeat = self.update_date_repeat(current_interval)
+            print(new_date_repeat, new_date_repeat.timestamp())
             # увеличить интервал на следующий
             new_current_interval = self.increase_current_interval(request, word_slug, current_interval)
             # добавить параметр указывающий о наличии интервала времени
@@ -230,6 +225,7 @@ class AddReplayWordAndNavigatingMixin(AddReplayWordMixin, BaseDetailView):
         context["all_count"] = len(self.list_slugs)  # количество всех данных в массиве сессии
         # число, номер текущего индекса в массиве сессии
         context["last_count"] = sum([int(len(self.list_slugs[:self.get_index_page])), 1])
+        context["interval"] = self.get_current_interval(self.request, self.kwargs["word_slug"])
         return context
 
     @property
