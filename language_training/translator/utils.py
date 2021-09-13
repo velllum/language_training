@@ -149,58 +149,76 @@ class AddReplayWordMixin(BaseMixin, BaseDetailView):
             request.session['repeat_words'].pop(ind)
             request.session['repeat_words'].append(tup_data)
 
-    def get_day_interval(self, request, word_slug):
+    def get_current_interval(self, request, word_slug):
         """- получить присвоенный интервал дня повтора, при добавлении"""
         if word_slug in self.list_slugs:
             ind = self.list_slugs.index(word_slug)
+            print(request.session['repeat_words'][ind][2])
             return request.session['repeat_words'][ind][2]
 
-    def update_date_repeat(self, request, word_slug, now, day_interval):
+    @staticmethod
+    def update_date_repeat(day_interval, hour=1):
         """- обновить дату повтора"""
-        ...
+        return datetime.datetime.combine(
+            date=datetime.date.today() + datetime.timedelta(days=day_interval),
+            time=datetime.time(hour=hour)
+        )
+
+    def increase_current_interval(self, request, word_slug, interval):
+        """- увеличить текущий интервал"""
+        if word_slug in self.list_slugs and interval in self.list_repeat_day_interval:
+            ind_slug = self.list_slugs.index(word_slug)
+            ind_interval = self.list_repeat_day_interval.index(interval)
+            new_current_interval = self.list_repeat_day_interval[ind_interval + 1]
+            request.session['repeat_words'][ind_slug] = new_current_interval
+
+            #  не мешало бы добавить проверку (данных в сессии и по списку интервалов), что то типа
+
+            # if word_slug in self.list_slugs:
+            #     ind = self.list_slugs.index(word_slug)
+            #     if len_list != ind and len_list > ind:
+            #         ind += 1
+            #     elif len_list < ind or len_list == ind:
+            #         ind -= 1
+            #     self.next_redirect_page = self.list_slugs[ind]
+
+            return new_current_interval
 
     def post(self, request, **kwargs):
         word_slug = kwargs.get("word_slug")
+        now = datetime.datetime.now()  # получить текущею дату
+        current_interval = self.get_current_interval(request, word_slug)  # получить текущий интервал
+        self.get_next_redirect_page()  # получить данные для редиректа
+
         if self.btn_today in request.POST:
             """- добавить, удалить данные из сессии"""
-            now = datetime.datetime.now()
-            day_interval = self.list_repeat_day_interval[0]
-            tup_data = [word_slug, now.timestamp(), day_interval]  # добавить параметр указывающий о наличии интервала времени
-            self.get_next_redirect_page()
+            tup_data = [word_slug, now.timestamp(), self.list_repeat_day_interval[0]]
             self.add_to_extract_session_data(request, word_slug, tup_data)
-            self.list_slugs = self.get_session_list_slugs
-            return redirect(reverse(
-                viewname=f"{self.res.namespace}:{self.get_url_name}",
-                kwargs=self.get_url_kwargs
-            ))
 
         elif self.btn_repeat in request.POST:
             """- добавить данные в сессии, повторить еще раз сегодня (отправляется в конец)"""
-            now = datetime.datetime.now()
-            day_interval = self.get_day_interval(request, word_slug)
-            tup_data = [word_slug, now.timestamp(), day_interval]  # добавить параметр указывающий о наличии интервала времени
-            print(tup_data)
-            self.get_next_redirect_page()
+            tup_data = [word_slug, now.timestamp(), current_interval]
             self.add_time_replay_session(request, word_slug, tup_data)
-            self.list_slugs = self.get_session_list_slugs
-            return redirect(reverse(
-                viewname=f"{self.res.namespace}:{self.get_url_name}",
-                kwargs=self.get_url_kwargs
-            ))
 
         elif self.btn_next_day in request.POST:
             """- продлить временную точку повтора"""
-            now = datetime.datetime.now()
-            day_interval = self.get_day_interval(request, word_slug)
-            new_date_repeat = self.update_date_repeat(request, word_slug, now, day_interval)
-            tup_data = [word_slug, new_date_repeat.timestamp(), day_interval]  # добавить параметр указывающий о наличии интервала времени
-            self.get_next_redirect_page()
+            # получить дату следующего показа (обновить дату след показа)
+            new_date_repeat = self.update_date_repeat(current_interval)
+            # увеличить интервал на следующий
+            new_current_interval = self.increase_current_interval(request, word_slug, current_interval)
+            # добавить параметр указывающий о наличии интервала времени
+            tup_data = [word_slug, new_date_repeat.timestamp(), new_current_interval]
+            # удаляем и добавляем в конец списка
             self.add_time_replay_session(request, word_slug, tup_data)
-            self.list_slugs = self.get_session_list_slugs
-            return redirect(reverse(
-                viewname=f"{self.res.namespace}:{self.get_url_name}",
-                kwargs=self.get_url_kwargs
-            ))
+
+        # переопределяем список list_slugs
+        self.list_slugs = self.get_session_list_slugs
+
+        # переадресация
+        return redirect(reverse(
+            viewname=f"{self.res.namespace}:{self.get_url_name}",
+            kwargs=self.get_url_kwargs
+        ))
 
 
 class AddReplayWordAndNavigatingMixin(AddReplayWordMixin, BaseDetailView):
