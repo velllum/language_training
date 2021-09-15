@@ -128,14 +128,15 @@ class AddReplayWordMixin(BaseMixin, BaseDetailView):
     def get_next_redirect_page(self):
         """- получить следующею страницу редиректа"""
         word_slug = self.res.kwargs.get("word_slug")
-        len_list = len(self.list_slugs) - 1
-        if word_slug in self.list_slugs:
-            ind = self.list_slugs.index(word_slug)
+        list_slugs = self.filter_list_slugs
+        len_list = len(list_slugs) - 1
+        if word_slug in list_slugs:
+            ind = list_slugs.index(word_slug)
             if len_list != ind and len_list > ind:
                 ind += 1
             else:
                 ind -= 1
-            self.next_redirect_page = self.list_slugs[ind]
+            self.next_redirect_page = list_slugs[ind]
 
     def add_to_extract_session_data(self, request, word_slug, tup_data):
         """- добавить, удалить данные из сессии"""
@@ -156,7 +157,7 @@ class AddReplayWordMixin(BaseMixin, BaseDetailView):
         """- получить присвоенный интервал дня повтора, при добавлении"""
         if word_slug in self.list_slugs:
             ind = self.list_slugs.index(word_slug)
-            print("request.session['repeat_words'][ind][2]", request.session['repeat_words'][ind][2])
+            print("интервал дня повтора", request.session['repeat_words'][ind][2])
             return request.session['repeat_words'][ind][2]
 
     @staticmethod
@@ -239,8 +240,8 @@ class AddReplayWordAndNavigatingMixin(AddReplayWordMixin, BaseDetailView):
         print(self.filter_list_slugs, len(self.filter_list_slugs))
         print(self.list_slugs, len(self.list_slugs))
         print(word_slug)
-        if word_slug in self.list_slugs:
-            ind = self.list_slugs.index(word_slug)
+        if word_slug in self.filter_list_slugs:
+            ind = self.filter_list_slugs.index(word_slug)
             return ind
 
     def get_url_page(self, page_ind):
