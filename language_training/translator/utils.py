@@ -20,6 +20,7 @@ class BaseMixin(View):
         self.name_space = "rus"
         self.rus_ns = "rus"
         self.over_ns = "over"
+
         self.next_redirect_page = None
         self.filter_list_slugs = None
         self.allow_empty = False
@@ -40,7 +41,7 @@ class TranslateContentMixin(BaseMixin, BaseListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["get_url_translate"] = self.get_url_translate()
-        context["name_space"] = self.get_name_space
+        context["name_space"] = self.name_space
         return context
 
     def get_url_translate(self):
@@ -50,11 +51,7 @@ class TranslateContentMixin(BaseMixin, BaseListView):
             namespace = self.rus_ns
         else:
             namespace = self.over_ns
-        return reverse(viewname=f"{namespace}:{res.url_name}", kwargs=res.kwargs)
-
-    @property
-    def get_name_space(self):
-        return self.name_space
+        return reverse(viewname=f"{namespace}:{self.res.url_name}", kwargs=self.res.kwargs)
 
 
 class NavigatingPagesMixin(BaseMixin, BaseDetailView):
@@ -77,10 +74,9 @@ class NavigatingPagesMixin(BaseMixin, BaseDetailView):
             query = query.order_by("-pk").first()
         else:
             query = query.first()
-        res = resolve(self.request.path)
-        if res.kwargs.get("word_slug"):
-            res.kwargs["word_slug"] = query.slug
-        return reverse(viewname=res.view_name, kwargs=res.kwargs)
+        if self.res.kwargs.get("word_slug"):
+            self.res.kwargs["word_slug"] = query.slug
+        return reverse(viewname=self.res.view_name, kwargs=self.res.kwargs)
 
 
 class AddReplayWordMixin(BaseMixin, BaseDetailView):
@@ -212,7 +208,7 @@ class AddReplayWordMixin(BaseMixin, BaseDetailView):
         # переопределяем список list_slugs
         self.list_slugs = self.get_session_list_slugs
         # переопределяем список filter_list_slugs
-        # self.filter_list_slugs = self.get_filter_list_slugs
+        self.filter_list_slugs = self.get_filter_list_slugs
 
         # переадресация
         return redirect(reverse(
@@ -227,6 +223,7 @@ class AddReplayWordAndNavigatingMixin(AddReplayWordMixin, BaseDetailView):
         context = super().get_context_data(**kwargs)
         context["previous"] = self.get_previous_page
         context["next"] = self.get_next_page
+        context["name_space"] = self.name_space
         context["all_count"] = len(self.filter_list_slugs)  # количество всех данных в массиве сессии
         # число, номер текущего индекса в массиве сессии
         context["last_count"] = sum([int(len(self.filter_list_slugs[:self.get_index_page])), 1])
@@ -253,15 +250,22 @@ class AddReplayWordAndNavigatingMixin(AddReplayWordMixin, BaseDetailView):
     @property
     def get_previous_page(self):
         """- Получить предыдущею страницу"""
-        ind = self.get_index_page - 1
-        if ind < 0:
-            return None
-        return self.get_url_page(ind)
+        ind = self.get_index_page
+        print('ind', ind)
+        # if not ind:
+        #     return None
+        # if ind < 0:
+        #     return None
+        if ind:
+            return self.get_url_page(ind - 1)
 
     @property
     def get_next_page(self):
         """- Получить следующею страницу"""
-        ind = self.get_index_page + 1
-        if ind >= len(self.filter_list_slugs):
-            return None
-        return self.get_url_page(ind)
+        ind = self.get_index_page
+        # if not ind:
+        #     return None
+        # if ind >= len(self.filter_list_slugs):
+        #     return None
+        if ind:
+            return self.get_url_page(ind + 1)

@@ -81,7 +81,6 @@ class RepeatWords(views.generic.DetailView, utils.AddReplayWordAndNavigatingMixi
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Повтор слов"
-        context["name_space"] = self.name_space
         return context
 
 
@@ -130,7 +129,7 @@ class AudioReplay(views.generic.DetailView, utils.AddReplayWordAndNavigatingMixi
 
     @property
     def get_url_kwargs(self):
-        """- переопределить словарь kwargs, при удалении первого слова"""
+        """- получить словарь kwargs"""
         if "word_slug" in self.kwargs:
             if not self.list_slugs:
                 del self.kwargs["word_slug"]
