@@ -98,7 +98,7 @@ class ExtendReplay(views.generic.DetailView, utils.AddReplayWordAndNavigatingMix
     def get_url_kwargs(self):
         """- получить словарь kwargs"""
         if "word_slug" in self.kwargs:
-            if not self.list_slugs:
+            if not self.filter_list_slugs:
                 del self.kwargs["word_slug"]
             else:
                 self.kwargs["word_slug"] = self.next_redirect_page  # переписать чтоб редирект вел на след страницу
@@ -107,7 +107,7 @@ class ExtendReplay(views.generic.DetailView, utils.AddReplayWordAndNavigatingMix
     @property
     def get_url_name(self):
         """- имя страницы редиректа"""
-        if not self.list_slugs:
+        if not self.filter_list_slugs:
             return "word"
         return "repeat_words"
 

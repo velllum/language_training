@@ -51,7 +51,7 @@ class TranslateContentMixin(BaseMixin, BaseListView):
             namespace = self.rus_ns
         else:
             namespace = self.over_ns
-        return reverse(viewname=f"{namespace}:{self.res.url_name}", kwargs=self.res.kwargs)
+        return reverse(viewname=f"{namespace}:{res.url_name}", kwargs=res.kwargs)
 
 
 class NavigatingPagesMixin(BaseMixin, BaseDetailView):
@@ -88,7 +88,9 @@ class AddReplayWordMixin(BaseMixin, BaseDetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["filter_list_slugs"] = self.get_filter_list_slugs
+        context["filter_list_slugs"] = self.filter_list_slugs
+        context["list_slugs"] = self.list_slugs
+        context["name_space"] = self.get_name_space
         return context
 
     @property
@@ -115,6 +117,11 @@ class AddReplayWordMixin(BaseMixin, BaseDetailView):
     def get_url_kwargs(self):
         """- получить словарь kwargs"""
         return self.kwargs
+
+    @property
+    def get_name_space(self):
+        """- меняем русский контент на иностранный"""
+        return self.name_space
 
     @property
     def get_url_name(self):
@@ -223,7 +230,6 @@ class AddReplayWordAndNavigatingMixin(AddReplayWordMixin, BaseDetailView):
         context = super().get_context_data(**kwargs)
         context["previous"] = self.get_previous_page
         context["next"] = self.get_next_page
-        context["name_space"] = self.name_space
         context["all_count"] = len(self.filter_list_slugs)  # количество всех данных в массиве сессии
         # число, номер текущего индекса в массиве сессии
         context["last_count"] = sum([int(len(self.filter_list_slugs[:self.get_index_page])), 1])
@@ -233,39 +239,39 @@ class AddReplayWordAndNavigatingMixin(AddReplayWordMixin, BaseDetailView):
     @property
     def get_index_page(self):
         """- Получить индекс страницу"""
+
+        print('self.filter_list_slugs', self.filter_list_slugs, len(self.filter_list_slugs))
+        print('self.list_slugs', self.list_slugs, len(self.list_slugs))
+        print('word_slug', self.kwargs.get("word_slug"))
+        print("*"*100)
+
         word_slug = self.kwargs.get("word_slug")
-        print(self.filter_list_slugs, len(self.filter_list_slugs))
-        print(self.list_slugs, len(self.list_slugs))
-        print(word_slug)
         if word_slug in self.filter_list_slugs:
             ind = self.filter_list_slugs.index(word_slug)
             return ind
 
     def get_url_page(self, page_ind):
         """- Получить ссылку на страницу"""
-        res = resolve(self.request.path)
-        res.kwargs["word_slug"] = self.filter_list_slugs[page_ind]
-        return reverse(viewname=res.view_name, kwargs=res.kwargs)
+        self.res.kwargs["word_slug"] = self.filter_list_slugs[page_ind]
+        return reverse(viewname=self.res.view_name, kwargs=self.res.kwargs)
 
     @property
     def get_previous_page(self):
         """- Получить предыдущею страницу"""
         ind = self.get_index_page
-        print('ind', ind)
-        # if not ind:
-        #     return None
-        # if ind < 0:
-        #     return None
         if ind:
             return self.get_url_page(ind - 1)
+        if ind < 0:
+            return None
 
     @property
     def get_next_page(self):
         """- Получить следующею страницу"""
         ind = self.get_index_page
-        # if not ind:
-        #     return None
-        # if ind >= len(self.filter_list_slugs):
-        #     return None
+        len_list_slug = len(self.filter_list_slugs) - 1
+        if ind == 0 and len_list_slug != 0:
+            return self.get_url_page(ind + 1)
+        if ind >= len_list_slug:
+            return None
         if ind:
             return self.get_url_page(ind + 1)
