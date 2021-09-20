@@ -25,9 +25,21 @@
         <!--Кнопка добавить в повтор, удалить из повтора-->
         {% include "translator/snippets/buttons/_btn_add_del_select.html" %}
 
-        <a href="#" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-2">1</strong></a>
+        <!--Кнопка перенести повтор слова на определенный интервал-->
+        <form method="post">
+            {% csrf_token %}
+            <button class="btn btn-outline-light" type="submit" name="next_day" value="next_day" style="border: 2px solid #ffffffbf;">
+                <strong class="mx-2">{{ interval }}</strong>
+            </button>
+        </form>
 
-        <a href="#" class="btn btn-outline-light" role="button" style="border: 2px solid #ffffffbf;"><strong class="mx-2">0</strong></a>
+        <!--Кнопка перенести повтор слова на этот же день в конец списка-->
+        <form method="post">
+            {% csrf_token %}
+            <button class="btn btn-outline-light" type="submit" name="repeat" value="repeat" style="border: 2px solid #ffffffbf;">
+                <strong class="mx-2">0</strong>
+            </button>
+        </form>
 
         <!--Кнопка перевода-->
         {% include "translator/snippets/buttons/_btn_translate.html" %}
@@ -65,6 +77,7 @@
                 <!--Кнопка добавить в повтор, удалить из повтора-->
                 {% include "translator/snippets/buttons/_btn_add_del_select.html" %}
 
+                <!--Кнопка перенести повтор слова на определенный интервал-->
                 <form method="post">
                     {% csrf_token %}
                     <button class="btn btn-outline-light" type="submit" name="next_day" value="next_day" style="border: 2px solid #ffffffbf;">
@@ -72,6 +85,7 @@
                     </button>
                 </form>
 
+                <!--Кнопка перенести повтор слова на этот же день в конец списка-->
                 <form method="post">
                     {% csrf_token %}
                     <button class="btn btn-outline-light" type="submit" name="repeat" value="repeat" style="border: 2px solid #ffffffbf;">
