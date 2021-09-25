@@ -9,7 +9,7 @@ from django import views
 from django.conf import settings as sett
 
 from . import models
-from . import utils
+from . import mixins
 from . import forms
 
 
@@ -29,7 +29,7 @@ class Category(views.generic.ListView):
         return context
 
 
-class Word(utils.TranslateContentMixin, views.generic.ListView):
+class Word(mixins.TranslateContentMixin, views.generic.ListView):
     """- Вывод списка слов"""
     paginate_by = sett.NUMBER_PAGES
     template_name = "translator/words.html"
@@ -49,7 +49,7 @@ class Word(utils.TranslateContentMixin, views.generic.ListView):
 
 
 class ShowWord(
-    views.generic.DetailView, utils.AddReplayWordMixin, utils.TranslateContentMixin, utils.NavigatingPagesMixin
+    views.generic.DetailView, mixins.AddReplayWordMixin, mixins.TranslateContentMixin, mixins.NavigatingPagesMixin
 ):
     """- Вывод слова"""
     template_name = "translator/show_word.html"
@@ -73,7 +73,7 @@ class ShowWord(
         return ((self.last_count - 1) // 10) + 1
 
 
-class RepeatWords(views.generic.DetailView, utils.AddReplayWordAndNavigatingMixin):
+class RepeatWords(views.generic.DetailView, mixins.AddReplayWordAndNavigatingMixin):
     """- Повтор"""
     template_name = "translator/repeat_words.html"
     slug_url_kwarg = 'word_slug'
@@ -84,7 +84,7 @@ class RepeatWords(views.generic.DetailView, utils.AddReplayWordAndNavigatingMixi
         return context
 
 
-class ExtendReplay(views.generic.DetailView, utils.AddReplayWordAndNavigatingMixin, utils.TranslateContentMixin):
+class ExtendReplay(views.generic.DetailView, mixins.AddReplayWordAndNavigatingMixin, mixins.TranslateContentMixin):
     """- Ответ, Продление повтора"""
     template_name = "translator/extend_replay.html"
     slug_url_kwarg = 'word_slug'
@@ -117,7 +117,7 @@ class ExtendReplay(views.generic.DetailView, utils.AddReplayWordAndNavigatingMix
         return "over"
 
 
-class AudioReplay(views.generic.DetailView, utils.AddReplayWordAndNavigatingMixin, utils.TranslateContentMixin):
+class AudioReplay(views.generic.DetailView, mixins.AddReplayWordAndNavigatingMixin, mixins.TranslateContentMixin):
     """- Аудио повтор слов добавленных в закладки"""
     template_name = "translator/audio_replay.html"
     slug_url_kwarg = 'word_slug'
@@ -145,7 +145,7 @@ class AudioReplay(views.generic.DetailView, utils.AddReplayWordAndNavigatingMixi
         return self.res.url_name
 
 
-class Login(utils.BaseMixin):
+class Login(mixins.BaseMixin):
     """- Авторизация"""
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
@@ -177,7 +177,7 @@ class Login(utils.BaseMixin):
         return render(request, "translator/auth.html", context)
 
 
-class Register(utils.BaseMixin):
+class Register(mixins.BaseMixin):
     """- Регистрация"""
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
